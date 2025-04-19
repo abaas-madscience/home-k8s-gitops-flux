@@ -1,0 +1,6 @@
+- name: Install kubeadm, kubelet, and kubectl from AUR
+  become: yes
+  become_user: "{{ ansible_user }}"
+  shell: yay -S --noconfirm kubeadm-bin kubelet-bin kubectl-bin
+  args:
+    creates: /usr/bin/kubeadm

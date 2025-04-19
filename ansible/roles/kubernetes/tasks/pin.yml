@@ -1,0 +1,7 @@
+- name: Hold Kubernetes binaries from updates
+  become: yes
+  lineinfile:
+    path: /etc/pacman.conf
+    regexp: '^IgnorePkg'
+    line: 'IgnorePkg   = kubeadm-bin kubelet-bin kubectl-bin'
+    insertafter: '^\[options\]'

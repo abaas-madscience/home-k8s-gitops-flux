@@ -1,0 +1,8 @@
+bootstrap.yml  
+k8s-sysctl.yml  
+python-bootstrap.yml    
+verify-bootstrap.yml
+containerd-bootstrap.yml  
+k8s-bootstrap.yml  
+k8s-node.yml  
+

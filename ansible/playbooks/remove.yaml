@@ -1,0 +1,7 @@
+---
+- name: Bootstrap k8s base software
+  hosts: all
+  become: yes
+
+  roles:
+    - remove-systemd
