@@ -139,9 +139,10 @@ yay -S flux-bin
 
 ```
 flux bootstrap github \
-  --owner=oscar \
+  --owner=abaas-madscience \
   --repository=home-k8s-gitops-flux \
-  --path=bootstrap/flux-system \
+  --branch=main \
+  --path=clusters/lab \
   --personal
 ```
 
