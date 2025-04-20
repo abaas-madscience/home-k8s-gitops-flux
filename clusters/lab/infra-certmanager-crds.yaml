@@ -4,7 +4,6 @@ metadata:
   name: infra-certmgr-crds
   namespace: flux-system
 spec:
-  targetNamespace: infra-cert-manager
   interval: 10m
   path: ./infrastructure/cert-manager/crds
   prune: true
