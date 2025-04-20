@@ -122,6 +122,7 @@ helm install cilium cilium/cilium \
   --set ipam.mode=kubernetes \
   --set cluster.name=archcore \
   --set cluster.id=1
+  --skip-phases=addon/kube-proxy
 ```
 
 DEBUG
