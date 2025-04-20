@@ -54,6 +54,8 @@ kubelet watches API server
 # iScsci : Prepare the nodes to handle iScsi targets
 <todo> add to ansible a way to drop iSCSI unto the nodes and start the services
 
+kubectl taint node kube-master node-role.kuberneteres.io/master
+
 
 # CNI
 ==========================================
@@ -158,3 +160,13 @@ Slap in the Github PAT and watch the pods come online
 ```bash
 kubectl -n kube-system exec -ti ds/cilium -- cilium status
 ```
+
+##
+# Now we want storage, but before that we need to join any nodes
+##
+
+kubeadm token create --print-join-command
+
+sudo kubeadm join <control-plane-ip>:6443 --token <token> --discovery-token-ca-cert-hash sha256:<hash>
+
+sudo kubeadm join 192.168.178.7:6443 --token axzcqr.s85tyjrfjg1y8qak --discovery-token-ca-cert-hash sha256:1d4e93e09e8d4506f6669218ecc1ecdc4afa50ece43dfbbbf0de1d5097a434ad 

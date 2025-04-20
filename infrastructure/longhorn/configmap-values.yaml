@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: longhorn-values
+  namespace: flux-system
+data:
+  values.yaml: |
+    defaultSettings:
+      defaultReplicaCount: 3
+      defaultDataPath: /var/lib/longhorn
+      replicaAutoBalance: best-effort
+      defaultLonghornStaticStorageClass: longhorn
+
+    longhornUI:
+      enabled: false
+
+    ingress:
+      enabled: false
+
+    service:
+      ui:
+        type: ClusterIP
+
+    persistence:
+      defaultClass: true
+      defaultClassReplicaCount: 3
