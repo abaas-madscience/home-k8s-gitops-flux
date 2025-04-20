@@ -51,6 +51,11 @@ kubelet watches API server
  - applies the desired state from the control plane to the local node
  Kubelet is not an orchestrator, it executes orders from the control plane using local resources
 
+# iScsci : Prepare the nodes to handle iScsi targets
+<todo> add to ansible a way to drop iSCSI unto the nodes and start the services
+
+
+# CNI
 ==========================================
 = CNI
 ==========================================
@@ -147,3 +152,8 @@ flux bootstrap github \
 ```
 
 Slap in the Github PAT and watch the pods come online
+
+# Check Cilium status
+```bash
+kubectl -n kube-system exec -ti ds/cilium -- cilium status
+```
