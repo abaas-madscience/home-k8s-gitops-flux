@@ -4,7 +4,7 @@ metadata:
   name: infra-longhorn
   namespace: flux-system
 spec:
-  interval: 1m
+  interval: 10m
   releaseName: longhorn
   targetNamespace: infra-longhorn
   chart:

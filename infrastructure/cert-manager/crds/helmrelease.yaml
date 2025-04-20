@@ -4,7 +4,8 @@ metadata:
   name: cert-manager-crds
   namespace: flux-system
 spec:
-  interval: 1m
+  interval: 10m
+  targetNamespace: infra-longhorn
   chart:
     spec:
       chart: cert-manager
