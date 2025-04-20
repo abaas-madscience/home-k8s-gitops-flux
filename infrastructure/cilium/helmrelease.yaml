@@ -22,6 +22,10 @@ spec:
       enabled: true
       interface: enp1s0
 
+    l2announcements:
+      enabled: true
+      interface: enp1s0
+
     operator:
       enabled: true
       manageCRDs: true
