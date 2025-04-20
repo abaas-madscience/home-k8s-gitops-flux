@@ -1,13 +1,19 @@
-apiVersion: apps/v1
-kind: DaemonSet
+apiVersion: batch/v1
+kind: Job
 metadata:
-  name: kube-proxy
+  name: delete-kube-proxy
   namespace: kube-system
-$patch: delete
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: kube-proxy
-  namespace: kube-system
-$patch: delete
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: nuker
+          image: bitnami/kubectl:latest
+          command:
+            - /bin/sh
+            - -c
+            - |
+              echo "[+] Deleting kube-proxy DS and ConfigMap..."
+              kubectl delete daemonset kube-proxy -n kube-system --ignore-not-found
+              kubectl delete configmap kube-proxy -n kube-system --ignore-not-found
