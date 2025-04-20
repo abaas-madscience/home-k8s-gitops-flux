@@ -1,11 +1,54 @@
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: kube-system-nuker
+  namespace: kube-system
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: kube-proxy-deleter
+  namespace: kube-system
+rules:
+  - apiGroups: ["apps"]
+    resources: ["daemonsets"]
+    verbs: ["delete"]
+  - apiGroups: [""]
+    resources: ["configmaps"]
+    verbs: ["delete"]
+  - apiGroups: ["rbac.authorization.k8s.io"]
+    resources: ["roles", "rolebindings"]
+    verbs: ["delete"]
+  - apiGroups: [""]
+    resources: ["serviceaccounts"]
+    verbs: ["delete"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: kube-proxy-deleter-binding
+  namespace: kube-system
+subjects:
+  - kind: ServiceAccount
+    name: kube-system-nuker
+    namespace: kube-system
+roleRef:
+  kind: Role
+  name: kube-proxy-deleter
+  apiGroup: rbac.authorization.k8s.io
+---
 apiVersion: batch/v1
 kind: Job
 metadata:
   name: delete-kube-proxy
   namespace: kube-system
 spec:
+  backoffLimit: 0
+  ttlSecondsAfterFinished: 30
   template:
     spec:
+      serviceAccountName: kube-system-nuker
       restartPolicy: Never
       containers:
         - name: nuker
@@ -14,6 +57,13 @@ spec:
             - /bin/sh
             - -c
             - |
-              echo "[+] Deleting kube-proxy DS and ConfigMap..."
+              echo "[+] Nuking kube-proxy..."
               kubectl delete daemonset kube-proxy -n kube-system --ignore-not-found
               kubectl delete configmap kube-proxy -n kube-system --ignore-not-found
+
+              echo "[+] Cleaning up RBAC and SA..."
+              kubectl delete role kube-proxy-deleter -n kube-system --ignore-not-found
+              kubectl delete rolebinding kube-proxy-deleter-binding -n kube-system --ignore-not-found
+              kubectl delete serviceaccount kube-system-nuker -n kube-system --ignore-not-found
+
+              echo "[✓] Done."
