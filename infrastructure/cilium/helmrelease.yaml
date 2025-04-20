@@ -18,9 +18,6 @@ spec:
     k8sServiceHost: archcore-control.lab.local
     k8sServicePort: 6443
 
-    bgpControlPlane:
-      enabled: true
-
     ingressController:
       enabled: true
       default: true
