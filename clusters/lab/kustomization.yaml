@@ -3,4 +3,3 @@ kind: Kustomization
 resources:
   - infra-cilium.yaml
   - infra-ks-patches.yaml
-  

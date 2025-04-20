@@ -41,12 +41,17 @@ roleRef:
 apiVersion: batch/v1
 kind: Job
 metadata:
+  labels:
+    job: delete-kube-proxy
   name: delete-kube-proxy
   namespace: kube-system
 spec:
   backoffLimit: 0
   ttlSecondsAfterFinished: 30
   template:
+    metadata:
+      labels:
+        job: delete-kube-proxy
     spec:
       serviceAccountName: kube-system-nuker
       restartPolicy: Never
