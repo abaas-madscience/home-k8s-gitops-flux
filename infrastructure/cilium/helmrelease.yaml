@@ -24,3 +24,5 @@ spec:
       service:
         enabled: true
         type: LoadBalancer
+    deployment:
+      enabled: true
