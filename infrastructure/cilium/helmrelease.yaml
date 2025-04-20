@@ -34,7 +34,3 @@ spec:
       enabled: true
       default: true
       ingressClassName: cilium
-
-    loadBalancer:
-      mode: dedicated
-      algorithm: maglev
