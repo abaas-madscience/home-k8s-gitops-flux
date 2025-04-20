@@ -4,3 +4,4 @@ resources:
   - helmrepo.yaml
   - helmrelease.yaml
   - lb-pool.yaml
+  - lb-policy.yaml

@@ -1,0 +1,11 @@
+apiVersion: cilium.io/v2alpha1
+kind: CiliumL2AnnouncementPolicy
+metadata:
+  name: ingress-vip-policy
+spec:
+  nodeSelector:
+    matchLabels:
+      kubernetes.io/hostname: archcore-control # Or match all nodes if you want
+  serviceSelector:
+    matchLabels:
+      app.kubernetes.io/part-of: cilium
