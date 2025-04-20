@@ -1,11 +1,10 @@
 apiVersion: cilium.io/v2alpha1
 kind: CiliumL2AnnouncementPolicy
 metadata:
-  name: ingress-vip-policy
+  name: ingress-vip-openfire
 spec:
-  nodeSelector:
-    matchLabels:
-      kubernetes.io/hostname: archcore-control # Or match all nodes if you want
+  nodeSelector: {} # Match all nodes
   serviceSelector:
-    matchLabels:
-      app.kubernetes.io/part-of: cilium
+    matchExpressions:
+      - key: cilium.io/ingress
+        operator: Exists
