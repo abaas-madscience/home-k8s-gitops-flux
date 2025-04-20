@@ -21,10 +21,4 @@ spec:
     ingressController:
       enabled: true
       default: true
-      loadbalancerMode: dedicated
       ingressClassName: cilium
-
-    loadBalancer:
-      mode: dedicated
-      algorithm: maglev
-      interface: enp1s0
