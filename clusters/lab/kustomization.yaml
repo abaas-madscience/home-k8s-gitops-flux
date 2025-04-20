@@ -4,5 +4,5 @@ resources:
   - infra-cilium.yaml
   - infra-flux-system.yaml
   - infra-longhorn.yaml
-  - infra-certmgr-crds.yaml
-  - infra-certmgr.yaml
+  - infra-certmanager-crds.yaml
+  - infra-certmanager.yaml
