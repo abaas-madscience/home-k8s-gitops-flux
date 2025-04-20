@@ -4,7 +4,7 @@ metadata:
   name: cert-manager
   namespace: flux-system
 spec:
-  targetNamespace: cert-manager
+  targetNamespace: infra-cert-manager
   chart:
     spec:
       chart: cert-manager
