@@ -8,7 +8,7 @@ spec:
   path: ./infrastructure/kube-system-patches
   prune: true
   dependsOn:
-  - name: cilium
+  - name: infra-cilium
   sourceRef:
     kind: GitRepository
     name: flux-system
