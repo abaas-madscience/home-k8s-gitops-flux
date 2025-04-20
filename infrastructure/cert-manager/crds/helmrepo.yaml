@@ -4,5 +4,6 @@ metadata:
   name: jetstack
   namespace: flux-system
 spec:
+  targetNamespace: flux-system
   interval: 10m
   url: https://charts.jetstack.io
