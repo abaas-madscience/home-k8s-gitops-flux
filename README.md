@@ -1,151 +1,171 @@
-** Homelab K8S cluster from scratch **
+# 🚀 Homelab Kubernetes Cluster from Scratch
 
-Prerequisites:
-Minimal Base Arch Images
-IP Forwarding on all boxes
-IP Firewall OFF
-Swap OFF
+Welcome to the **Homelab K8S Cluster** repository! This guide walks you through setting up a Upstream Native Kubernetes cluster from scratch using Arch Linux, containerd, and Cilium for networking. The setup is tailored for a homelab environment with GitOps principles powered by Flux.
 
-loaded modules:
-overlay
-br_netfilter
+---
 
+## 📋 Prerequisites
+
+Before starting, ensure the following:
+
+- 🖥️ **Minimal Base Arch Images** installed on all nodes.
+- 🔄 **IP Forwarding** enabled on all boxes.
+- 🔥 **Firewall Disabled** (IPTables will be managed by Kubernetes).
+- ❌ **Swap Disabled** (Kubernetes requires swap to be off).
+
+### 🛠️ Required Kernel Modules
+
+Load the following kernel modules:
+
+```bash
 sudo modprobe overlay
 sudo modprobe br_netfilter
+```
 
-echo -e "br_netfilter\noverlay" > /etc/modules-load.d/k8s.conf
+Persist the modules by adding them to `/etc/modules-load.d/k8s.conf`:
 
-br_netfilter is a kernel module that allows iptables to see bridged traffic—which is crucial for Kubernetes networking, especially for things like kube-proxy, CNI plugins, and service routing.
+```bash
+echo -e "br_netfilter\noverlay" | sudo tee /etc/modules-load.d/k8s.conf
+```
 
-Without it, things like iptables -m physdev or inter-pod traffic across bridges might silently fail or behave weirdly.
+The `br_netfilter` module allows iptables to see bridged traffic, which is crucial for Kubernetes networking, especially for components like kube-proxy, CNI plugins, and service routing.
 
-# Edit /etc/sysctl.d/k8s.conf
+---
+
+## 🔧 System Configuration
+
+Edit `/etc/sysctl.d/k8s.conf` to enable required sysctl parameters:
+
+```bash
 net.bridge.bridge-nf-call-iptables  = 1
 net.bridge.bridge-nf-call-ip6tables = 1
 net.ipv4.ip_forward                 = 1
-
-# Install container runtime
-sudo pacman -S containerd
-
-# Create a safe baseline config
-sudo mkdir -p /etc/containerd
-containerd config default | sudo tee /etc/containerd/config.toml
-
-# Start the service
-sudo systemctl enable --now containerd
-
-# Test the service
-sudo pacman -S crictl
-sudo crictl info
-
-=========================================
-= Above steps have been moved to ansbible
-=========================================
-
-Now we can configure kubelet which is a node agent and managed pod lifecycles
-When you run kubeadm init to init the cluster it uses kubelet to spawn the control node
-kubelet watches API server
- - runs containers via the runtime
- - monitors pod health and status
- - handles lifecycle - pulls image -> mounts volumes -> applies cgroups
- - applies the desired state from the control plane to the local node
- Kubelet is not an orchestrator, it executes orders from the control plane using local resources
-
-# iScsci : Prepare the nodes to handle iScsi targets
-<todo> add to ansible a way to drop iSCSI unto the nodes and start the services
-
-kubectl taint node kube-master node-role.kuberneteres.io/master
-
-
-# CNI
-==========================================
-= CNI
-==========================================
-I had the choice of Flannel vs Calico vs Cilium
-Since I am deeply interested in eBPF and kernel based security, 
-Also about identity based security I chose Cilium
-
-For Cilium to work properly we need to be at kernel 5.15+ which Arch is at 6.14 at time of writing
-
-
-================
-= Now we can init the cluster
-================
 ```
-apiVersion: kubeadm.k8s.io/v1beta3
-kind: InitConfiguration
-nodeRegistration:
-  name: archcore-control
-  criSocket: unix:///run/containerd/containerd.sock
+
+Apply the changes:
+
+```bash
+sudo sysctl --system
+```
 
 ---
-apiVersion: kubeadm.k8s.io/v1beta3
-kind: ClusterConfiguration
-kubernetesVersion: "1.32.1"  # <- My version
-controlPlaneEndpoint: "archcore-control.lab.local:6443"
-networking:
-  podSubnet: "10.10.0.0/16"   # <- Pod network
-  serviceSubnet: "10.96.0.0/12"
-  dnsDomain: "cluster.local"
+
+## 🐳 Install Container Runtime
+
+Install `containerd`:
+
+```bash
+sudo pacman -S containerd
 ```
-##
-This broke and i ran the config migrate command, the new file is in yamls/kubeinit.yaml
 
-Step 1 stop kubelet
-systemctl stop kubelet.service
+Create a baseline configuration:
 
-Then sudo kubeadm init --config kubeinit.yaml --ignore-preflight-errors=Port-10250
-since it's bare we know kubelet is running on 10250
+```bash
+sudo mkdir -p /etc/containerd
+containerd config default | sudo tee /etc/containerd/config.toml
+```
 
-Then
+Enable and start the service:
+
+```bash
+sudo systemctl enable --now containerd
+```
+
+Test the service:
+
+```bash
+sudo pacman -S crictl
+sudo crictl info
+```
+
+---
+
+## ⚙️ Configure Kubelet
+
+Kubelet is the node agent that manages pod lifecycles. It is used by `kubeadm init` to initialize the cluster and spawn the control node. Kubelet:
+
+- Watches the API server.
+- Runs containers via the runtime.
+- Monitors pod health and status.
+- Handles lifecycle tasks like pulling images, mounting volumes, and applying cgroups.
+- Applies the desired state from the control plane to the local node.
+
+---
+
+## 🛠️ iSCSI Configuration
+
+Prepare the nodes to handle iSCSI targets. Add a method to deploy iSCSI and start the services via Ansible.
+
+---
+
+## 🌐 CNI (Container Network Interface)
+
+For networking, we use **Cilium** due to its eBPF-based kernel security and identity-based security features. Ensure your kernel version is 5.15+ (Arch Linux is at 6.14 at the time of writing).
+
+---
+
+## 🏗️ Initialize the Cluster
+
+Create the `kubeadm` configuration file, I have one in yamls
+
+
+Initialize the cluster:
+We ignore port 10250 since we know it's a bare machine.
+We also remove kube-proxy in favor of Cilium
+
+```bash
+sudo kubeadm init --config kubeinit.yaml --ignore-preflight-errors=Port-10250   --skip-phases=addon/kube-proxy
 
 ```
+
+Set up `kubectl`:
+
+```bash
 mkdir -p ~/.kube
 sudo cp /etc/kubernetes/admin.conf ~/.kube/config
 sudo chown $USER:$USER ~/.kube/config
 ```
 
+---
 
-Now we can start with CNI, our networking cilium
+## 🌐 Install Cilium
 
-########################
-# helm search repo cilium/cilium --versions | head -n 5
-####
+Install Cilium using Helm:
+We remove kubeproxy altogether.
 
-Grab the latest version
-
-```
+```bash
 helm install cilium cilium/cilium \
   --version 1.17.3 \
   --namespace kube-system \
   --set kubeProxyReplacement=true \
-  --set k8sServiceHost=192.168.178.7 \
+  --set k8sServiceHost=<control-plane-ip> \
   --set k8sServicePort=6443 \
   --set ipam.mode=kubernetes \
   --set cluster.name=archcore \
-  --set cluster.id=1
-  --skip-phases=addon/kube-proxy
+  --set cluster.id=1 \
 ```
 
-DEBUG
+Check Cilium status:
+
+```bash
 kubectl -n kube-system exec ds/cilium -- cilium status
-
-!! After this coreDNS might get stuck, just restart containerd and then kubelet !!
-
-System is up by now and we should see everything ready.
-
-[oscar@archcore-control ~]$ kubectl get nodes
-NAME               STATUS   ROLES           AGE   VERSION
-archcore-control   Ready    control-plane   43m   v1.32.1
-
-Now bootstrap flux
-
 ```
+
+If CoreDNS gets stuck, restart `containerd` and `kubelet`.
+
+---
+
+## 🌀 Bootstrap Flux
+
+Install Flux:
+
+```bash
 yay -S flux-bin
-
 ```
 
-```
+Bootstrap Flux with GitHub:
+
+```bash
 flux bootstrap github \
   --owner=abaas-madscience \
   --repository=home-k8s-gitops-flux \
@@ -154,19 +174,46 @@ flux bootstrap github \
   --personal
 ```
 
-Slap in the Github PAT and watch the pods come online
+Enter your GitHub PAT and watch the pods come online.
 
-# Check Cilium status
+---
+
+## 🛠️ Add Nodes to the Cluster
+
+Generate the join command:
+
 ```bash
-kubectl -n kube-system exec -ti ds/cilium -- cilium status
+kubeadm token create --print-join-command
 ```
 
-##
-# Now we want storage, but before that we need to join any nodes
-##
+Run the join command on the new nodes:
 
-kubeadm token create --print-join-command
-
+```bash
 sudo kubeadm join <control-plane-ip>:6443 --token <token> --discovery-token-ca-cert-hash sha256:<hash>
+```
 
-sudo kubeadm join 192.168.178.7:6443 --token axzcqr.s85tyjrfjg1y8qak --discovery-token-ca-cert-hash sha256:1d4e93e09e8d4506f6669218ecc1ecdc4afa50ece43dfbbbf0de1d5097a434ad 
+Example:
+
+```bash
+sudo kubeadm join 192.168.178.7:6443 --token axzcqr.s85tyjrfjg1y8qak --discovery-token-ca-cert-hash sha256:1d4e93e09e8d4506f6669218ecc1ecdc4afa50ece43dfbbbf0de1d5097a434ad
+```
+You can check the output:
+
+```bash
+kubectl get nodes -o wide
+```
+
+---
+
+## 💾 Storage
+
+Storage has been moved into Flux with 3 nodes. Configure it to use your nodes.
+
+---
+
+## 🧪 Future Enhancements
+
+- ✨ Build a CiliumPolicyWatcher operator:
+  - Scans all namespaces
+  - Identifies pods not covered by any CiliumNetworkPolicy
+  - Emits alerts or applies quarantine policy
