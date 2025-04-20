@@ -4,6 +4,7 @@ metadata:
   name: infra-certmgr
   namespace: flux-system
 spec:
+  targetNamespace: infra-cert-manager
   interval: 10m
   path: ./infrastructure/cert-manager/app
   prune: true

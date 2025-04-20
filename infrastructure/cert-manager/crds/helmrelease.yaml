@@ -5,7 +5,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m
-  targetNamespace: infra-longhorn
+  targetNamespace: infra-cert-manager
   chart:
     spec:
       chart: cert-manager
