@@ -18,8 +18,10 @@ spec:
     k8sServiceHost: archcore-control.lab.local
     k8sServicePort: 6443
 
-    #    bgpControlPlane:
-    #      enabled: true
+    podAnnouncements:
+      enabled: true
+      interface: enp1s0
+
     operator:
       enabled: true
       manageCRDs: true
