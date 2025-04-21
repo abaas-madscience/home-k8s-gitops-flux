@@ -4,11 +4,6 @@ metadata:
   name: cilium
   namespace: kube-system
 spec:
-  upgrade:
-    remediation:
-      retries: 3
-    force: true
-    resetValues: true
   interval: 10m
   chart:
     spec:
