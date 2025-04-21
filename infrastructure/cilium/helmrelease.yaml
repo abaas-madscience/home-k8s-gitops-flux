@@ -14,37 +14,39 @@ spec:
         name: cilium
         namespace: flux-system
   values:
-    kubeProxyReplacement: true
-    k8sServiceHost: archcore-control.lab.local
-    k8sServicePort: 6443
+    cilium:
+      kubeProxyReplacement: true
+      k8sServiceHost: archcore-control.lab.local
+      k8sServicePort: 6443
 
-    externalIPs:
-      enabled: true
-
-    loadBalancerIPs:
-      enabled: true
-
-    l2announcements:
-      enabled: true
-      interface: enp1s0
-
-    ciliumIngress:
-      enabled: true
-      replicas: 1
-
-    operator:
-      enabled: true
-      manageCRDs: true
-
-    ingressController:
-      enabled: true
-      default: true
-      loadbalancerMode: dedicated
-      ingressClassName: cilium
-      service:
+      l2announcements:
         enabled: true
-        type: LoadBalancer
-        annotations:
-          io.cilium/lb-ipam-ips: "192.168.178.240"
-          io.cilium/lb-ipam-mode: "pool"
-        externalTrafficPolicy: Local
+        interfaces:
+          - "^enp.*"
+
+      externalIPs:
+        enabled: true
+
+      loadBalancerIPs:
+        enabled: true
+
+      ciliumIngress:
+        enabled: true
+        replicas: 1
+
+      operator:
+        enabled: true
+        manageCRDs: true
+
+      ingressController:
+        enabled: true
+        default: true
+        loadbalancerMode: dedicated
+        ingressClassName: cilium
+        service:
+          enabled: true
+          type: LoadBalancer
+          annotations:
+            io.cilium/lb-ipam-ips: "192.168.178.240"
+            io.cilium/lb-ipam-mode: "pool"
+          externalTrafficPolicy: Local
