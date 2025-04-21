@@ -204,6 +204,11 @@ kubectl get nodes -o wide
 ```
 
 ---
+*Check for ARP on a host*
+sudo tcpdump -i enp1s0 -n arp
+---
+
+---
 
 ## 💾 Storage
 

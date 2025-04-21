@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: echo-ingress
+  labels:
+    cilium.io/ingress: "true"
+  annotations:
+    ingress.cilium.io/loadbalancer-class: io.cilium/l2-announcer
+spec:
+  ingressClassName: cilium
+  rules:
+    - host: echo.svc.lab.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: echo
+                port:
+                  number: 80
