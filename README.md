@@ -209,6 +209,13 @@ sudo tcpdump -i enp1s0 -n arp
 ---
 
 ---
+## Check for Endpointd
+kubectl get endpoints cilium-ingress-echo-ingress
+
+NAME                          ENDPOINTS              AGE
+cilium-ingress-echo-ingress   192.192.192.192:9999   14s
+
+---
 
 ## 💾 Storage
 

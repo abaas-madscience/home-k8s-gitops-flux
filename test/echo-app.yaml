@@ -35,7 +35,7 @@ spec:
           image: hashicorp/http-echo
           args:
             - "-text=hello from cilium ingress"
-            - "-listen=:8080"
+            - "-listen=:80"
 
           ports:
-            - containerPort: 8080
+            - containerPort: 80
