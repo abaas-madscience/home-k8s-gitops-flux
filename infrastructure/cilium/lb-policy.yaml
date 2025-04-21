@@ -8,3 +8,5 @@ spec:
     matchExpressions:
       - key: cilium.io/ingress
         operator: Exists
+  interfaces:
+    - enp1s0

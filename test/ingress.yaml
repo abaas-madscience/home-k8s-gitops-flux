@@ -1,11 +1,12 @@
+# ingress.yaml
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: echo-ingress
-  labels:
-    cilium.io/ingress: "true"
   annotations:
     ingress.cilium.io/loadbalancer-class: io.cilium/l2-announcer
+  labels:
+    cilium.io/ingress: "true"
 spec:
   ingressClassName: cilium
   rules:
