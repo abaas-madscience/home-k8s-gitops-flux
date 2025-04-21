@@ -9,7 +9,7 @@ spec:
       retries: 3
     force: true
     resetValues: true
-    interval: 10m
+  interval: 10m
   chart:
     spec:
       chart: cilium
