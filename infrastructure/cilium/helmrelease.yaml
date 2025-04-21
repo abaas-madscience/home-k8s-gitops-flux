@@ -28,13 +28,13 @@ spec:
       enabled: true
       interface: enp1s0
 
+    ciliumIngress:
+      enabled: true
+      replicas: 1
+
     operator:
       enabled: true
       manageCRDs: true
-      components:
-        ciliumIngress:
-          enabled: true
-          replicas: 1
 
     ingressController:
       enabled: true
@@ -45,6 +45,6 @@ spec:
         enabled: true
         type: LoadBalancer
         annotations:
-          io.cilium/lb-ipam-ips: "192.168.178.240-192.168.178.240"
+          io.cilium/lb-ipam-ips: "192.168.178.240"
           io.cilium/lb-ipam-mode: "pool"
         externalTrafficPolicy: Local
