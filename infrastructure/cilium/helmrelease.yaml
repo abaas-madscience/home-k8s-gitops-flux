@@ -31,6 +31,10 @@ spec:
     operator:
       enabled: true
       manageCRDs: true
+      components:
+        ciliumIngress:
+          enabled: true
+          replicas: 1
 
     ingressController:
       enabled: true
