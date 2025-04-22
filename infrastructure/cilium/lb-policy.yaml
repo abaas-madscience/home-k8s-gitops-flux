@@ -1,7 +1,7 @@
 apiVersion: cilium.io/v2alpha1
 kind: CiliumL2AnnouncementPolicy
 metadata:
-  name: ingress-vip-openfire
+  name: ingress-all-new
 spec:
   nodeSelector: {} # Match all nodes
   serviceSelector:
