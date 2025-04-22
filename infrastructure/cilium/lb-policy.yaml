@@ -3,12 +3,8 @@ kind: CiliumL2AnnouncementPolicy
 metadata:
   name: ingress-all-new
 spec:
-  nodeSelector: {} # Match all nodes
-  serviceSelector:
-    matchExpressions:
-      - key: cilium.io/ingress
-        operator: Exists
+  nodeSelector: {}
   interfaces:
-    - ^enp.*
+    - enp1s0
   externalIPs: true
   loadBalancerIPs: true

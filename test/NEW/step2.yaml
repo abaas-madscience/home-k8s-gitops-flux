@@ -1,0 +1,32 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: cilium-gateway
+  namespace: default
+spec:
+  gatewayClassName: cilium
+  listeners:
+    - name: http
+      protocol: HTTP
+      port: 80
+      hostname: "*.svc.lab.local"
+      allowedRoutes:
+        namespaces:
+          from: All
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: echo-route
+  namespace: default
+spec:
+  hostnames:
+    - echo.svc.lab.local
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: echo
+          port: 80

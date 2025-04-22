@@ -2,19 +2,14 @@ apiVersion: v1
 kind: Service
 metadata:
   name: echo
-  annotations:
-    io.cilium/lb-ipam-ips: "192.168.178.240"
-    io.cilium/lb-ipam-mode: pool
   labels:
     app: echo
-    cilium.io/ingress: "true"
 spec:
+  selector:
+    app: echo
   ports:
     - port: 80
       targetPort: 80
-  selector:
-    app: echo
-  type: LoadBalancer
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -33,9 +28,6 @@ spec:
       containers:
         - name: echo
           image: hashicorp/http-echo
-          args:
-            - "-text=hello from cilium ingress"
-            - "-listen=:80"
-
+          args: ["-text=hello from cilium ingress", "-listen=:80"]
           ports:
             - containerPort: 80

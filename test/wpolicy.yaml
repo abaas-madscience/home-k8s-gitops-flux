@@ -1,0 +1,16 @@
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: frontend-policy
+  namespace: default
+spec:
+  endpointSelector:
+    matchLabels:
+      app: echo
+  ingress:
+    - fromEntities:
+        - world
+      toPorts:
+        - ports:
+            - port: "80"
+              protocol: TCP
