@@ -114,7 +114,10 @@ We ignore port 10250 since we know it's a bare machine.
 We also remove kube-proxy in favor of Cilium
 
 ```bash
-sudo kubeadm init --config kubeinit.yaml --ignore-preflight-errors=Port-10250   --skip-phases=addon/kube-proxy
+sudo kubeadm init --config kubeinit.yaml \
+                  --ignore-preflight-errors=Port-10250 \  
+                  --pod-network-cidr="10.244.0.0/16" \
+                  --skip-phases=addon/kube-proxy
 
 ```
 
@@ -130,19 +133,29 @@ sudo chown $USER:$USER ~/.kube/config
 
 ## 🌐 Install Cilium
 
-Install Cilium using Helm:
-We remove kubeproxy altogether.
+
+# Before this we need to install the CRDS
+
+helm repo add cilium https://helm.cilium.io/
+helm repo update
+
+# Install Cilium using Helm:
 
 ```bash
 helm install cilium cilium/cilium \
   --version 1.17.3 \
   --namespace kube-system \
-  --set kubeProxyReplacement=true \
-  --set k8sServiceHost=<control-plane-ip> \
+  --set kubeProxyReplacement="strict" \
+  --set k8sServiceHost=<your-control-plane-ip> \
   --set k8sServicePort=6443 \
   --set ipam.mode=kubernetes \
   --set cluster.name=archcore \
-  --set cluster.id=1 \
+  --set enableL2AnnounceLB=true \
+  --set enableIngressController=true \
+  --set enableGatewayAPI=true \
+  --set enableHTTPRoute=true \
+  --set cluster.id=1
+  
 ```
 
 Check Cilium status:
@@ -195,8 +208,9 @@ sudo kubeadm join <control-plane-ip>:6443 --token <token> --discovery-token-ca-c
 Example:
 
 ```bash
-sudo kubeadm join 192.168.178.7:6443 --token axzcqr.s85tyjrfjg1y8qak --discovery-token-ca-cert-hash sha256:1d4e93e09e8d4506f6669218ecc1ecdc4afa50ece43dfbbbf0de1d5097a434ad
+sudo kubeadm join 192.168.178.7:6443 --token xxxx --discovery-token-ca-cert-hash sha256:xxx
 ```
+
 You can check the output:
 
 ```bash
@@ -204,7 +218,7 @@ kubectl get nodes -o wide
 ```
 
 ---
-*Check for ARP on a host*
+# Check for ARP on a host
 sudo tcpdump -i enp1s0 -n arp
 ---
 
@@ -212,8 +226,6 @@ sudo tcpdump -i enp1s0 -n arp
 ## Check for Endpointd
 kubectl get endpoints cilium-ingress-echo-ingress
 
-NAME                          ENDPOINTS              AGE
-cilium-ingress-echo-ingress   192.192.192.192:9999   14s
 
 ---
 
@@ -229,3 +241,4 @@ Storage has been moved into Flux with 3 nodes. Configure it to use your nodes.
   - Scans all namespaces
   - Identifies pods not covered by any CiliumNetworkPolicy
   - Emits alerts or applies quarantine policy
+  - Use RBAC for get, list, watch
