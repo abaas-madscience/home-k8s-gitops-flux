@@ -69,6 +69,7 @@ if ! pacman -Sy --noconfirm \
   ethtool \
   socat \
   git \
+  base-devel \
   xfsprogs \
   conntrack-tools \
   crictl \
