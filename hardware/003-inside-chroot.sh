@@ -5,10 +5,6 @@ set -e
 #DISK=$(lsblk -ndo PKNAME $(findmnt -no SOURCE /) | head -n1)
 DISK="/dev/vda"
 
-exec > /root/install.log 2>&1
-set -x
-
-
 read -p "Enter static IP (e.g. 192.168.178.101/24): " STATIC_IP
 read -p "Enter gateway (e.g. 192.168.178.1): " GATEWAY
 read -p "Enter DNS (e.g. 192.168.178.1): " DNS
@@ -67,10 +63,15 @@ echo "📍 Reached pacman"
 # Pacman
 # Install required packages
 pacman -Syu --noconfirm
+
+# Remove old iptables
+pacman -R --noconfirm iptables
+
+# Install required packages
 if ! pacman -Sy --noconfirm \
   containerd \
   kubelet kubeadm kubectl \
-  iptables \
+  iptables-nft \
   ebtables \
   ethtool \
   socat \
