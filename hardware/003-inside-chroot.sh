@@ -66,7 +66,6 @@ pacman -Syu --noconfirm
 if ! pacman -Sy --noconfirm \
   openssh \
   containerd \
-  kubelet kubeadm kubectl \
   ethtool \
   socat \
   xfsprogs \
@@ -148,3 +147,14 @@ echo "🎉 Setup complete. You can now reboot into your new Arch node."
 
 # Last step
 mkinitcpio -P
+
+
+#
+#K8S_VERSION="v1.32.0"
+
+#curl -LO https://dl.k8s.io/release/${K8S_VERSION}/bin/linux/amd64/kubectl
+#curl -LO https://dl.k8s.io/release/${K8S_VERSION}/bin/linux/amd64/kubelet
+#curl -LO https://dl.k8s.io/release/${K8S_VERSION}/bin/linux/amd64/kubeadm
+
+#chmod +x kube*
+#mv kubelet kubeadm kubectl /usr/local/bin/
