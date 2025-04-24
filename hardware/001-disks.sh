@@ -23,4 +23,8 @@ mount "${DISK}2" /mnt
 mkdir -p /mnt/boot
 mount "${DISK}1" /mnt/boot
 
-bash /mnt/nfs/002-arch.sh
+cd /
+mkdir /mnt/nfs
+mount -t nfs 192.168.178.2:/srv/nfs/installer /mnt/nfs
+cd /mnt/nfs
+bash 002-arch.sh

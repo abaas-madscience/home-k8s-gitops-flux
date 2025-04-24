@@ -32,7 +32,7 @@ EOF
 
 systemctl enable systemd-networkd
 systemctl enable systemd-resolved
-ln -sf /run/systemd/resolve/stub-resolv.conf /etc/resolv.conf
+#ln -sf /run/systemd/resolve/stub-resolv.conf /etc/resolv.conf
 
 # Initramfs (if custom modules later)
 mkinitcpio -P
