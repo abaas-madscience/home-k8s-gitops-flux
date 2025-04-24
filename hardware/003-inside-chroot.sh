@@ -40,9 +40,6 @@ systemctl enable systemd-networkd
 systemctl enable systemd-resolved
 #ln -sf /run/systemd/resolve/stub-resolv.conf /etc/resolv.conf
 
-# Initramfs (if custom modules later)
-mkinitcpio -P
-
 # Systemd bootloader
 bootctl --path=/boot install
 cat <<EOF > /boot/loader/loader.conf
@@ -67,6 +64,7 @@ pacman -Syu --noconfirm
 
 # Install required packages
 if ! pacman -Sy --noconfirm \
+  openssh \
   containerd \
   kubelet kubeadm kubectl \
   ebtables \
@@ -88,6 +86,9 @@ systemctl enable containerd
 
 # Enable kubelet (fails on first boot, ignore)
 systemctl enable kubelet
+
+# Enable SSH
+systemctl enable sshd
 
 echo "📍 Set Kernel parameters"
 
@@ -146,3 +147,6 @@ chown oscar:oscar /home/oscar/.bashrc
 # Set SSH Key
 
 echo "🎉 Setup complete. You can now reboot into your new Arch node."
+
+# Last step
+mkinitcpio -P
