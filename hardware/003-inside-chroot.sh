@@ -64,14 +64,11 @@ echo "📍 Reached pacman"
 # Install required packages
 pacman -Syu --noconfirm
 
-# Remove old iptables
-pacman -R --noconfirm iptables
 
 # Install required packages
 if ! pacman -Sy --noconfirm \
   containerd \
   kubelet kubeadm kubectl \
-  iptables-nft \
   ebtables \
   ethtool \
   socat \
