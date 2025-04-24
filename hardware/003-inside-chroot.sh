@@ -5,6 +5,9 @@ set -e
 #DISK=$(lsblk -ndo PKNAME $(findmnt -no SOURCE /) | head -n1)
 DISK="/dev/vda"
 
+exec > /root/install.log 2>&1
+set -x
+
 
 read -p "Enter static IP (e.g. 192.168.178.101/24): " STATIC_IP
 read -p "Enter gateway (e.g. 192.168.178.1): " GATEWAY
@@ -59,6 +62,8 @@ initrd  /initramfs-linux.img
 options root=$(blkid -s UUID -o value ${DISK}2) rw
 EOF
 
+echo "📍 Reached pacman"
+
 # Pacman
 # Install required packages
 pacman -Sy --noconfirm \
@@ -75,11 +80,15 @@ pacman -Sy --noconfirm \
   bash-completion \
   linux-headers
 
+echo "📍 passed pacman"
+
 # Enable containerd
 systemctl enable containerd
 
 # Enable kubelet (fails on first boot, ignore)
 systemctl enable kubelet
+
+echo "📍 Set Kernel parameters"
 
 # Kernel params for eBPF + forwarding
 cat <<EOF > /etc/sysctl.d/99-k8s.conf
