@@ -68,6 +68,7 @@ if ! pacman -Sy --noconfirm \
   containerd \
   ethtool \
   socat \
+  git \
   xfsprogs \
   conntrack-tools \
   crictl \
