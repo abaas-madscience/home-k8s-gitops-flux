@@ -1,6 +1,10 @@
 #!/bin/bash
 set -e
 
+# Set DISK
+DISK=$(lsblk -ndo PKNAME $(findmnt -no SOURCE /) | head -n1)
+
+
 # Locale & Time
 ln -sf /usr/share/zoneinfo/Europe/Amsterdam /etc/localtime
 hwclock --systohc
@@ -28,6 +32,7 @@ EOF
 
 systemctl enable systemd-networkd
 systemctl enable systemd-resolved
+ln -sf /run/systemd/resolve/stub-resolv.conf /etc/resolv.conf
 
 # Initramfs (if custom modules later)
 mkinitcpio -P
