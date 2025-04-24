@@ -5,7 +5,7 @@ set -e
 #DISK=$(lsblk -ndo PKNAME $(findmnt -no SOURCE /) | head -n1)
 DISK="/dev/vda"
 
-read -p "Enter static IP (e.g. 192.168.178.101/24): " STATIC_IP
+read -p "Enter static IP (e.g. 192.168.178.101): " STATIC_IP
 read -p "Enter gateway (e.g. 192.168.178.1): " GATEWAY
 read -p "Enter DNS (e.g. 192.168.178.1): " DNS
 read -p "Enter hostname: " NODE_HOSTNAME
@@ -67,12 +67,10 @@ if ! pacman -Sy --noconfirm \
   openssh \
   containerd \
   kubelet kubeadm kubectl \
-  ebtables \
   ethtool \
   socat \
   xfsprogs \
   conntrack-tools \
-  iproute2 \
   crictl \
   bash-completion \
   linux-headers; then
