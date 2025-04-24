@@ -66,10 +66,11 @@ echo "📍 Reached pacman"
 
 # Pacman
 # Install required packages
-pacman -Sy --noconfirm \
+pacman -Syu --noconfirm
+if ! pacman -Sy --noconfirm \
   containerd \
   kubelet kubeadm kubectl \
-  iptables-nft \
+  iptables \
   ebtables \
   ethtool \
   socat \
@@ -78,8 +79,10 @@ pacman -Sy --noconfirm \
   iproute2 \
   crictl \
   bash-completion \
-  linux-headers
-
+  linux-headers; then
+    echo "Pacman installation failed with error code $?"
+    exit 1
+fi
 echo "📍 passed pacman"
 
 # Enable containerd
