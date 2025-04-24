@@ -27,4 +27,4 @@ cd /
 mkdir /mnt/nfs
 mount -t nfs 192.168.178.2:/ /mnt/nfs
 cd /mnt/nfs
-bash 002-arch.sh
+bash 002-arch.sh "$DISK"

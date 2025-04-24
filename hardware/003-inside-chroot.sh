@@ -2,7 +2,9 @@
 set -e
 
 # Set DISK
-DISK=$(lsblk -ndo PKNAME $(findmnt -no SOURCE /) | head -n1)
+#DISK=$(lsblk -ndo PKNAME $(findmnt -no SOURCE /) | head -n1)
+DISK="/dev/vda"
+
 
 read -p "Enter static IP (e.g. 192.168.178.101/24): " STATIC_IP
 read -p "Enter gateway (e.g. 192.168.178.1): " GATEWAY
@@ -66,6 +68,7 @@ pacman -Sy --noconfirm \
   ebtables \
   ethtool \
   socat \
+  xfsprogs \
   conntrack-tools \
   iproute2 \
   crictl \
@@ -132,3 +135,4 @@ chown oscar:oscar /home/oscar/.bashrc
 
 # Set SSH Key
 
+echo "🎉 Setup complete. You can now reboot into your new Arch node."
