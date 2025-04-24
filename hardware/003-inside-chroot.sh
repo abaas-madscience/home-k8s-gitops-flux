@@ -4,6 +4,11 @@ set -e
 # Set DISK
 DISK=$(lsblk -ndo PKNAME $(findmnt -no SOURCE /) | head -n1)
 
+read -p "Enter static IP (e.g. 192.168.178.101/24): " STATIC_IP
+read -p "Enter gateway (e.g. 192.168.178.1): " GATEWAY
+read -p "Enter DNS (e.g. 192.168.178.1): " DNS
+read -p "Enter hostname: " NODE_HOSTNAME
+
 
 # Locale & Time
 ln -sf /usr/share/zoneinfo/Europe/Amsterdam /etc/localtime
@@ -16,18 +21,18 @@ echo "LANG=en_US.UTF-8" > /etc/locale.conf
 echo "k8s-node" > /etc/hostname
 echo "127.0.0.1 localhost" >> /etc/hosts
 echo "::1       localhost" >> /etc/hosts
-echo "127.0.1.1 k8s-node.localdomain k8s-node" >> /etc/hosts
+echo "127.0.1.1 $NODE_HOSTNAME.lab.local $NODE_HOSTNAME" >> /etc/hosts
 
 # Network setup (systemd-networkd example)
 mkdir -p /etc/systemd/network
 cat <<EOF > /etc/systemd/network/20-static.network
 [Match]
-Name=eth0
+Name=enp1s0
 
 [Network]
-Address=192.168.178.101/24
-Gateway=192.168.178.1
-DNS=192.168.178.1
+Address=$STATIC_IP/24
+Gateway=$GATEWAY
+DNS=$DNS  
 EOF
 
 systemctl enable systemd-networkd
