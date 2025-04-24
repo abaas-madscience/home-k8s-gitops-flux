@@ -81,9 +81,6 @@ echo "📍 passed pacman"
 # Enable containerd
 systemctl enable containerd
 
-# Enable kubelet (fails on first boot, ignore)
-systemctl enable kubelet
-
 # Enable SSH
 systemctl enable sshd
 
@@ -121,27 +118,6 @@ sudo -u oscar makepkg -si --noconfirm
 cd ..
 rm -rf yay
 
-sudo -u oscar yay -S --noconfirm cilium-cli hubble-ui-bin
-
-# Set some BASH aliases
-cat << 'EOF' >> /home/oscar/.bashrc
-
-# Kubernetes alias
-alias k='kubectl'
-complete -F __start_kubectl k
-
-# Cilium alias
-alias c='cilium'
-complete -C /usr/bin/cilium c
-
-# Better PS1 for quick context switching
-export PS1="[\u@\h \W \$(kubectl config current-context 2>/dev/null)]\$ "
-
-EOF
-
-chown oscar:oscar /home/oscar/.bashrc
-
-# Set SSH Key
 
 echo "🎉 Setup complete. You can now reboot into your new Arch node."
 
