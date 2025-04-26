@@ -1,4 +1,4 @@
-apiVersion: io.cilium.gateway/v1alpha1
+apiVersion: io.cilium.gateway/v2alpha1
 kind: CiliumGatewayConfig
 metadata:
   name: cilium-gateway-config
