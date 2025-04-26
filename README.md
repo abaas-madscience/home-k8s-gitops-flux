@@ -2,6 +2,11 @@
 
 Welcome to the **Homelab K8S Cluster** repository! This guide walks you through setting up a Upstream Native Kubernetes cluster from scratch using Arch Linux, containerd, and Cilium for networking. The setup is tailored for a homelab environment with GitOps principles powered by Flux.
 
+!! I am moving to talos if all pans out well, so this is a temporary setup. !!
+
+This repository is designed for educational purposes and may not be suitable for production environments.
+It is recommended to use a minimal base Arch image for the nodes.
+
 ---
 
 ## 📋 Prerequisites
