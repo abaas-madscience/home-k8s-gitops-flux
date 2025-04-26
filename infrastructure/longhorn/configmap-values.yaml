@@ -6,12 +6,12 @@ metadata:
 data:
   values.yaml: |
     defaultSettings:
-      defaultReplicaCount: 1
+      defaultReplicaCount: 3
       defaultDataPath: /var/lib/longhorn
       replicaAutoBalance: best-effort
       defaultLonghornStaticStorageClass: longhorn
       deletingConfirmationFlag: true
-      
+
     longhornUI:
       enabled: false
 
@@ -24,4 +24,4 @@ data:
 
     persistence:
       defaultClass: true
-      defaultClassReplicaCount: 1
+      defaultClassReplicaCount: 3

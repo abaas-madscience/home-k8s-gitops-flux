@@ -133,10 +133,22 @@ kubectl apply -f https://raw.githubusercontent.com/kubernetes-sigs/gateway-api/v
 ### 1️⃣3️⃣ **Install Cilium**
 Install Cilium with the following configuration:
 
+This removed kubeproxy and uses Cilium as the CNI.
+L2 announcements are enabled for the gateway API.
+This also sets the security context for the Cilium agent and cleanCiliumState.
+This is important for the Cilium agent to work properly.
+This also sets the cgroup host root to /sys/fs/cgroup, which is important for Cilium to work properly.
+This also sets the kubeProxyReplacement to true, which is important for Cilium to work properly.
+This also sets the k8sServiceHost and k8sServicePort to localhost and 7445, which is important for Cilium to work properly.
+This also sets the gatewayAPI to true, which is important for Cilium to work properly.
+This also sets the gatewayAPI.enableAlpn to true, which is important for Cilium to work properly.
+This also sets the gatewayAPI.enableAppProtocol to true, which is important for Cilium to work properly.
+
 ```bash
 cilium install \
   --set ipam.mode=kubernetes \
   --set kubeProxyReplacement=true \
+  --set l2announcements.enabled=true \
   --set securityContext.capabilities.ciliumAgent="{CHOWN,KILL,NET_ADMIN,NET_RAW,IPC_LOCK,SYS_ADMIN,SYS_RESOURCE,DAC_OVERRIDE,FOWNER,SETGID,SETUID}" \
   --set securityContext.capabilities.cleanCiliumState="{NET_ADMIN,SYS_ADMIN,SYS_RESOURCE}" \
   --set cgroup.autoMount.enabled=false \
@@ -152,3 +164,12 @@ cilium install \
 
 ### 🎉 **Cluster is Ready**
 Your Talos cluster with Cilium is now online and ready for use! TALOS ON BARE PLASTIC ##
+
+
+### Add Node:
+
+talosctl apply-config \
+  --nodes <WORKER-IP> \
+  --file worker.yaml \
+  --talosconfig ./talosconfig \
+  --insecure
