@@ -14,7 +14,7 @@ spec:
         mode: Terminate
         certificateRefs:
           - kind: Secret
-            name: hypercube-tls
+            name: wildcard-tls # Use a wildcard certificate or a certificate covering all your subdomains
       allowedRoutes:
         namespaces:
           from: Same
@@ -37,22 +37,3 @@ spec:
       backendRefs:
         - name: nginx
           port: 80
----
-apiVersion: cert-manager.io/v1
-kind: Certificate
-metadata:
-  name: hypercube-tls
-  namespace: hypercube-test
-spec:
-  secretName: hypercube-tls
-  duration: 2160h # 90d
-  renewBefore: 360h # 15d
-  subject:
-    organizations:
-      - HyperCube Org
-  commonName: nginx.public.lab.local
-  dnsNames:
-    - nginx.public.lab.local
-  issuerRef:
-    name: selfsigned-cluster-issuer
-    kind: ClusterIssuer
