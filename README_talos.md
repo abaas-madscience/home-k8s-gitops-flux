@@ -173,3 +173,11 @@ talosctl apply-config \
   --file worker.yaml \
   --talosconfig ./talosconfig \
   --insecure
+
+
+kubectl label namespace infra-longhorn pod-security.kubernetes.io/enforce=privileged
+
+  ## Add Flux
+
+
+  

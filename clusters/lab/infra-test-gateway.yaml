@@ -6,9 +6,14 @@ metadata:
 spec:
   gatewayClassName: cilium
   listeners:
-    - name: http
-      protocol: HTTP
-      port: 80
+    - name: https
+      protocol: HTTPS
+      port: 443
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: hypercube-tls
       allowedRoutes:
         namespaces:
           from: Same
@@ -16,15 +21,37 @@ spec:
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
-  name: nginx-route
+  name: nginx-https-route
   namespace: hypercube-test
 spec:
   parentRefs:
     - name: hypercube-gateway
+  hostnames:
+    - "nginx.public.lab.local"
   rules:
     - matches:
         - path:
+            type: PathPrefix
             value: /
       backendRefs:
         - name: nginx
           port: 80
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: hypercube-tls
+  namespace: hypercube-test
+spec:
+  secretName: hypercube-tls
+  duration: 2160h # 90d
+  renewBefore: 360h # 15d
+  subject:
+    organizations:
+      - HyperCube Org
+  commonName: nginx.public.lab.local
+  dnsNames:
+    - nginx.public.lab.local
+  issuerRef:
+    name: selfsigned-cluster-issuer
+    kind: ClusterIssuer
