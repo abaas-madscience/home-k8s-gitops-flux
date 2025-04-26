@@ -30,7 +30,7 @@ metadata:
   name: nginx
   namespace: hypercube-test
 spec:
-  type: LoadBalancer
+  type: ClusterIP
   selector:
     app: nginx
   ports:
