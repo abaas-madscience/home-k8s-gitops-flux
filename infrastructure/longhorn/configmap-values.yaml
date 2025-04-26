@@ -10,7 +10,7 @@ data:
       defaultDataPath: /var/lib/longhorn
       replicaAutoBalance: best-effort
       defaultLonghornStaticStorageClass: longhorn
-      deletingConfirmationFlag: false
+      deletingConfirmationFlag: true
 
     longhornUI:
       enabled: false
