@@ -1,7 +1,7 @@
 apiVersion: cilium.io/v2alpha1
 kind: CiliumL2AnnouncementPolicy
 metadata:
-  name: ingress-all-new
+  name: l2-announcement-policy
 spec:
   nodeSelector: {}
   interfaces:
