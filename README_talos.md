@@ -96,7 +96,7 @@ Wait until the cluster is fully operational:
 Set up the Talos configuration.
 
 ```bash
-export TALOSCONFIG=/home/oscar/.config/hypercube/talosconfig
+export TALOSCONFIG=<path_to_talosconfig>
 talosctl config endpoint $CONTROL
 talosctl config node $CONTROL
 ```
