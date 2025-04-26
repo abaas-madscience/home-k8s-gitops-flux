@@ -3,5 +3,5 @@ kind: Kustomization
 resources:
   - lb-pool.yaml
   - lb-policy.yaml
-  - gatewayclass.yaml
-  - gatewayconfig.yaml
+#  - gatewayclass.yaml
+#  - gatewayconfig.yaml
