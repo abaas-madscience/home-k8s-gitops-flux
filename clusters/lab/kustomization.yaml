@@ -6,5 +6,6 @@ resources:
   - infra-longhorn.yaml
   - infra-certmanager-crds.yaml
   - infra-certmanager.yaml
+  - infra-certwildcard.yaml
   - infra-test-app.yaml
   - infra-test-gateway.yaml
