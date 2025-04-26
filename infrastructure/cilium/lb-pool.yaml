@@ -8,8 +8,8 @@ spec:
       stop: "192.168.178.245"
   serviceSelector:
     matchExpressions:
-      - {
-          key: io.kubernetes.service.namespace,
-          operator: In,
-          values: [default],
-        }
+      - key: io.kubernetes.service.namespace
+        operator: In
+        values:
+          - default
+          - hypercube-test
