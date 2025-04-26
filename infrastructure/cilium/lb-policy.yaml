@@ -6,5 +6,6 @@ spec:
   nodeSelector: {}
   interfaces:
     - enp1s0
+    - eth0
   externalIPs: true
   loadBalancerIPs: true
