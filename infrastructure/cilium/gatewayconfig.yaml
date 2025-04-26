@@ -1,8 +1,0 @@
-apiVersion: io.cilium.gateway/v2alpha1
-kind: CiliumGatewayConfig
-metadata:
-  name: cilium-gateway-config
-spec:
-  service:
-    type: LoadBalancer
-    loadBalancerIP: 192.168.178.240
