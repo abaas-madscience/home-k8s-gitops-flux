@@ -64,7 +64,7 @@ spec:
       runAsUser: 65534
       fsGroup: 65534
     hostRootFsMount:
-      enabled: false # turn OFF unsafe host mounts
+      enabled: false
     collectors:
       disabled:
         - hwmon
