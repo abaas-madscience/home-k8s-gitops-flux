@@ -4,7 +4,6 @@ metadata:
   name: infra-node-exporter
   namespace: flux-system
 spec:
-  targetNamespace: monitoring
   interval: 5m
   chart:
     spec:
@@ -14,9 +13,42 @@ spec:
         kind: HelmRepository
         name: infra-node-exporter
         namespace: flux-system
+  targetNamespace: monitoring
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      retries: 3
   values:
     service:
       port: 9100
     prometheus:
       monitor:
         enabled: true
+    rbac:
+      create: true
+    serviceAccount:
+      create: true
+    securityContext:
+      runAsUser: 65534
+      runAsGroup: 65534
+      runAsNonRoot: true
+      allowPrivilegeEscalation: false
+      readOnlyRootFilesystem: true
+      capabilities:
+        drop:
+          - ALL
+    podSecurityContext:
+      runAsUser: 65534
+      fsGroup: 65534
+    hostRootFsMount:
+      enabled: false # turn OFF unsafe host mounts
+    collectors:
+      disabled:
+        - hwmon
+        - mdadm
+        - edac
+        - timex
+        - systemd
+        - interrupts
