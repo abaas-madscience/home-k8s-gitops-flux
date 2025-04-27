@@ -8,14 +8,6 @@ data:
     global:
       scrape_interval: 15s
     scrape_configs:
-      - job_name: "kubelet-metrics"
-        metrics_path: /metrics
-        scheme: https
-        bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
-        tls_config:
-          insecure_skip_verify: true
+      - job_name: 'node-exporter'
         static_configs:
-          - targets:
-              - 192.168.178.3:10250
-              - 192.168.178.4:10250
-              - 192.168.178.5:10250
+          - targets: ['monitoring-infra-node-exporter-prometheus-node-exporter:9100']
