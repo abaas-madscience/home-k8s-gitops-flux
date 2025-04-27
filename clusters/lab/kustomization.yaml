@@ -7,6 +7,8 @@ resources:
   - infra-certmanager-crds.yaml
   - infra-certmanager.yaml
   - infra-certwildcard.yaml
+  - infra-gateways.yaml
+  - infra-https-routes.yaml
   - infra-test-app.yaml
-  - infra-test-gateway.yaml
+  #  - infra-test-gateway.yaml
   - apps.yaml

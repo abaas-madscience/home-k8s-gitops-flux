@@ -1,0 +1,15 @@
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: infra-gateways
+  namespace: flux-system
+spec:
+  interval: 10m
+  path: ./infrastructure/gateways
+  prune: true
+  dependsOn:
+    - name: infra-certwildcard
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
