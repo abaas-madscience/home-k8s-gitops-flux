@@ -23,53 +23,54 @@ spec:
   values:
     hostNetwork: false
     hostPID: false
-    hostPort:
+    hostIPC: false
+    hostRootFsMount:
       enabled: false
-    extraArgs:
-      - --no-collector.filesystem
-      - --no-collector.mountstats
-      - --no-collector.netclass
-      - --no-collector.netdev
+    hostProcFsMount:
+      mountPropagation: ""
+    hostSysFsMount:
+      mountPropagation: ""
 
-    # (Optional but recommended to nuke auto-mounts completely)
-    volumeMounts: []
-    volumes: []
-
-    tolerations:
-      - key: "node-role.kubernetes.io/control-plane"
-        operator: "Exists"
-        effect: "NoSchedule"
-      - key: "node-role.kubernetes.io/master"
-        operator: "Exists"
-        effect: "NoSchedule"
-    service:
-      port: 9100
-    prometheus:
-      monitor:
-        enabled: true
     rbac:
       create: true
-    serviceAccount:
-      create: true
+      pspEnabled: false # 🚨 turn off old PodSecurityPolicy stuff
+
     securityContext:
-      runAsUser: 65534
+      fsGroup: 65534
       runAsGroup: 65534
       runAsNonRoot: true
-      allowPrivilegeEscalation: false
+      runAsUser: 65534
+
+    containerSecurityContext:
       readOnlyRootFilesystem: true
+      allowPrivilegeEscalation: false
       capabilities:
         drop:
           - ALL
-    podSecurityContext:
-      runAsUser: 65534
-      fsGroup: 65534
-    hostRootFsMount:
-      enabled: false
-    collectors:
-      disabled:
-        - hwmon
-        - mdadm
-        - edac
-        - timex
-        - systemd
-        - interrupts
+
+    tolerations:
+      - operator: Exists
+
+    volumeMounts: [] # 🚨 force empty to block /proc, /sys mounts
+    volumes: [] # 🚨 force empty to block any mounts
+
+    extraArgs: # Optional hardening: disable collectors needing deep /proc
+      - --no-collector.filesystem
+      - --no-collector.hwmon
+      - --no-collector.mdadm
+      - --no-collector.edac
+      - --no-collector.timex
+      - --no-collector.systemd
+      - --no-collector.interrupts
+
+    service:
+      enabled: true
+      port: 9100
+      annotations:
+        prometheus.io/scrape: "true"
+
+    prometheus:
+      monitor:
+        enabled: true
+        scrapeTimeout: 10s
+        scheme: http
