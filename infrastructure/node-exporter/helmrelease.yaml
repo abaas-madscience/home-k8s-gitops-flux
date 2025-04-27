@@ -25,6 +25,15 @@ spec:
     hostPID: false
     hostPort:
       enabled: false
+    extraArgs:
+      - --no-collector.filesystem
+      - --no-collector.mountstats
+      - --no-collector.netclass
+      - --no-collector.netdev
+
+    # (Optional but recommended to nuke auto-mounts completely)
+    volumeMounts: []
+    volumes: []
 
     tolerations:
       - key: "node-role.kubernetes.io/control-plane"
