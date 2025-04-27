@@ -180,4 +180,7 @@ kubectl label namespace infra-longhorn pod-security.kubernetes.io/enforce=privil
   ## Add Flux
 
 
+## Restart Cilium Operator
+kubectl rollout restart deployment/cilium-operator -n kube-system
+
   

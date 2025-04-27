@@ -6,6 +6,10 @@ metadata:
   namespace: infra-longhorn
 spec:
   gatewayClassName: cilium
+  type: LoadBalancer
+  addresses:
+    - type: IPAddress
+      value: 192.168.178.240
   listeners:
     - name: https
       protocol: HTTPS
