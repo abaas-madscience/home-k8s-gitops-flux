@@ -7,8 +7,6 @@ spec:
   interval: 10m
   path: ./infrastructure/node-exporter
   prune: true
-  dependsOn:
-    - name: infra-vm
   sourceRef:
     kind: GitRepository
     name: flux-system
