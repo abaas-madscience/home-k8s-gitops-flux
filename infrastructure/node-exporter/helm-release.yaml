@@ -46,4 +46,8 @@ spec:
         - "--collector.filesystem.ignored-mount-points=^/(dev|proc|sys|var/lib/kubelet/.+)($|/)"
         - "--collector.filesystem.ignored-fs-types=^tmpfs$|^overlay$"
       securityContext:
-        privileged: true # Try with privileged first as a broad permission
+        capabilities:
+          add:
+            - SYS_PTRACE
+            - SYS_RESOURCE
+        privileged: true
