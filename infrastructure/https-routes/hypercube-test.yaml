@@ -5,8 +5,8 @@ metadata:
   namespace: hypercube-test # Change to the namespace where the route should be created
 spec:
   parentRefs:
-    - name: public-gateways
-      namespace: infra-gateways
+    - name: public-gateway
+      namespace: infra-gateway
   hostnames:
     - "hpt.public.lab.local" # Change to the hostname you want to use
   rules:

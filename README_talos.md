@@ -192,7 +192,8 @@ kubectl get httproute -A -o=jsonpath='{range .items[*]}{.metadata.namespace}/{.m
 ## Traffic map
 kubectl get httproute -A -o=jsonpath='{range .items[*]}{.metadata.namespace}{"\t"}{.metadata.name}{"\t"}{range .spec.parentRefs[*]}{.name}{"\t"}{end}{range .spec.hostnames[*]}{.}{"\t"}{end}{range .spec.rules[*].backendRefs[*]}{.name}{"\t"}{.port}{"\n"}{end}'
 
-
+# Check a specific route
+kubectl get httproute -n infra-longhorn longhorn-route -o yaml | grep -A10 status:
   
 ## TODO
 Create Servicemonitors
