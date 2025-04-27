@@ -9,3 +9,4 @@ resources:
   - infra-certwildcard.yaml
   - infra-test-app.yaml
   - infra-test-gateway.yaml
+  - apps.yaml
