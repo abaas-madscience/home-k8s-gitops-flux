@@ -214,3 +214,11 @@ http://localhost:8080
 
 # Search helm releases
 helm search repo vm/victoria-metrics-single -l | head -n 5
+
+# Find Tainted nodes
+kubectl get nodes -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{range .spec.taints[*]}{.key}{"="}{.value}{" "}{end}{"\n"}{end}'
+
+# Check logs
+kubectl get events -n monitoring --sort-by='.lastTimestamp' | tail -20
+
+10m         Warning   FailedCreate             daemonset/monitoring-infra-node-exporter-prometheus-node-exporter                          Error creating: pods "monitoring-infra-node-exporter-prometheus-node-exporter-lwdsm" is forbidden: violates PodSecurity "baseline:latest": host namespaces (hostNetwork=true, hostPID=true), hostPath volumes (volumes "proc", "sys"), hostPort (container "node-exporter" uses hostPort 9100)
