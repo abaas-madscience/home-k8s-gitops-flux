@@ -21,7 +21,6 @@ spec:
         loggerLevel: ERROR
         envflag.enable: "true"
         promscrape.config: "/config/prometheus.yml"
-        promscrape.config-reload-interval: "30s" # Reload every 30 seconds
         retentionPeriod: "30d"
 
       extraVolumeMounts:
