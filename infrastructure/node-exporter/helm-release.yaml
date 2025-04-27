@@ -1,0 +1,47 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: infra-node-exporter
+  namespace: flux-system
+spec:
+  targetNamespace: monitoring
+  interval: 5m
+  chart:
+    spec:
+      chart: prometheus-node-exporter
+      version: 4.24.0
+      sourceRef:
+        kind: HelmRepository
+        name: infra-node-exporter
+        namespace: flux-system
+  values:
+    service:
+      port: 9100
+    prometheus:
+      monitor:
+        enabled: true
+    daemonset:
+      hostPid: true
+      hostNetwork: true
+      volumes:
+        - name: proc
+          hostPath: /proc
+        - name: sys
+          hostPath: /sys
+        - name: rootfs
+          hostPath: /
+      volumeMounts:
+        - name: proc
+          mountPath: /host/proc
+          readOnly: true
+        - name: sys
+          mountPath: /host/sys
+          readOnly: true
+        - name: rootfs
+          mountPath: /rootfs
+          mountPropagation: HostToContainer
+      extraArgs:
+        - "--path.procfs=/host/proc"
+        - "--path.sysfs=/host/sys"
+        - "--collector.filesystem.ignored-mount-points=^/(dev|proc|sys|var/lib/kubelet/.+)($|/)"
+        - "--collector.filesystem.ignored-fs-types=^tmpfs$|^overlay$"

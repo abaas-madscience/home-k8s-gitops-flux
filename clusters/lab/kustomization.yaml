@@ -10,7 +10,7 @@ resources:
   - infra-gateways.yaml
   - infra-victoria-logs.yaml
   - infra-victoria-metrics.yaml
-  - infra-service-monitor.yaml
+  - infra-node-exporter.yaml
   - infra-https-routes.yaml
   - infra-test-app.yaml
   - apps.yaml
