@@ -210,3 +210,7 @@ Or just kubectl port-forward to localhost.
 
 Then open:
 http://localhost:8080
+
+
+# Search helm releases
+helm search repo vm/victoria-metrics-single -l | head -n 5

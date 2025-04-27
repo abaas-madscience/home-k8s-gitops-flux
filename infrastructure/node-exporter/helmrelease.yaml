@@ -1,0 +1,22 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: infra-node-exporter
+  namespace: flux-system
+spec:
+  targetNamespace: monitoring
+  interval: 5m
+  chart:
+    spec:
+      chart: prometheus-node-exporter
+      version: 4.45.3
+      sourceRef:
+        kind: HelmRepository
+        name: infra-node-exporter
+        namespace: flux-system
+  values:
+    service:
+      port: 9100
+    prometheus:
+      monitor:
+        enabled: true

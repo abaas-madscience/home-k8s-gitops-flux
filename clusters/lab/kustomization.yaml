@@ -8,7 +8,9 @@ resources:
   - infra-certmanager.yaml
   - infra-certwildcard.yaml
   - infra-gateways.yaml
+  - infra-victoria-logs.yaml
+  - infra-victoria-metrics.yaml
+  - infra-node-exporter.yaml
   - infra-https-routes.yaml
   - infra-test-app.yaml
-  #  - infra-test-gateway.yaml
   - apps.yaml

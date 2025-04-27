@@ -1,14 +1,14 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: apps
+  name: infra-vl
   namespace: flux-system
 spec:
   interval: 10m
-  path: ./apps
+  path: ./infrastructure/victoria-logs
   prune: true
   dependsOn:
-    - name: infra-vl
+    - name: infra-longhorn
   sourceRef:
     kind: GitRepository
     name: flux-system

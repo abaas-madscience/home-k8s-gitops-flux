@@ -1,0 +1,76 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: grafana
+  namespace: flux-system
+spec:
+  targetNamespace: monitoring
+  interval: 5m
+  chart:
+    spec:
+      chart: grafana
+      version: 8.11.4
+      sourceRef:
+        kind: HelmRepository
+        name: grafana
+        namespace: flux-system
+  values:
+    adminUser: admin
+    adminPassword: admin
+    envFromSecrets: []
+    env:
+      GF_INSTALL_PLUGINS: "victoriametrics-logs-datasource"
+
+    service:
+      type: ClusterIP
+      port: 80
+      targetPort: 3000
+
+    persistence:
+      enabled: true
+      storageClassName: longhorn
+      accessModes: ["ReadWriteOnce"]
+      size: 5Gi
+
+    datasources:
+      datasources.yaml:
+        apiVersion: 1
+        datasources:
+          - name: VictoriaLogs
+            type: victoriametrics-logs-datasource
+            url: http://vl-server:9428
+            access: proxy
+            jsonData:
+              maxLines: 1000
+
+          - name: VictoriaMetrics
+            type: prometheus
+            url: http://monitoring-infra-vm-victoria-metrics-single-server:8428
+            access: proxy
+            isDefault: true
+
+    dashboardProviders:
+      dashboardproviders.yaml:
+        apiVersion: 1
+        providers:
+          - name: default
+            orgId: 1
+            folder: ""
+            type: file
+            disableDeletion: false
+            editable: true
+            options:
+              path: /var/lib/grafana/dashboards/default
+
+    dashboards:
+      default:
+        node-exporter:
+          gnetId: 1860
+          revision: 27
+          datasource: VictoriaMetrics
+
+    sidecar:
+      dashboards:
+        enabled: true
+      datasources:
+        enabled: true
