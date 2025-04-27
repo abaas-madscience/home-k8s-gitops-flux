@@ -12,5 +12,4 @@ spec:
         operator: In
         values:
           - default
-          - hypercube-test
-          - infra-longhorn
+          - infra-gateway

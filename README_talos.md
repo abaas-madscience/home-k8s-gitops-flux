@@ -183,6 +183,9 @@ kubectl label namespace infra-longhorn pod-security.kubernetes.io/enforce=privil
 ## Restart Cilium Operator
 kubectl rollout restart deployment/cilium-operator -n kube-system
 
+## Check Routes and gateways
+kubectl get gateway,httproute -A -o custom-columns='KIND:kind,NAMESPACE:metadata.namespace,NAME:metadata.name,ADDR:status.addresses[*].value,CONDITION:status.conditions[-1].type,STATUS:status.conditions[-1].status,REASON:status.conditions[-1].reason'
+
   
 ## TODO
 Create Servicemonitors
