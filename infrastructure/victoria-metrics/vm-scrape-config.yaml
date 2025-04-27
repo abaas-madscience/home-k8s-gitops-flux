@@ -9,11 +9,5 @@ data:
       scrape_interval: 15s
     scrape_configs:
       - job_name: 'node-exporter'
-        kubernetes_sd_configs:
-          - role: pod
-            namespaces:
-              names:
-                - monitoring
-            selectors:
-              - role: node-exporter
-                app: prometheus-node-exporter
+        static_configs:
+          - targets: ['monitoring-infra-node-exporter-prometheus-node-exporter:9100']
