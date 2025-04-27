@@ -22,7 +22,7 @@ spec:
         enabled: true
     daemonset:
       hostPid: true
-      hostNetwork: true
+      hostNetwork: false
       volumes:
         - name: proc
           hostPath: /proc
