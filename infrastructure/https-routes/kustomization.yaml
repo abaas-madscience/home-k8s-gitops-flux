@@ -3,3 +3,4 @@ kind: Kustomization
 resources:
   - hypercube-test.yaml
   - longhorn.yaml
+  - grafana.yaml
