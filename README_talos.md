@@ -186,6 +186,26 @@ kubectl rollout restart deployment/cilium-operator -n kube-system
 ## Check Routes and gateways
 kubectl get gateway,httproute -A -o custom-columns='KIND:kind,NAMESPACE:metadata.namespace,NAME:metadata.name,ADDR:status.addresses[*].value,CONDITION:status.conditions[-1].type,STATUS:status.conditions[-1].status,REASON:status.conditions[-1].reason'
 
+## Check Resolutions
+kubectl get httproute -A -o=jsonpath='{range .items[*]}{.metadata.namespace}/{.metadata.name}{"\t"}{.status.parents[*].conditions[*].type}{"\t"}{.status.parents[*].conditions[*].status}{"\n"}{end}' | grep ResolvedRefs
+
+## Traffic map
+kubectl get httproute -A -o=jsonpath='{range .items[*]}{.metadata.namespace}{"\t"}{.metadata.name}{"\t"}{range .spec.parentRefs[*]}{.name}{"\t"}{end}{range .spec.hostnames[*]}{.}{"\t"}{end}{range .spec.rules[*].backendRefs[*]}{.name}{"\t"}{.port}{"\n"}{end}'
+
+
   
 ## TODO
 Create Servicemonitors
+Checkout: #1 — kube-graph (CLI tool, graphviz output)
+go install github.com/henderiw/kube-graph/cmd/kube-graph@latest
+
+kube-graph > cluster-topology.dot
+dot -Tpng cluster-topology.dot -o cluster-topology.png
+
+#2 topology-viewer
+kubectl apply -f https://raw.githubusercontent.com/weaveworks-plugins/k8s-topology-viewer/main/deploy/k8s-topology-viewer.yaml
+Expose it via HTTPRoute (optional)
+Or just kubectl port-forward to localhost.
+
+Then open:
+http://localhost:8080

@@ -2,7 +2,7 @@ apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: wildcard-tls
-  namespace: hypercube-test
+  namespace: infra-gateway # Change this to the namespace where your gateway is deployed
 spec:
   secretName: wildcard-tls
   duration: 2160h # 90d
