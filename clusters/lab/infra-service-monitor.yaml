@@ -5,7 +5,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m
-  path: ./infrastructure/node-exporter
+  path: ./infrastructure/service-monitor
   prune: true
   dependsOn:
     - name: infra-vm
