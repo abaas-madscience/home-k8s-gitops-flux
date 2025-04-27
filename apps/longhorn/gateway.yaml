@@ -1,4 +1,3 @@
----
 apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
 metadata:
@@ -6,10 +5,9 @@ metadata:
   namespace: infra-longhorn
 spec:
   gatewayClassName: cilium
-  type: LoadBalancer
   addresses:
-    - type: IPAddress
-      value: 192.168.178.240
+    - type: Hostname
+      value: longhorn.public.lab.local
   listeners:
     - name: https
       protocol: HTTPS
