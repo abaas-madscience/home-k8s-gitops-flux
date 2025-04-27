@@ -1,4 +1,3 @@
----
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
@@ -10,6 +9,19 @@ spec:
   hostnames:
     - "longhorn.public.lab.local"
   rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /v1
+        - path:
+            type: PathPrefix
+            value: /backupstores
+        - path:
+            type: PathPrefix
+            value: /volumes
+      backendRefs:
+        - name: longhorn-backend
+          port: 9500
     - matches:
         - path:
             type: PathPrefix
