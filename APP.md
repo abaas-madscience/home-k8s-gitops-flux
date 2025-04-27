@@ -14,7 +14,7 @@ spec:
         mode: Terminate
         certificateRefs:
           - kind: Secret
-            name: <appname>-tls
+            name: wildcard-tls
       allowedRoutes:
         namespaces:
           from: Same
@@ -29,7 +29,7 @@ spec:
   parentRefs:
     - name: <appname>-gateway
   hostnames:
-    - "<your-app-domain.lab.local>"
+    - "<your-app-.public.lab.local>"
   rules:
     - matches:
         - path:
@@ -38,22 +38,6 @@ spec:
       backendRefs:
         - name: <appname>
           port: 80
----
-apiVersion: cert-manager.io/v1
-kind: Certificate
-metadata:
-  name: <appname>-tls
-  namespace: <namespace>
-spec:
-  secretName: <appname>-tls
-  duration: 2160h # 90d
-  renewBefore: 360h # 15d
-  commonName: <your-app-domain.lab.local>
-  dnsNames:
-    - <your-app-domain.lab.local>
-  issuerRef:
-    name: selfsigned-cluster-issuer
-    kind: ClusterIssuer
 ---
 apiVersion: v1
 kind: Service

@@ -11,3 +11,7 @@ flux reconcile source git flux-system --with-source
 
 flux reconcile kustomization flux-system --with-source
 flux reconcile kustomization infra-cilium --with-source
+
+
+# Gateway
+➜ k describe gateway -n hypercube-test hypercube-gateway

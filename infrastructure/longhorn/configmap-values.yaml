@@ -13,10 +13,10 @@ data:
       deletingConfirmationFlag: true
 
     longhornUI:
-      enabled: false
+      enabled: true
 
     ingress:
-      enabled: false
+      enabled: true
 
     service:
       ui:
