@@ -1,7 +1,7 @@
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: kubelet-metrics
+  name: kubelet-metrics-test
   namespace: monitoring
 spec:
   selector:
@@ -9,7 +9,4 @@ spec:
       k8s-app: kubelet
   endpoints:
     - port: https-metrics
-      scheme: https
       interval: 30s
-      tlsConfig:
-        insecureSkipVerify: true
