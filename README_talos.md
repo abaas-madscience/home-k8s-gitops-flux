@@ -222,3 +222,7 @@ kubectl get nodes -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{range .sp
 kubectl get events -n monitoring --sort-by='.lastTimestamp' | tail -20
 
 10m         Warning   FailedCreate             daemonset/monitoring-infra-node-exporter-prometheus-node-exporter                          Error creating: pods "monitoring-infra-node-exporter-prometheus-node-exporter-lwdsm" is forbidden: violates PodSecurity "baseline:latest": host namespaces (hostNetwork=true, hostPID=true), hostPath volumes (volumes "proc", "sys"), hostPort (container "node-exporter" uses hostPort 9100)
+
+# Namspace security
+pod-security.kubernetes.io/enforce: restricted # Or baseline, or audit/warn
+pod-security.kubernetes.io/warn: baseline
