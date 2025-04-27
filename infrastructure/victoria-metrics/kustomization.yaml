@@ -5,3 +5,5 @@ resources:
   - prom-crd.yaml
   - rbac-crd.yaml
   - vm-scrape-config.yaml
+  - cluster-role.yaml
+  - cluster-role-binding.yaml
