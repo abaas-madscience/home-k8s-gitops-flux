@@ -8,12 +8,11 @@ data:
     global:
       scrape_interval: 15s
 
-
     scrape_configs:
+
       - job_name: 'node-exporter'
         kubernetes_sd_configs:
           - role: pod
-        
         relabel_configs:
           - action: keep
             source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_instance]
@@ -29,3 +28,27 @@ data:
             target_label: instance
           - action: labelmap
             regex: __meta_kubernetes_pod_label_(.+)
+
+      - job_name: 'kube-state-metrics'
+        kubernetes_sd_configs:
+          - role: pod
+        relabel_configs:
+          - action: keep
+            source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_name]
+            regex: kube-state-metrics
+          - source_labels: [__meta_kubernetes_pod_ip]
+            target_label: __address__
+            regex: (.*)
+            replacement: ${1}:8080
+
+      - job_name: 'etcd'
+        kubernetes_sd_configs:
+          - role: pod
+        relabel_configs:
+          - action: keep
+            source_labels: [__meta_kubernetes_pod_label_component]
+            regex: etcd
+          - source_labels: [__meta_kubernetes_pod_ip]
+            target_label: __address__
+            regex: (.*)
+            replacement: ${1}:2379
