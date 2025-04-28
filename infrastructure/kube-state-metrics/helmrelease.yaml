@@ -2,8 +2,9 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
   name: kube-state-metrics
-  namespace: monitoring
+  namespace: flux-systemoring
 spec:
+  targetNamespace: monitoring
   interval: 5m
   chart:
     spec:
