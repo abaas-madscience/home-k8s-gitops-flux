@@ -15,6 +15,9 @@ spec:
         name: grafana
         namespace: flux-system
   values:
+    updateStrategy:
+      type: Recreate
+
     adminUser: admin
     adminPassword: admin
     envFromSecrets: []
