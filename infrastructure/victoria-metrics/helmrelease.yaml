@@ -32,7 +32,8 @@ spec:
           configMap:
             name: vm-scrape-config
 
-      retentionPeriod: 1
+      retentionPeriod: 3 # 3 days Modified to see if the network spike is related to the retention period
+
       persistentVolume:
         enabled: true
         storageClass: longhorn
