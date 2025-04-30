@@ -23,17 +23,7 @@ data:
             target_label: node
           - source_labels: [__address__]
             target_label: __address__
-        metricRelabelConfigs:
-          - sourceLabels: [id]
-            regex: '^/kubepods[^/]+/pod[^/]+/(.+)$'
-            targetLabel: container_id
-            replacement: '$1'
-          - sourceLabels: [container_label_io_kubernetes_pod_name]
-            targetLabel: pod
-          - sourceLabels: [container_label_io_kubernetes_pod_namespace]
-            targetLabel: namespace
-          - sourceLabels: [container_label_io_kubernetes_container_name]
-            targetLabel: container
+
 
       - job_name: 'node-exporter'
         kubernetes_sd_configs:
