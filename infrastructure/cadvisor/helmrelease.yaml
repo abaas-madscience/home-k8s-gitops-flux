@@ -16,6 +16,8 @@ spec:
         name: cadvisor
         namespace: flux-system
   values:
+    updateStrategy:
+      type: Recreate
     image:
       repository: gcr.io/cadvisor/cadvisor
       tag: v0.52.1
