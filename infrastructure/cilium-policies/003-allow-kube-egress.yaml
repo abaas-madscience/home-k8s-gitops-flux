@@ -1,0 +1,15 @@
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-kube-system-egress-apiserver
+  namespace: kube-system
+spec:
+  endpointSelector: {}
+  egress:
+    - toEndpoints:
+        - matchLabels:
+            k8s-app: kube-apiserver # Example label, adjust based on your setup
+      toPorts:
+        - ports:
+            - port: "6443" # Default kube-apiserver port, adjust if needed
+              protocol: TCP

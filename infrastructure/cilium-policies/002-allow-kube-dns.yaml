@@ -1,0 +1,18 @@
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-kube-system-egress-dns
+  namespace: kube-system
+spec:
+  endpointSelector: {} # Selects all pods in the kube-system namespace
+  egress:
+    - toServices:
+        - serviceName: kube-dns
+          namespace: kube-system
+      toPorts:
+        - ports:
+            - port: "53"
+              protocol: UDP
+        - ports:
+            - port: "53"
+              protocol: TCP

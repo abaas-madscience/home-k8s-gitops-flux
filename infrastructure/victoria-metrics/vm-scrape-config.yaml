@@ -17,13 +17,19 @@ data:
           - source_labels: [__meta_kubernetes_service_label_app_kubernetes_io_name]
             regex: cadvisor
             action: keep
-          - source_labels: [__meta_kubernetes_namespace]
+          - source_labels: [container_label_io_kubernetes_pod_namespace]
             target_label: namespace
+          - source_labels: [container_label_io_kubernetes_pod_name]
+            target_label: pod
+          - source_labels: [container_label_io_kubernetes_container_name]
+            target_label: container
           - source_labels: [__meta_kubernetes_pod_node_name]
             target_label: node
           - source_labels: [__address__]
             target_label: __address__
-
+          - source_labels: [container_label_io_kubernetes_pod_name]
+            action: keep
+            regex: ".+"
 
       - job_name: 'node-exporter'
         kubernetes_sd_configs:
