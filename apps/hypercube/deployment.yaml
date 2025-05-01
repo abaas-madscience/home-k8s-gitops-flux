@@ -4,7 +4,7 @@ metadata:
   name: nginx
   namespace: hypercube-test
 spec:
-  replicas: 10
+  replicas: 1
   selector:
     matchLabels:
       app: nginx
