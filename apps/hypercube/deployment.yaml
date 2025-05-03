@@ -18,3 +18,8 @@ spec:
           image: nginx:alpine
           ports:
             - containerPort: 80
+          resources:
+            requests:
+              cpu: "100m"
+            limits:
+              cpu: "200m"
