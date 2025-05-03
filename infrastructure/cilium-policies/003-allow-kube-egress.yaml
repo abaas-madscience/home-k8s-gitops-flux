@@ -8,8 +8,8 @@ spec:
   egress:
     - toEndpoints:
         - matchLabels:
-            k8s-app: kube-apiserver # Example label, adjust based on your setup
+            k8s-app: kube-apiserver # Example label
       toPorts:
         - ports:
-            - port: "6443" # Default kube-apiserver port, adjust if needed
+            - port: "6443" # Default kube-apiserver port
               protocol: TCP
