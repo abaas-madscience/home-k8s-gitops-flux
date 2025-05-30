@@ -1,7 +1,0 @@
----
-- name: Bootstrap Arch nodes
-  hosts: all
-  become: yes
-
-  roles:
-    - k8s-sysctl

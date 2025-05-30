@@ -1,9 +1,0 @@
----
-- name: Install Linux headers for Falco eBPF support
-  hosts: all
-  become: yes
-  gather_facts: no
-
-  tasks:
-    - name: Install linux-headers via pacman
-      raw: pacman -Sy --noconfirm linux-headers

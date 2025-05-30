@@ -1,9 +1,0 @@
----
-- name: Install Python on bare Arch nodes
-  hosts: all
-  gather_facts: no
-  become: yes
-
-  tasks:
-    - name: Install python and base-devel
-      raw: pacman -Sy --noconfirm python base-devel git
