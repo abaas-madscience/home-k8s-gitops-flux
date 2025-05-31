@@ -4,7 +4,7 @@ resources:
   - infra-namespaces.yaml
   - infra-cilium.yaml
   - infra-flux-system.yaml
-  - infra-longhorn.yaml
+  #  - infra-longhorn.yaml
   - infra-certmanager.yaml
   - infra-certmanager-issuer.yaml
   - infra-certwildcard.yaml
