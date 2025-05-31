@@ -1,11 +1,11 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: infra-certmgr-crds
+  name: infra-certmgr-deploy
   namespace: flux-system
 spec:
   interval: 10m
-  path: ./infrastructure/cert-manager/crds
+  path: ./infrastructure/cert-manager/deploy
   prune: true
   sourceRef:
     kind: GitRepository

@@ -20,10 +20,10 @@ spec:
     crds: CreateReplace
   values:
     installCRDs: true
-#    webhook:
-#      containerSecurityContext:
-#        runAsNonRoot: true
-#        allowPrivilegeEscalation: false
-#        capabilities:
-#          drop:
-#            - ALL
+    webhook:
+      containerSecurityContext:
+        runAsNonRoot: true
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+            - ALL
