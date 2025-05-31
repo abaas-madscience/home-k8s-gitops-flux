@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-cert-manager-webhook
+  namespace: infra-cert-manager
+spec:
+  podSelector:
+    matchLabels:
+      app: webhook
+      app.kubernetes.io/component: webhook # Common label for cert-manager webhook
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress:
+    - from:
+        - podSelector: {} # Allow from all pods in all namespaces (very broad)
+        - namespaceSelector: {} # Allow from all namespaces
+      ports:
+        - protocol: TCP
+          port: 443
+  egress:
+    - to:
+        - podSelector: {} # Allow to all pods in all namespaces (very broad)
+        - namespaceSelector: {} # Allow to all namespaces
+      ports:
+        - protocol: TCP
+          port: 443
