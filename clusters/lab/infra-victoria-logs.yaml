@@ -7,9 +7,9 @@ spec:
   interval: 10m
   path: ./infrastructure/victoria-logs
   prune: true
-  dependsOn:
-    - name: infra-longhorn
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
+  dependsOn:
+    - name: infra-longhorn

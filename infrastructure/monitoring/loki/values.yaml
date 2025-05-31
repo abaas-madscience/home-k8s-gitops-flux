@@ -1,0 +1,38 @@
+# k8s-config/monitoring/loki/values.yaml
+# For full customization, see:
+# https://grafana.github.io/helm-charts/charts/loki-stack/
+grafana:
+  enabled: false # We are using the Grafana from kube-prometheus-stack
+
+loki:
+  # You'll want persistence for Loki's index and chunks
+  # persistence:
+  #   enabled: true
+  #   storageClassName: "your-storage-class"
+  #   size: 10Gi # Adjust based on log volume and retention
+  #   accessModes:
+  #     - ReadWriteOnce
+  # serviceMonitor:
+  #   enabled: true # Enable if you want Prometheus to scrape Loki's metrics
+
+promtail:
+  enabled: true
+  # Configure Promtail to scrape logs from all pods
+  # extraScrapeConfigs:
+  #   - job_name: kubernetes-pods
+  #     kubernetes_sd_configs:
+  #       - role: pod
+  #     relabel_configs:
+  #       - source_labels:
+  #           - __meta_kubernetes_pod_label_app_kubernetes_io_name
+  #         target_label: app
+  #       - source_labels:
+  #           - __meta_kubernetes_pod_namespace
+  #         target_label: namespace
+  #       - source_labels:
+  #           - __meta_kubernetes_pod_name
+  #         target_label: pod_name
+  #     pipeline_stages:
+  #       - cri: {} # For containerd logs (Talos)
+  # serviceMonitor:
+  #   enabled: true # Enable if you want Prometheus to scrape Promtail's metrics

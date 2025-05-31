@@ -7,9 +7,9 @@ spec:
   interval: 10m
   path: ./infrastructure/gateways
   prune: true
-  dependsOn:
-    - name: infra-certwildcard
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
+  dependsOn:
+    - name: infra-certwildcard

@@ -7,9 +7,9 @@ spec:
   interval: 10m
   path: ./infrastructure/service-monitor
   prune: true
-  dependsOn:
-    - name: infra-vm
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
+  dependsOn:
+    - name: infra-vm

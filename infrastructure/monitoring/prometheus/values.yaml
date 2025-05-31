@@ -1,0 +1,64 @@
+# k8s-config/monitoring/prometheus/values.yaml
+# Minimal values for a quick start.
+# For full customization, see:
+# https://github.com/prometheus-community/helm-charts/blob/main/charts/kube-prometheus-stack/values.yaml
+
+defaultRules:
+  create: true
+  # ruleSelector: {} # You can select specific rule groups here
+
+alertmanager:
+  enabled: true
+  # You'll likely want to configure persistence and receivers later
+  # persistence:
+  #   enabled: true
+  #   storageClass: "your-storage-class" # Define your storage class if not using default
+  #   size: 1Gi
+
+grafana:
+  enabled: true
+  adminPassword: "prom-operator-admin-password" # CHANGE THIS IN PRODUCTION! Use a SecretRef in HelmRelease
+  # persistence:
+  #   enabled: true
+  #   storageClassName: "your-storage-class"
+  #   size: 5Gi
+  ingress:
+    enabled: true
+    hosts:
+      - grafana.svc.lab.local # Change this to your desired domain
+    # tls:
+    #   - secretName: grafana-tls
+    #     hosts:
+    #       - grafana.yourdomain.com
+  # Additional Grafana dashboards can be imported here, e.g., for Loki integration later
+  # You can add dashboards from the community: https://grafana.com/grafana/dashboards/
+  # dashboards:
+  #   enabled: true
+  #   default:
+  #     loki:
+  #       url: https://grafana.com/grafana/dashboards/12345
+  #       checksum: "..." # Use a checksum to force update
+
+prometheus:
+  prometheusSpec:
+    # You'll definitely want persistence for Prometheus data
+    # storageSpec:
+    #   volumeClaimTemplate:
+    #     spec:
+    #       storageClassName: "your-storage-class"
+    #       accessModes: ["ReadWriteOnce"]
+    #       resources:
+    #         requests:
+    #           storage: 20Gi # Adjust based on your retention and metrics volume
+# Node Exporter:
+# Talos Linux typically manages its own host-level components.
+# The default Node Exporter configuration often works fine.
+# If you face issues with permissions, you might need to adjust paths.
+# See: https://prometheus.io/docs/guides/node-exporter/#running-node-exporter-on-kubernetes
+# nodeExporter:
+#   hostRootfs: true # Potentially needed for Talos if host paths are restricted
+#   path:
+#     proc: /host/proc
+#     sys: /host/sys
+
+# kube-state-metrics, pushgateway, etc., are usually fine with defaults.
