@@ -12,5 +12,4 @@ resources:
   - infra-cadvisor.yaml
   - infra-node-exporter.yaml
   - infra-https-routes.yaml
-  - infra-test-app.yaml
   - apps.yaml
