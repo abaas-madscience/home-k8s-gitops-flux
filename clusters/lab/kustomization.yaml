@@ -5,10 +5,10 @@ resources:
   - infra-cilium.yaml
   - infra-flux-system.yaml
   - infra-longhorn.yaml
-  - infra-certmanager.yaml
-  - infra-certmanager-issuer.yaml
-  - infra-certwildcard.yaml
-  - infra-gateways.yaml
+#  - infra-certmanager.yaml
+#  - infra-certmanager-issuer.yaml
+#  - infra-certwildcard.yaml
+#  - infra-gateways.yaml
 #  - infra-cadvisor.yaml
 #  - infra-node-exporter.yaml
 #  - infra-https-routes.yaml
