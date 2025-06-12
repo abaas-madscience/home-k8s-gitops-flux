@@ -9,7 +9,5 @@ resources:
   #  - infra-certmanager-issuer.yaml
   #  - infra-certwildcard.yaml
   - infra-gateways.yaml
-  #  - infra-cadvisor.yaml
-  #  - infra-node-exporter.yaml
   - infra-https-routes.yaml
 #  - apps.yaml
