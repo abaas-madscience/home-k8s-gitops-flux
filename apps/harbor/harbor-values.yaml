@@ -8,8 +8,8 @@ data:
     expose:
       type: clusterIP
       tls:
-        enabled: false # Keep false for simplicity for local testing
-        certSource: auto # If you later enable TLS, 'auto' is good for self-signed
+        enabled: false 
+        certSource: auto 
     authMode: db_auth 
     ldap:
       enabled: false
