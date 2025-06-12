@@ -15,7 +15,7 @@ data:
       enabled: false
     oidc:
       enabled: false
-    externalURL: http://harbor.public.lab.local 
+    externalURL: https://harbor.public.lab.local 
     persistence:
       enabled: true
       resourcePolicy: "keep" # Keep PVCs on Helm release deletion
