@@ -58,7 +58,7 @@ data:
           # size: 5Gi # Only specify if enabled
 
     # --- Admin password ---
-    harborAdminPassword: "12345"
+    harborAdminPassword: 12345
 
     # --- Internal TLS (recommended to disable for simple local testing) ---
     internalTLS:
