@@ -1,0 +1,31 @@
+# clusters/your-cluster/harbor/helmrelease.yaml
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: harbor
+  namespace: harbor # Must be in the namespace where Harbor will be deployed
+spec:
+  interval: 5m
+  chart:
+    spec:
+      chart: harbor
+      version: "26.7.5" # Specify the desired chart version (e.g., "1.12.0")
+      sourceRef:
+        kind: HelmRepository
+        name: harbor
+        namespace: flux-system # Must match the HelmRepository's namespace
+  valuesFrom:
+    - kind: ConfigMap # Or Secret, if you manage sensitive values separately
+      name: harbor-values # Name of the ConfigMap holding your values
+      optional: false
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      remediationInterval: 1m
+      retries: 3
+    timeout: 10m # Harbor installation can take a while
+  test:
+    enable: true # Run Helm tests after installation
+  timeout: 15m # Overall timeout for Helm operations

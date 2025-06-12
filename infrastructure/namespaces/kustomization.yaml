@@ -5,3 +5,4 @@ resources:
   - monitoring.yaml
   - longhorn.yaml
   - certmanager.yaml
+  - harbor.yaml

@@ -1,0 +1,129 @@
+# clusters/your-cluster/harbor/harbor-values-configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: harbor-values
+  namespace: harbor
+data:
+  values.yaml: |
+    # --- Expose settings ---
+    expose:
+      type: ingress
+      tls:
+        enabled: false # Keep false for simplicity for local testing
+        certSource: auto # If you later enable TLS, 'auto' is good for self-signed
+      ingress:
+        # IMPORTANT: Change this to your desired hostname for Harbor
+        hosts:
+          core: harbor.public.lab.local
+        className: cilium
+
+    # IMPORTANT: Set this to match your Ingress hostname
+    externalURL: http://harbor.mylocalcluster.com # Use HTTP if TLS is disabled at Ingress
+
+    # --- Persistence settings (using Longhorn) ---
+    persistence:
+      enabled: true
+      resourcePolicy: "keep" # Keep PVCs on Helm release deletion
+
+      # Main registry storage for images and charts
+      imageChartStorage:
+        type: filesystem
+        storageClass: "longhorn" # Use your Longhorn StorageClass
+        size: 50Gi # Adjust size as needed
+
+      # Database persistence
+      database:
+        persistence:
+          enabled: true
+          resourcePolicy: "keep"
+          storageClass: "longhorn" # Use Longhorn for database
+          size: 5Gi # Adjust size as needed
+          accessMode: ReadWriteOnce
+
+      # Redis persistence
+      redis:
+        persistence:
+          enabled: true
+          resourcePolicy: "keep"
+          storageClass: "longhorn" # Use Longhorn for Redis
+          size: 1Gi # Adjust size as needed
+          accessMode: ReadWriteOnce
+
+      # Job service log persistence
+      jobservice:
+        jobLog:
+          persistence:
+            enabled: true
+            resourcePolicy: "keep"
+            storageClass: "longhorn" # Use Longhorn for job logs
+            size: 1Gi # Adjust size as needed
+            accessMode: ReadWriteOnce
+
+      # Trivy persistence (only if Trivy is enabled)
+      trivy:
+        persistence:
+          enabled: false # Disable Trivy persistence if Trivy is disabled
+          # storageClass: "longhorn" # Only specify if enabled
+          # size: 5Gi # Only specify if enabled
+
+    # --- Admin password ---
+    # IMPORTANT: CHANGE THIS TO A SECURE PASSWORD!
+    harborAdminPassword: "YourReallySecurePasswordHere"
+
+    # --- Internal TLS (recommended to disable for simple local testing) ---
+    internalTLS:
+      enabled: false
+
+    # --- Component image tags (pin versions for stability) ---
+    # These should match the Helm chart version you are using or be explicitly specified.
+    # Check the Harbor Helm Chart page for the exact image tags for your chosen chart version.
+    portal:
+      image:
+        tag: v2.13.1
+    core:
+      image:
+        tag: v2.13.1
+    jobservice:
+      image:
+        tag: v2.13.1
+    registry:
+      registry:
+        image:
+          tag: v2.13.1
+      controller:
+        image:
+          tag: v2.13.1
+    database:
+      internal:
+        image:
+          tag: v2.13.1
+        password: "changeit" # Password for internal Postgres user
+    redis:
+      internal:
+        image:
+          tag: v2.13.1
+    exporter:
+      image:
+        tag: v2.13.1
+    trivy:
+      image:
+        tag: v2.13.1 # Only relevant if trivy.enabled is true
+
+    # --- Disable optional features for a leaner local registry ---
+    metrics:
+      enabled: false
+    trivy:
+      enabled: false # Disable vulnerability scanning for simpler setup
+    # If you later enable Trivy, make sure `trivy.persistence.enabled` above is also `true`
+    # and its `storageClass` and `size` are set.
+
+    # --- Other important settings ---
+    # The secret key for encryption. Must be a string of 16 chars.
+    # IMPORTANT: CHANGE THIS TO A RANDOM 16-character string!
+    secretKey: "SixteenCharRandom" # e.g., "abcdefghijklmnop"
+    # Or use existingSecretSecretKey if managed via a secret.
+    # existingSecretSecretKey: ""
+
+    # Log level for components
+    logLevel: info
