@@ -53,12 +53,13 @@ data:
       # Trivy persistence (only if Trivy is enabled)
       trivy:
         persistence:
-          enabled: false # Disable Trivy persistence if Trivy is disabled
+          enabled: false 
+          # Disable Trivy persistence if Trivy is disabled
           # storageClass: "longhorn" # Only specify if enabled
           # size: 5Gi # Only specify if enabled
 
     # --- Admin password ---
-    harborAdminPassword: 12345
+    harborAdminPassword: "12345"
 
     # --- Internal TLS (recommended to disable for simple local testing) ---
     internalTLS:
