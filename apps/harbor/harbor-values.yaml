@@ -5,33 +5,24 @@ metadata:
   namespace: harbor
 data:
   values.yaml: |
-    # --- Expose settings ---
     expose:
-      type: ingress
+      type: clusterIP
       tls:
         enabled: false # Keep false for simplicity for local testing
         certSource: auto # If you later enable TLS, 'auto' is good for self-signed
       ingress:
-        # IMPORTANT: Change this to your desired hostname for Harbor
         hosts:
           core: harbor.public.lab.local
         className: cilium
 
-    # IMPORTANT: Set this to match your Ingress hostname
-    externalURL: http://harbor.mylocalcluster.com # Use HTTP if TLS is disabled at Ingress
-
-    # --- Persistence settings (using Longhorn) ---
+    externalURL: http://harbor.public.lab.local 
     persistence:
       enabled: true
       resourcePolicy: "keep" # Keep PVCs on Helm release deletion
-
-      # Main registry storage for images and charts
       imageChartStorage:
         type: filesystem
         storageClass: "longhorn" # Use your Longhorn StorageClass
         size: 50Gi # Adjust size as needed
-
-      # Database persistence
       database:
         persistence:
           enabled: true
