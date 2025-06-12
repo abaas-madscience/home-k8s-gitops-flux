@@ -10,11 +10,11 @@ data:
       tls:
         enabled: false # Keep false for simplicity for local testing
         certSource: auto # If you later enable TLS, 'auto' is good for self-signed
-      #ingress:
-      #  hosts:
-      #    core: harbor.public.lab.local
-      #  className: cilium
-
+    authMode: db_auth 
+    ldap:
+      enabled: false
+    oidc:
+      enabled: false
     externalURL: http://harbor.public.lab.local 
     persistence:
       enabled: true
@@ -58,8 +58,7 @@ data:
           # size: 5Gi # Only specify if enabled
 
     # --- Admin password ---
-    # IMPORTANT: CHANGE THIS TO A SECURE PASSWORD!
-    harborAdminPassword: "YourReallySecurePasswordHere"
+    harborAdminPassword: "12345"
 
     # --- Internal TLS (recommended to disable for simple local testing) ---
     internalTLS:
