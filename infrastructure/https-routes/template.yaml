@@ -6,7 +6,7 @@ metadata:
 spec:
   parentRefs:
     - name: public-gateway
-      namespace: infra-gateways
+      namespace: infra-gateway
   hostnames:
     - "appname.public.lab.local" # Change to the hostname you want to use
   rules:
