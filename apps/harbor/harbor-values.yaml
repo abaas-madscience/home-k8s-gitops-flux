@@ -7,8 +7,9 @@ data:
   values.yaml: |
     expose:
       type: ingress
-      core: harbor.public.lab.local 
-      notary: harbor.public.lab.local 
+      hosts: 
+        core: harbor.public.lab.local 
+        notary: harbor.public.lab.local 
       tls:
         enabled: true 
         certSource: auto 
