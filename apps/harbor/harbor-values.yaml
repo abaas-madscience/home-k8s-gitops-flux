@@ -10,10 +10,10 @@ data:
       tls:
         enabled: false # Keep false for simplicity for local testing
         certSource: auto # If you later enable TLS, 'auto' is good for self-signed
-      ingress:
-        hosts:
-          core: harbor.public.lab.local
-        className: cilium
+      #ingress:
+      #  hosts:
+      #    core: harbor.public.lab.local
+      #  className: cilium
 
     externalURL: http://harbor.public.lab.local 
     persistence:
