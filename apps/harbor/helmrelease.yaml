@@ -19,11 +19,11 @@ spec:
       name: harbor-values # Name of the ConfigMap holding your values
       optional: false
   install:
+    createNamespace: true
     remediation:
       retries: 3
   upgrade:
     remediation:
-      remediationInterval: 1m
       retries: 3
     timeout: 10m # Harbor installation can take a while
   test:
