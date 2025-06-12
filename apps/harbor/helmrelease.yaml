@@ -15,8 +15,8 @@ spec:
         name: harbor
         namespace: flux-system
   valuesFrom:
-    - kind: ConfigMap # Or Secret, if you manage sensitive values separately
-      name: harbor-values # Name of the ConfigMap holding your values
+    - kind: ConfigMap
+      name: harbor-values
       optional: false
   install:
     createNamespace: true
@@ -25,7 +25,7 @@ spec:
   upgrade:
     remediation:
       retries: 3
-    timeout: 10m # Harbor installation can take a while
+    timeout: 10m
   test:
-    enable: true # Run Helm tests after installation
-  timeout: 15m # Overall timeout for Helm operations
+    enable: true
+  timeout: 15m
