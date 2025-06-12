@@ -4,3 +4,4 @@ resources:
   #  - hypercube-test.yaml
   #  - longhorn.yaml
   - grafana.yaml
+  - harbor.yaml
