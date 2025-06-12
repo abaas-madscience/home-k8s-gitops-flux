@@ -30,8 +30,6 @@ data:
           storageClass: "longhorn" # Use Longhorn for database
           size: 5Gi # Adjust size as needed
           accessMode: ReadWriteOnce
-
-      # Redis persistence
       redis:
         persistence:
           enabled: true
@@ -39,8 +37,6 @@ data:
           storageClass: "longhorn" # Use Longhorn for Redis
           size: 1Gi # Adjust size as needed
           accessMode: ReadWriteOnce
-
-      # Job service log persistence
       jobservice:
         jobLog:
           persistence:
@@ -49,25 +45,17 @@ data:
             storageClass: "longhorn" # Use Longhorn for job logs
             size: 1Gi # Adjust size as needed
             accessMode: ReadWriteOnce
-
-      # Trivy persistence (only if Trivy is enabled)
       trivy:
         persistence:
           enabled: false 
           # Disable Trivy persistence if Trivy is disabled
           # storageClass: "longhorn" # Only specify if enabled
           # size: 5Gi # Only specify if enabled
-
-    # --- Admin password ---
     harborAdminPassword: "12345"
 
-    # --- Internal TLS (recommended to disable for simple local testing) ---
     internalTLS:
       enabled: false
 
-    # --- Component image tags (pin versions for stability) ---
-    # These should match the Helm chart version you are using or be explicitly specified.
-    # Check the Harbor Helm Chart page for the exact image tags for your chosen chart version.
     portal:
       image:
         tag: v2.13.1
@@ -111,7 +99,7 @@ data:
     # --- Other important settings ---
     # The secret key for encryption. Must be a string of 16 chars.
     # IMPORTANT: CHANGE THIS TO A RANDOM 16-character string!
-    secretKey: "SixteenCharRandom" # e.g., "abcdefghijklmnop"
+    secretKey: "6035937314011719" # e.g., "abcdefghijklmnop"
     # Or use existingSecretSecretKey if managed via a secret.
     # existingSecretSecretKey: ""
 
