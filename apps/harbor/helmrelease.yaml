@@ -1,19 +1,19 @@
-# clusters/your-cluster/harbor/helmrelease.yaml
-apiVersion: helm.toolkit.fluxcd.io/v2beta1
+apiVersion: helm.toolkit.fluxcd.io/v2
+
 kind: HelmRelease
 metadata:
   name: harbor
-  namespace: harbor # Must be in the namespace where Harbor will be deployed
+  namespace: harbor
 spec:
   interval: 5m
   chart:
     spec:
       chart: harbor
-      version: "26.7.5" # Specify the desired chart version (e.g., "1.12.0")
+      version: "26.7.5"
       sourceRef:
         kind: HelmRepository
         name: harbor
-        namespace: flux-system # Must match the HelmRepository's namespace
+        namespace: flux-system
   valuesFrom:
     - kind: ConfigMap # Or Secret, if you manage sensitive values separately
       name: harbor-values # Name of the ConfigMap holding your values

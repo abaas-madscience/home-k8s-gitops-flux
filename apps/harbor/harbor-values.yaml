@@ -1,4 +1,3 @@
-# clusters/your-cluster/harbor/harbor-values-configmap.yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:
