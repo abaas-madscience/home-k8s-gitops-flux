@@ -6,7 +6,9 @@ metadata:
 data:
   values.yaml: |
     expose:
-      type: clusterIP
+      type: LoadBalancer
+      core: harbor.public.lab.local 
+      notary: harbor.public.lab.local 
       tls:
         enabled: false 
         certSource: auto 
