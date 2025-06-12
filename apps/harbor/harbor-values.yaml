@@ -6,11 +6,12 @@ metadata:
 data:
   values.yaml: |
     expose:
-      type: LoadBalancer
+      type: ingress
+        className: cilium
       core: harbor.public.lab.local 
       notary: harbor.public.lab.local 
       tls:
-        enabled: false 
+        enabled: true 
         certSource: auto 
     authMode: db_auth 
     ldap:
