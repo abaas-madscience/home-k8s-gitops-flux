@@ -7,7 +7,6 @@ data:
   values.yaml: |
     expose:
       type: ingress
-        className: cilium
       core: harbor.public.lab.local 
       notary: harbor.public.lab.local 
       tls:
