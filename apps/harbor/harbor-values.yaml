@@ -60,7 +60,6 @@ data:
         enabled: true
         persistence:
           enabled: true 
-          resourcePolicy: "keep"
           storageClass: "longhorn" # Only specify if enabled
           size: 5Gi # Only specify if enabled
     existingSecretSecretPasswordKey: HARBOR_ADMIN_PASSWORD
@@ -70,15 +69,19 @@ data:
       enabled: false
 
     portal:
+      replicaCount: 1
       image:
         tag: v2.13.1
     core:
+      replicaCount: 1
       image:
         tag: v2.13.1
     jobservice:
+      replicaCount: 1
       image:
         tag: v2.13.1
     registry:
+      replicaCount: 1
       registry:
         image:
           tag: v2.13.1
@@ -86,35 +89,35 @@ data:
         image:
           tag: v2.13.1
     database:
+      replicaCount: 1
       internal:
         image:
           tag: v2.13.1
         password: "changeit" # Password for internal Postgres user
     redis:
+      replicaCount: 1
       internal:
         image:
           tag: v2.13.1
     exporter:
+      replicaCount: 1
       image:
         tag: v2.13.1
     trivy:
+      replicaCount: 1
       image:
-        tag: v2.13.1 # Only relevant if trivy.enabled is true
+        tag: v2.13.1 
+    clair:
+      replicaCount: 1
+      image:
+        tag: v2.13.1 
 
     # --- Disable optional features for a leaner local registry ---
     metrics:
       enabled: false
-    trivy:
-      enabled: false # Disable vulnerability scanning for simpler setup
-    # If you later enable Trivy, make sure `trivy.persistence.enabled` above is also `true`
-    # and its `storageClass` and `size` are set.
 
-    # --- Other important settings ---
     # The secret key for encryption. Must be a string of 16 chars.
-    # IMPORTANT: CHANGE THIS TO A RANDOM 16-character string!
     secretKey: "6035937314011719" # e.g., "abcdefghijklmnop"
-    # Or use existingSecretSecretKey if managed via a secret.
-    # existingSecretSecretKey: ""
 
     # Log level for components
     logLevel: info
