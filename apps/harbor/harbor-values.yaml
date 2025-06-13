@@ -6,13 +6,13 @@ metadata:
 data:
   values.yaml: |
     expose:
-      type: ingress
+      type: clusterIP
     ingress:
       hosts: 
         core: harbor.public.lab.local 
         notary: harbor.public.lab.local 
       tls:
-        enabled: true 
+        enabled: false 
         certSource: auto 
     authMode: db_auth 
     ldap:
@@ -55,6 +55,7 @@ data:
           # Disable Trivy persistence if Trivy is disabled
           # storageClass: "longhorn" # Only specify if enabled
           # size: 5Gi # Only specify if enabled
+    existingSecretSecretPasswordKey: HARBOR_ADMIN_PASSWORD
     harborAdminPassword: "12345"
 
     internalTLS:
