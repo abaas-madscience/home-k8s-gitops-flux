@@ -34,7 +34,7 @@ data:
         trivy:
           existingClaim: data-harbor-trivy-0
         registry:
-          existingClaim: data-harbor-registry
+          existingClaim: harbor-registry
 
       imageChartStorage:
         type: filesystem
