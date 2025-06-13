@@ -7,10 +7,10 @@ data:
   values.yaml: |
     expose:
       type: clusterIP
-    ingress:
-      hosts: 
-        core: harbor.public.lab.local 
-        notary: harbor.public.lab.local 
+      ingress:
+        hosts: 
+          core: harbor.public.lab.local 
+          notary: harbor.public.lab.local 
       tls:
         enabled: false 
         certSource: auto 
