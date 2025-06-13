@@ -18,5 +18,5 @@ spec:
             type: PathPrefix
             value: /
       backendRefs:
-        - name: harbor
+        - name: harbor-portal
           port: 80
