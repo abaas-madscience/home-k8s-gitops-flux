@@ -10,5 +10,5 @@ resources:
   #  - infra-certwildcard.yaml
   - infra-gateways.yaml
   - infra-https-routes.yaml
-  - apps-harbor.yaml
+  # - apps-harbor.yaml
 #  - apps.yaml
