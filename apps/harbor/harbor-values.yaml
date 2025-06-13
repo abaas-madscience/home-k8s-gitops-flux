@@ -49,12 +49,18 @@ data:
             storageClass: "longhorn" # Use Longhorn for job logs
             size: 1Gi # Adjust size as needed
             accessMode: ReadWriteOnce
-      trivy:
+      clair:
+        enabled: true
         persistence:
-          enabled: false 
-          # Disable Trivy persistence if Trivy is disabled
-          # storageClass: "longhorn" # Only specify if enabled
-          # size: 5Gi # Only specify if enabled
+          enabled: true 
+          storageClass: "longhorn" # Only specify if enabled
+          size: 5Gi # Only specify if enabled
+      trivy:
+        enabled: true
+        persistence:
+          enabled: true 
+          storageClass: "longhorn" # Only specify if enabled
+          size: 5Gi # Only specify if enabled
     existingSecretSecretPasswordKey: HARBOR_ADMIN_PASSWORD
     harborAdminPassword: "12345"
 
