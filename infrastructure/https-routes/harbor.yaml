@@ -13,10 +13,47 @@ spec:
   hostnames:
     - "harbor.public.lab.local"
   rules:
+    # Rule for the Harbor Portal (UI and general access)
     - matches:
         - path:
             type: PathPrefix
             value: /
       backendRefs:
         - name: harbor-portal
+          port: 80
+    # Rules for the Harbor Core services
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /api/
+      backendRefs:
+        - name: harbor-core
+          port: 80
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /service/
+      backendRefs:
+        - name: harbor-core
+          port: 80
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /v2/
+      backendRefs:
+        - name: harbor-core
+          port: 80
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /chartrepo/
+      backendRefs:
+        - name: harbor-core
+          port: 80
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /c/
+      backendRefs:
+        - name: harbor-core
           port: 80
