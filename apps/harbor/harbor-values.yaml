@@ -23,45 +23,58 @@ data:
     persistence:
       enabled: true
       resourcePolicy: "keep" 
+
+      persistentVolumeClaim:
+        registry:
+          existingClaim: harbor-registry
+        jobservice:
+          existingClaim: harbor-jobservice
+        database:
+          existingClaim: database-data-harbor-database-0
+        redis:
+          existingClaim: data-harbor-redis-0
+        trivy:
+          existingClaim: data-harbor-trivy-0
+
       imageChartStorage:
         type: filesystem
-        storageClass: "longhorn" # Use your Longhorn StorageClass
-        size: 50Gi # Adjust size as needed
+        storageClass: "longhorn" 
+        size: 50Gi 
       database:
         persistence:
           enabled: true
           resourcePolicy: "keep"
-          storageClass: "longhorn" # Use Longhorn for database
-          size: 5Gi # Adjust size as needed
+          storageClass: "longhorn" 
+          size: 5Gi 
           accessMode: ReadWriteOnce
       redis:
         persistence:
           enabled: true
           resourcePolicy: "keep"
-          storageClass: "longhorn" # Use Longhorn for Redis
-          size: 1Gi # Adjust size as needed
+          storageClass: "longhorn" 
+          size: 1Gi 
           accessMode: ReadWriteOnce
       jobservice:
         jobLog:
           persistence:
             enabled: true
             resourcePolicy: "keep"
-            storageClass: "longhorn" # Use Longhorn for job logs
-            size: 1Gi # Adjust size as needed
+            storageClass: "longhorn" 
+            size: 1Gi 
             accessMode: ReadWriteOnce
       clair:
         enabled: true
         persistence:
           enabled: true 
           resourcePolicy: "keep"
-          storageClass: "longhorn" # Only specify if enabled
-          size: 5Gi # Only specify if enabled
+          storageClass: "longhorn" 
+          size: 5Gi 
       trivy:
         enabled: true
         persistence:
           enabled: true 
-          storageClass: "longhorn" # Only specify if enabled
-          size: 5Gi # Only specify if enabled
+          storageClass: "longhorn" 
+          size: 5Gi 
     existingSecretSecretPasswordKey: HARBOR_ADMIN_PASSWORD
     harborAdminPassword: "12345"
 
