@@ -33,6 +33,8 @@ data:
           existingClaim: data-harbor-redis-0
         trivy:
           existingClaim: data-harbor-trivy-0
+        registry:
+          existingClaim: data-harbor-registry
 
       imageChartStorage:
         type: filesystem
