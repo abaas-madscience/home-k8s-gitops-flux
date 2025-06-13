@@ -17,6 +17,7 @@ spec:
   valuesFrom:
     - kind: ConfigMap
       name: harbor-values
+      valuesKey: harbor-values.yaml
       optional: false
   install:
     createNamespace: true
