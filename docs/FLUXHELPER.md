@@ -14,4 +14,8 @@ flux reconcile kustomization infra-cilium --with-source
 
 
 # Gateway
-➜ k describe gateway -n hypercube-test hypercube-gateway
+k describe gateway -n hypercube-test hypercube-gateway
+
+
+# Rollout
+kubectl rollout restart deployment harbor-core harbor-portal -n harbor
