@@ -19,3 +19,12 @@ k describe gateway -n hypercube-test hypercube-gateway
 
 # Rollout
 kubectl rollout restart deployment harbor-core harbor-portal -n harbor
+
+
+# DELETE all error pods
+kubectl get pods --all-namespaces | grep -E 'Error|CrashLoopBackOff|ImagePullBackOff|Evicted|Failed|Pending' | awk '{print $2 " -n " $1}' | xargs -L1 kubectl delete pod
+
+kubectl get pods --all-namespaces | grep -E 'Completed' | awk '{print $2 " -n " $1}' | xargs -L1 kubectl delete pod
+
+
+kubectl get pods --all-namespaces | grep -E 'ContainerStatusUnknown' | awk '{print $2 " -n " $1}' | xargs -L1 kubectl delete pod
