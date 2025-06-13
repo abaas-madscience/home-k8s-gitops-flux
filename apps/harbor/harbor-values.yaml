@@ -62,13 +62,6 @@ data:
             storageClass: "longhorn" 
             size: 1Gi 
             accessMode: ReadWriteOnce
-      clair:
-        enabled: true
-        persistence:
-          enabled: true 
-          resourcePolicy: "keep"
-          storageClass: "longhorn" 
-          size: 5Gi 
       trivy:
         enabled: true
         persistence:
@@ -117,10 +110,6 @@ data:
       image:
         tag: v2.13.1
     trivy:
-      replicaCount: 1
-      image:
-        tag: v2.13.1 
-    clair:
       replicaCount: 1
       image:
         tag: v2.13.1 
