@@ -3,18 +3,12 @@ kind: Kustomization
 metadata:
   name: planka
   namespace: planka # The namespace where Planka will be deployed (and where the HelmRelease itself resides)
-spec: # <--- This is the correct, singular spec block
-  interval: 5m # How often Flux should reconcile this HelmRelease
-  targetNamespace: planka # The namespace *into which* the Helm chart will be deployed
-  releaseName: planka # Recommended: match the HelmRelease name for clarity
-
-  wait: true
-  prune: true
-  path: "./"
-  sourceRef:
+spec:
+  interval: 10m
+  chartRef:
     kind: OCIRepository
-    name: harbor-planka-repo # The name of the OCIRepository resource that contains your Planka chart
-
+    name: harbor-planka-repo
+    namespace: planka
   values:
     planka:
       secretKey: "YOUR_GENERATED_SECURE_SECRET_KEY" # <<-- GENERATE THIS PROPERLY

@@ -1,4 +1,4 @@
-apiVersion: source.toolkit.fluxcd.io/v1beta2 # For OCI
+apiVersion: source.toolkit.fluxcd.io/v1
 kind: OCIRepository
 metadata:
   name: harbor-planka-repo
@@ -6,5 +6,7 @@ metadata:
 spec:
   interval: 15m
   url: oci://harbor.public.lab.local/helm
+  ref:
+    tag: latest
   #secretRef:
   #  name: harbor-registry-creds
