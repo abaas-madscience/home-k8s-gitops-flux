@@ -8,7 +8,7 @@ spec:
   chartRef:
     kind: OCIRepository
     name: harbor-planka-repo
-    namespace: planka
+    namespace: flux-system
   values:
     planka:
       secretKey: "YOUR_GENERATED_SECURE_SECRET_KEY" # <<-- GENERATE THIS PROPERLY
