@@ -25,4 +25,4 @@ patches:
     target:
       kind: Deployment
       name: source-controller
-      namespace: flux-system # Ensure this matches
+      namespace: flux-system
