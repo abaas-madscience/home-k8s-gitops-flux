@@ -4,7 +4,7 @@ metadata:
   name: harbor-planka-repo
   namespace: flux-system
 spec:
-  interval: 15m
+  interval: 1m
   url: oci://harbor.public.lab.local/helm
   ref:
     tag: latest
