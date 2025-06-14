@@ -1,5 +1,5 @@
 apiVersion: source.toolkit.fluxcd.io/v1beta2 # For OCI
-kind: HelmRepository
+kind: OCIRepository
 metadata:
   name: harbor-planka-repo
   namespace: flux-system

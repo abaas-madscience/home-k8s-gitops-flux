@@ -1,24 +1,20 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
-kind: HelmRelease
+kind: OCIRepository
 metadata:
   name: planka
   namespace: planka # The namespace where Planka will be deployed
 spec:
   interval: 5m # How often Flux should reconcile this HelmRelease
+  prune: true # Clean up resources that are no longer defined in the HelmRelease
+  targetNamespace: planka # Ensure this matches the namespace defined in your kustomization.yaml
   chart:
     spec:
       chart: planka-board # The name of your chart in Harbor
       version: "0.1.0" # The specific version of your chart to deploy
       sourceRef:
-        kind: HelmRepository
+        kind: OCIRepository
         name: harbor-planka-repo
-        namespace: flux-system # The namespace where your HelmRepository is defined
-      # For OCI charts, you might also specify the `url` here if `sourceRef` isn't enough,
-      # but `sourceRef` pointing to the HelmRepository is typically sufficient for Flux.
-      # Example for OCI with direct URL:
-      # url: oci://your-harbor-domain.com/my-apps/planka-board
-      # verification: # If you sign your charts
-      #   provider: cosign
+        namespace: flux-system
   install:
     remediation:
       remediateLastFailure: true
