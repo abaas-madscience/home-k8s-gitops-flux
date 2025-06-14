@@ -1,5 +1,5 @@
 apiVersion: helm.toolkit.fluxcd.io/v2 # Use v2 if that's what your Flux version supports
-kind: HelmRelease
+kind: Kustomization
 metadata:
   name: planka
   namespace: planka # The namespace where Planka will be deployed (and where the HelmRelease itself resides)
@@ -8,18 +8,14 @@ spec: # <--- This is the correct, singular spec block
   targetNamespace: planka # The namespace *into which* the Helm chart will be deployed
   releaseName: planka # Recommended: match the HelmRelease name for clarity
 
-  chart: # <--- This is the correct field for defining the chart source
-    spec: # <--- This defines the chart's source specification
-      chart: planka-board # This should match the 'tag' you used in OCIRepository if url points to 'helm', or just 'planka-board' if url points to 'helm/planka-board'
-      version: "0.1.0" # The specific version of your chart to deploy
-      sourceRef:
-        kind: OCIRepository
-        name: harbor-planka-repo # The name of your OCIRepository resource
-        namespace: flux-system # The namespace where your OCIRepository is defined (important!)
+  wait: true
+  prune: true
+  path: "./"
+  sourceRef:
+    kind: OCIRepository
+    name: harbor-planka-repo # The name of the OCIRepository resource that contains your Planka chart
 
-  values: # <--- This is where your chart's values go, directly under the top-level spec
-    # These values will override the defaults in your chart's values.yaml
-    # Similar to passing --set in a helm install command
+  values:
     planka:
       secretKey: "YOUR_GENERATED_SECURE_SECRET_KEY" # <<-- GENERATE THIS PROPERLY
       baseUrl: "https://planka.public.lab.local" # The base URL for your Planka instance
