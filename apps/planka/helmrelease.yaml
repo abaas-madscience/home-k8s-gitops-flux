@@ -1,8 +1,8 @@
-apiVersion: helm.toolkit.fluxcd.io/v2 #
+apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: planka
-  namespace: planka # The namespace where Planka will be deployed (and where the HelmRelease itself resides)
+  namespace: planka
 spec:
   interval: 10m
   chartRef:
@@ -11,41 +11,27 @@ spec:
     namespace: flux-system
   values:
     planka:
-      secretKey: "YOUR_GENERATED_SECURE_SECRET_KEY" # <<-- GENERATE THIS PROPERLY
-      baseUrl: "https://planka.public.lab.local" # The base URL for your Planka instance
-      admin: # Remember to remove this after first successful deployment!
+      secretKey: "YOUR_GENERATED_SECURE_SECRET_KEY"
+      baseUrl: "https://planka.public.lab.local"
+      admin:
         email: "oscar@datakube.org"
         username: "admin"
-        password: "12345" # <<-- CHANGE THIS
+        password: "12345"
         name: "Planka Admin"
       persistence:
         enabled: true
-        storageClass: "longhorn" # Specify your cluster's StorageClass
+        storageClass: "longhorn"
         size: 2Gi
     postgresql:
       enabled: true
       auth:
         database: planka
         username: planka_user
-        password: "12345" # <<-- CHANGE THIS
+        password: "12345"
       primary:
         persistence:
           enabled: true
-          storageClass: "longhorn" # Specify your cluster's StorageClass
+          storageClass: "longhorn"
           size: 5Gi
     ingress:
-      enabled: false # Correct, as you're using Cilium Gateway API
-      # The rest of the ingress block is effectively ignored because enabled: false
-      # However, it's good practice to remove unnecessary fields for clarity
-      # className: "nginx"
-      # annotations:
-      #   cert-manager.io/cluster-issuer: "letsencrypt-prod"
-      # hosts:
-      #   - host: planka.yourdomain.com
-      #     paths:
-      #       - path: /
-      #         pathType: ImplementationSpecific
-      # tls:
-      #   - secretName: planka-tls
-      #     hosts:
-      #       - planka.yourdomain.com
+      enabled: false

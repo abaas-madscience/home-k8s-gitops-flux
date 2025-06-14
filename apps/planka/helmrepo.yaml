@@ -8,5 +8,3 @@ spec:
   url: oci://harbor.public.lab.local/helm/planka-board
   ref:
     tag: 0.1.1
-  #secretRef:
-  #  name: harbor-registry-creds
