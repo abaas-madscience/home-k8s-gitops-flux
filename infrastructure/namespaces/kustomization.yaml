@@ -6,3 +6,4 @@ resources:
   - longhorn.yaml
   - certmanager.yaml
   - harbor.yaml
+  - planka.yaml
