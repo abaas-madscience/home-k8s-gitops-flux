@@ -5,7 +5,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 1m
-  url: oci://harbor.public.lab.local/helm
+  url: oci://harbor.public.lab.local/helm/planka-board
   ref:
     tag: latest
   #secretRef:
