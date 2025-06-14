@@ -11,4 +11,5 @@ resources:
   - infra-gateways.yaml
   - infra-https-routes.yaml
   - apps-harbor.yaml
+  - apps-planka.yaml
 #  - apps.yaml

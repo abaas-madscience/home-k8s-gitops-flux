@@ -1,0 +1,69 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
+kind: HelmRelease
+metadata:
+  name: planka
+  namespace: planka # The namespace where Planka will be deployed
+spec:
+  interval: 5m # How often Flux should reconcile this HelmRelease
+  chart:
+    spec:
+      chart: planka-board # The name of your chart in Harbor
+      version: "0.1.0" # The specific version of your chart to deploy
+      sourceRef:
+        kind: HelmRepository
+        name: harbor-planka-repo
+        namespace: flux-system # The namespace where your HelmRepository is defined
+      # For OCI charts, you might also specify the `url` here if `sourceRef` isn't enough,
+      # but `sourceRef` pointing to the HelmRepository is typically sufficient for Flux.
+      # Example for OCI with direct URL:
+      # url: oci://your-harbor-domain.com/my-apps/planka-board
+      # verification: # If you sign your charts
+      #   provider: cosign
+  install:
+    remediation:
+      remediateLastFailure: true
+    crds: CreateReplace
+  upgrade:
+    remediation:
+      remediateLastFailure: true
+    crds: CreateReplace
+  values:
+    # These values will override the defaults in your chart's values.yaml
+    # Similar to passing --set in a helm install command
+    planka:
+      secretKey: "YOUR_GENERATED_SECURE_SECRET_KEY" # This should ideally be referenced from a Secret
+      baseUrl: "https://planka.public.lab.local" # The base URL for your Planka instance
+      admin: # Remember to remove this after first successful deployment!
+        email: "oscar@datakube.org"
+        username: "admin"
+        password: "12345"
+        name: "Planka Admin"
+      persistence:
+        enabled: true
+        storageClass: "longhorn" # Specify your cluster's StorageClass
+        size: 2Gi
+    postgresql:
+      enabled: true
+      auth:
+        database: planka
+        username: planka_user
+        password: "12345" # This should ideally be referenced from a Secret
+      primary:
+        persistence:
+          enabled: true
+          storageClass: "longhorn" # Specify your cluster's StorageClass
+          size: 5Gi
+    ingress:
+      enabled: false
+      className: "nginx" # Or your ingress controller's class
+      annotations:
+        cert-manager.io/cluster-issuer: "letsencrypt-prod" # If using cert-manager
+      hosts:
+        - host: planka.yourdomain.com
+          paths:
+            - path: /
+              pathType: ImplementationSpecific
+      tls:
+        - secretName: planka-tls # Secret where cert-manager will store the cert
+          hosts:
+            - planka.yourdomain.com
