@@ -1,5 +1,5 @@
-apiVersion: helm.toolkit.fluxcd.io/v2 # Use v2 if that's what your Flux version supports
-kind: Kustomization
+apiVersion: helm.toolkit.fluxcd.io/v2 #
+kind: HelmRelease
 metadata:
   name: planka
   namespace: planka # The namespace where Planka will be deployed (and where the HelmRelease itself resides)
