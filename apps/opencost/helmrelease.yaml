@@ -38,10 +38,16 @@ spec:
       # Configure OpenCost to connect to the existing Prometheus instance
       prometheus:
         internal:
-          enabled: true
+          enabled: false
           serviceName: prometheus-stack-kube-prom-prometheus
           namespaceName: monitoring
           port: 9090
+      persistence:
+        enabled: true
+        size: 1Gi
+        storageClass: "longhorn"
+        accessModes:
+          - ReadWriteOnce
       ui:
         enabled: true
       metrics:
