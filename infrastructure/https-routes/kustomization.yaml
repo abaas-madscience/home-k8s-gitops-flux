@@ -6,3 +6,4 @@ resources:
   - grafana.yaml
   - harbor.yaml
   - planka.yaml
+  - opencost.yaml
