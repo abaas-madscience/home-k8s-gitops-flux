@@ -42,7 +42,7 @@ spec:
         namespaceName: monitoring
       ui:
         enabled: true
-      metrics:
-        serviceMonitor:
-        enabled: true
-        namespace: monitoring
+      #metrics:
+      #  serviceMonitor:
+      #  enabled: true
+      #  namespace: monitoring
