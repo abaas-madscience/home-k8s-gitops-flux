@@ -16,4 +16,4 @@ spec:
             value: /
       backendRefs:
         - name: opencost
-          port: 9003
+          port: 9090
