@@ -7,3 +7,4 @@ resources:
   - certmanager.yaml
   - harbor.yaml
   - planka.yaml
+  - opencost.yaml

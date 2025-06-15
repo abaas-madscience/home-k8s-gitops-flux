@@ -1,0 +1,40 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: opencost
+  namespace: flux-system
+spec:
+  interval: 5m0s
+  chart:
+    spec:
+      chart: opencost
+      version: "2.1.5"
+      sourceRef:
+        kind: HelmRepository
+        name: opencost-charts
+        namespace: flux-system
+
+  releaseName: opencost
+  targetNamespace: opencost
+
+  # Helm values for OpenCost.
+  # These values are calculated directly from hardware and electricity costs.
+  values:
+    opencost:
+      customPricing:
+        enabled: true
+        costModel:
+          description: "On-Prem Mini PC Cluster Pricing"
+          # Calculated costs per unit per hour in EUR
+          CPU: 0.005847
+          RAM: 0.001096
+          storage: 0.0000114
+
+          # Internet Egress is set to 0 as ISP is a flat monthly fee,
+          # and its cost is integrated into the CPU/RAM/Storage rates.
+          internetNetworkEgress: 0
+
+    # Configure OpenCost to connect to the existing Prometheus instance
+    prometheus:
+      external:
+        host: prometheus-stack-kube-prom-prometheus.monitoring:9090
