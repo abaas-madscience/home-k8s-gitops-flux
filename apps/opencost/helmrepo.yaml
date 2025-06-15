@@ -5,4 +5,4 @@ metadata:
   namespace: flux-system
 spec:
   interval: 1m
-  url: https://opencost.github.io/opencost
+  url: https://opencost.github.io/opencost-helm-chart
