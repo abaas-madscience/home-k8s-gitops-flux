@@ -12,4 +12,5 @@ resources:
   - infra-https-routes.yaml
   - apps-harbor.yaml
   - apps-planka.yaml
+  - apps-opencost.yaml
 #  - apps.yaml
