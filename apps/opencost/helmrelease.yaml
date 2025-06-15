@@ -23,6 +23,7 @@ spec:
     opencost:
       customPricing:
         enabled: true
+        provider: custom
         costModel:
           description: "On-Prem Mini PC Cluster Pricing"
           # Calculated costs per unit per hour in EUR
