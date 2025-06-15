@@ -34,18 +34,15 @@ spec:
           # and its cost is integrated into the CPU/RAM/Storage rates.
           internetNetworkEgress: 0
 
-    # Configure OpenCost to connect to the existing Prometheus instance
-    prometheus:
-      external:
-        host: prometheus-stack-kube-prom-prometheus.monitoring:9090
-    #prometheus:
-    #  internal:
-    #    enabled: true
-    #    serviceName: prometheus-stack-kube-prom-prometheus
-    #    namespaceName: monitoring
-    ui:
-      enabled: true
-    metrics:
-      serviceMonitor:
+      # Configure OpenCost to connect to the existing Prometheus instance
+      prometheus:
+        internal:
+        enabled: true
+        serviceName: prometheus-stack-kube-prom-prometheus
+        namespaceName: monitoring
+      ui:
+        enabled: true
+      metrics:
+        serviceMonitor:
         enabled: true
         namespace: monitoring

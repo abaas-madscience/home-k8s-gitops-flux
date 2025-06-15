@@ -28,3 +28,10 @@ kubectl get pods --all-namespaces | grep -E 'Completed' | awk '{print $2 " -n " 
 
 
 kubectl get pods --all-namespaces | grep -E 'ContainerStatusUnknown' | awk '{print $2 " -n " $1}' | xargs -L1 kubectl delete pod
+
+
+# CHECK TO SEE IF The correct helmrelease is applied
+kubectl get helmrelease opencost -n flux-system -o yaml
+
+# Reconcile HelmRelease
+flux reconcile hr opencost -n flux-system --with-source
