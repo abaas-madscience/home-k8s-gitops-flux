@@ -41,6 +41,7 @@ spec:
           enabled: true
           serviceName: prometheus-stack-kube-prom-prometheus
           namespaceName: monitoring
+          port: 9090
       ui:
         enabled: true
       metrics:
