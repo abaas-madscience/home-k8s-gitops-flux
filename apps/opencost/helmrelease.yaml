@@ -35,14 +35,14 @@ spec:
           internetNetworkEgress: 0
 
     # Configure OpenCost to connect to the existing Prometheus instance
-    #prometheus:
-    #  external:
-    #    host: prometheus-stack-kube-prom-prometheus.monitoring:9090
     prometheus:
-      internal:
-        enabled: true
-        serviceName: prometheus-stack-kube-prom-prometheus
-        namespaceName: monitoring
+      external:
+        host: prometheus-stack-kube-prom-prometheus.monitoring:9090
+    #prometheus:
+    #  internal:
+    #    enabled: true
+    #    serviceName: prometheus-stack-kube-prom-prometheus
+    #    namespaceName: monitoring
     ui:
       enabled: true
     metrics:
