@@ -37,12 +37,12 @@ spec:
       # Configure OpenCost to connect to the existing Prometheus instance
       prometheus:
         internal:
-        enabled: true
-        serviceName: prometheus-stack-kube-prom-prometheus
-        namespaceName: monitoring
+          enabled: true
+          serviceName: prometheus-stack-kube-prom-prometheus
+          namespaceName: monitoring
       ui:
         enabled: true
-      #metrics:
-      #  serviceMonitor:
-      #  enabled: true
-      #  namespace: monitoring
+      metrics:
+        serviceMonitor:
+          enabled: true
+          namespace: monitoring
