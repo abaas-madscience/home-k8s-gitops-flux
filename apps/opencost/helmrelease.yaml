@@ -31,7 +31,7 @@ spec:
           storage: 0.0000114
 
           # Internet Egress is set to 0 as ISP is a flat monthly fee,
-          # and its cost is integrated into the CPU/RAM/Storage rates.
+          # It's now ntegrated into the CPU/RAM/Storage rates.
           internetNetworkEgress: 0
 
       # Configure OpenCost to connect to the existing Prometheus instance
