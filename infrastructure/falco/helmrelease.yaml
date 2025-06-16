@@ -20,8 +20,7 @@ spec:
 
   values:
     falco:
-      rules_files: # Changed from rules_file to rules_files (plural)
-        - /etc/falco/falco_rules.yaml
+      rules_files:
         - /etc/falco/falco_rules.local.yaml
         - /etc/falco/custom_rules.yaml
 
@@ -29,7 +28,7 @@ spec:
     extraVolumes:
       - name: custom-rules
         configMap:
-          name: falco-custom-rules # Fixed: changed from falco-rules to falco-custom-rules
+          name: falco-custom-rules
 
     extraVolumeMounts:
       - name: custom-rules

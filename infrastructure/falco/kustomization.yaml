@@ -3,4 +3,4 @@ kind: Kustomization
 resources:
   - helmrepo.yaml
   - helmrelease.yaml
-  - falco-rules.yaml
+  - falco-custom-rules.yaml
