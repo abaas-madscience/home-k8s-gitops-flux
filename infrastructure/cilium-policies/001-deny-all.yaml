@@ -6,3 +6,5 @@ spec:
   description: "Deny all ingress and egress traffic by default"
   ingress: []
   egress: []
+# We will wait with this policy until we have a better understanding of the network traffic
+
