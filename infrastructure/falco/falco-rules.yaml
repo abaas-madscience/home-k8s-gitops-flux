@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: falco-custom-rules
-  namespace: falco
+  namespace: infra-falco
 data:
   custom_rules.yaml: |
 
