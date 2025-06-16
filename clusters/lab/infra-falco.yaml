@@ -5,7 +5,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m
-  path: ./apps/falco
+  path: ./infrastructure/falco
   prune: true
   sourceRef:
     kind: GitRepository
