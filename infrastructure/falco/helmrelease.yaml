@@ -20,46 +20,18 @@ spec:
 
   values:
     falco:
-      rules:
-        # This is the key where you provide your custom rules content
-        # The content below will be written to /etc/falco/falco_rules.local.yaml inside the container
-        customRules: |
-          # --------------------------------------------------------------------------------
-          # 1. Tune out the Grafana API Server Connection alert (False Positive)
-          # --------------------------------------------------------------------------------
-          - rule: Unexpected K8s API Server Connection
-            desc: Detects unexpected connections to the K8s API Server
-            condition: >
-              (k8s_api_server_connection)
-              and not k8s.ns.name = "monitoring"
-            output: "Unexpected connection to K8s API Server from container (connection=%fd.name cmdline=%proc.cmdline k8s.ns=%k8s.ns.name k8s.pod=%k8s.pod.name)"
-            priority: NOTICE
-            tags: [k8s, network]
+      rules_file:
+        - /etc/falco/falco_rules.yaml
+        - /etc/falco/falco_rules.local.yaml
+        - /etc/falco/custom_rules.yaml # Add your custom rules
 
-          # --------------------------------------------------------------------------------
-          # 2. Example: Detect Write to Sensitive System Files
-          # --------------------------------------------------------------------------------
-          - rule: Write to Sensitive System File
-            desc: Detects attempts to write to known sensitive system files like /etc/passwd or /etc/shadow.
-            condition: >
-              (evt.type = write and fd.name in ("/etc/passwd", "/etc/shadow", "/etc/sudoers", "/etc/group")
-               and fd.directory in ("/etc", "/bin", "/sbin", "/usr/bin", "/usr/sbin")
-               and proc.name != "touch" and proc.name != "cp" and proc.name != "mv"
-               and not container.image.repository in ("k8s.gcr.io/pause", "registry.k8s.io/pause")
-               and not user.name in ("root", "systemd", "kube-apiserver"))
-            output: "Sensitive system file written (user=%user.name file=%fd.name cmdline=%proc.cmdline container_name=%container.name k8s.ns=%k8s.ns.name k8s.pod=%k8s.pod.name)"
-            priority: CRITICAL
-            tags: [filesystem, host_compromise]
+    # Mount the ConfigMap
+    extraVolumes:
+      - name: custom-rules
+        configMap:
+          name: falco-rules
 
-          # --------------------------------------------------------------------------------
-          # 3. Example: Detect Unexpected Listener on High Port
-          # --------------------------------------------------------------------------------
-          - rule: Unexpected Server Listener
-            desc: Detects a process listening on a high port outside of known services.
-            condition: >
-              (evt.type = listen and fd.type = ipv4 and fd.port >= 1024
-               and not proc.name in ("nginx", "httpd", "kube-apiserver", "kubelet", "kube-proxy", "cilium-agent")
-               and not k8s.ns.name in ("kube-system", "monitoring"))
-            output: "Unexpected server listening on port %fd.port by %proc.name (cmdline=%proc.cmdline container_name=%container.name k8s.ns=%k8s.ns.name k8s.pod=%k8s.pod.name)"
-            priority: WARNING
-            tags: [network, persistence]
+    extraVolumeMounts:
+      - name: custom-rules
+        mountPath: /etc/falco/custom_rules.yaml
+        subPath: custom_rules.yaml
