@@ -14,4 +14,3 @@ resources:
   - apps-planka.yaml
   - apps-opencost.yaml
 #  - infra-falco.yaml
-#  - apps.yaml
