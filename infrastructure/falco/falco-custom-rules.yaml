@@ -6,14 +6,24 @@ metadata:
 data:
   custom_rules.yaml: |
     # --------------------------------------------------------------------------------
-    # 1. Shell Detection in Containers
+    # 1. Shell Detection in Containers (tuned to reduce false positives)
     # --------------------------------------------------------------------------------
     - rule: Shell Spawned in Container
       desc: A shell was spawned in a container
       condition: >
         spawned_process and container and
         proc.name in (shell_binaries)
-        and not k8s.ns.name in (kube-system, monitoring)
+        and not k8s.ns.name in (kube-system, monitoring, infra-longhorn, longhorn-system, planka)
+        and not container.image.repository startswith "longhornio/"
+        and not container.image.repository startswith "rancher/"
+        and not container.image.repository startswith "bitnami/postgresql"
+        and not container.image.repository startswith "postgres"
+        and not proc.args contains "version --client-only"
+        and not proc.args contains "ls /data/longhorn"
+        and not proc.args contains "pg_isready"
+        and not proc.args contains "psql"
+        and not proc.pname in (containerd-shim, dockerd, runc)
+        and not (proc.name = "sh" and proc.args contains "exec pg_")
       output: >
         Shell spawned in container (user=%user.name container=%container.name 
         shell=%proc.name parent=%proc.pname cmdline=%proc.cmdline k8s.ns=%k8s.ns.name k8s.pod=%k8s.pod.name)
@@ -21,14 +31,18 @@ data:
       tags: [container, shell]
 
     # --------------------------------------------------------------------------------
-    # 2. File Write Detection using available macros
+    # 2. File Write Detection (tuned to reduce false positives)
     # --------------------------------------------------------------------------------
     - rule: Write to Etc Directory
       desc: Detect writes to /etc directory
       condition: >
         open_write and fd.name startswith /etc
         and not proc.name in (passwd_binaries, shadowutils_binaries)
-        and not k8s.ns.name in (kube-system)
+        and not k8s.ns.name in (kube-system, infra-longhorn, longhorn-system, planka)
+        and not container.image.repository startswith "longhornio/"
+        and not container.image.repository startswith "bitnami/postgresql"
+        and not container.image.repository startswith "postgres"
+        and not fd.name in (/etc/resolv.conf, /etc/hostname, /etc/hosts)
       output: >
         File in /etc opened for writing (user=%user.name command=%proc.cmdline 
         file=%fd.name k8s.ns=%k8s.ns.name k8s.pod=%k8s.pod.name)
@@ -36,14 +50,16 @@ data:
       tags: [filesystem]
 
     # --------------------------------------------------------------------------------
-    # 3. Database Server Detection
+    # 3. Database Server Detection (tuned for PostgreSQL)
     # --------------------------------------------------------------------------------
     - rule: Unexpected Database Server
       desc: Detect unexpected database server processes
       condition: >
         spawned_process and container and
         proc.name in (db_server_binaries, postgres_mgmt_binaries, nosql_server_binaries)
-        and not k8s.ns.name in (kube-system, monitoring, database)
+        and not k8s.ns.name in (kube-system, monitoring, database, planka)
+        and not container.image.repository startswith "bitnami/postgresql"
+        and not container.image.repository startswith "postgres"
       output: >
         Unexpected database server started (user=%user.name container=%container.name 
         process=%proc.name cmdline=%proc.cmdline k8s.ns=%k8s.ns.name k8s.pod=%k8s.pod.name)
@@ -51,7 +67,7 @@ data:
       tags: [process, database]
 
     # --------------------------------------------------------------------------------
-    # 4. HTTP Server Detection
+    # 4. HTTP Server Detection (unchanged)
     # --------------------------------------------------------------------------------
     - rule: Unexpected HTTP Server
       desc: Detect unexpected HTTP server processes
