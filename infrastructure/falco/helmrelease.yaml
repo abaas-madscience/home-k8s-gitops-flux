@@ -26,12 +26,12 @@ spec:
         - /etc/falco/custom_rules.yaml
 
     # Mount the ConfigMap
-    extraVolumes:
-      - name: custom-rules
-        configMap:
-          name: falco-custom-rules
-
-    extraVolumeMounts:
-      - name: custom-rules
-        mountPath: /etc/falco/custom_rules.yaml
-        subPath: custom_rules.yaml
+    mounts:
+      volumes:
+        - name: custom-rules
+          configMap:
+            name: falco-custom-rules
+      volumeMounts:
+        - name: custom-rules
+          mountPath: /etc/falco/custom_rules.yaml
+          subPath: custom_rules.yaml
