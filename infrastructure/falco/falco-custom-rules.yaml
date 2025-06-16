@@ -6,41 +6,48 @@ metadata:
 data:
   custom_rules.yaml: |
     # --------------------------------------------------------------------------------
-    # 1. Tune out the Grafana API Server Connection alert (False Positive)
+    # 1. Detect Shell Activity in Containers
     # --------------------------------------------------------------------------------
-    - rule: Unexpected K8s API Server Connection
-      desc: Detects unexpected connections to the K8s API Server
+    - rule: Shell in Container
+      desc: Notice shell activity within a container
       condition: >
-        (k8s_api_server_connection)
-        and not k8s.ns.name = "monitoring"
-      output: "Unexpected connection to K8s API Server from container (connection=%fd.name cmdline=%proc.cmdline k8s.ns=%k8s.ns.name k8s.pod=%k8s.pod.name)"
-      priority: NOTICE
-      tags: [k8s, network]
-
-    # --------------------------------------------------------------------------------
-    # 2. Example: Detect Write to Sensitive System Files
-    # --------------------------------------------------------------------------------
-    - rule: Write to Sensitive System File
-      desc: Detects attempts to write to known sensitive system files like /etc/passwd or /etc/shadow.
-      condition: >
-        (evt.type = write and fd.name in ("/etc/passwd", "/etc/shadow", "/etc/sudoers", "/etc/group")
-        and fd.directory in ("/etc", "/bin", "/sbin", "/usr/bin", "/usr/sbin")
-        and proc.name != "touch" and proc.name != "cp" and proc.name != "mv"
-        and not container.image.repository in ("k8s.gcr.io/pause", "registry.k8s.io/pause")
-        and not user.name in ("root", "systemd", "kube-apiserver"))
-      output: "Sensitive system file written (user=%user.name file=%fd.name cmdline=%proc.cmdline container_name=%container.name k8s.ns=%k8s.ns.name k8s.pod=%k8s.pod.name)"
-      priority: CRITICAL
-      tags: [filesystem, host_compromise]
-
-    # --------------------------------------------------------------------------------
-    # 3. Example: Detect Unexpected Listener on High Port
-    # --------------------------------------------------------------------------------
-    - rule: Unexpected Server Listener
-      desc: Detects a process listening on a high port outside of known services.
-      condition: >
-        (evt.type = listen and fd.type = ipv4 and fd.port >= 1024
-        and not proc.name in ("nginx", "httpd", "kube-apiserver", "kubelet", "kube-proxy", "cilium-agent")
-        and not k8s.ns.name in ("kube-system", "monitoring"))
-      output: "Unexpected server listening on port %fd.port by %proc.name (cmdline=%proc.cmdline container_name=%container.name k8s.ns=%k8s.ns.name k8s.pod=%k8s.pod.name)"
+        spawned_process and container and
+        (proc.name in (shell_binaries) or
+         (proc.name in (shell_interpreters) and not proc.args contains "entrypoint"))
+        and not k8s.ns.name in ("kube-system", "monitoring")
+      output: >
+        Shell spawned in container (user=%user.name %container.info
+        shell=%proc.name parent=%proc.pname cmdline=%proc.cmdline k8s.ns=%k8s.ns.name k8s.pod=%k8s.pod.name)
       priority: WARNING
-      tags: [network, persistence]
+      tags: [container, shell]
+
+    # --------------------------------------------------------------------------------
+    # 2. Detect Write to Sensitive Files
+    # --------------------------------------------------------------------------------
+    - rule: Write Below Etc
+      desc: Write to sensitive directory /etc
+      condition: >
+        write_etc_common and not proc.name in (package_mgmt_binaries) 
+        and not proc.name in ("systemd", "sed", "bash", "sh")
+        and not k8s.ns.name in ("kube-system")
+      output: >
+        File below /etc opened for writing (user=%user.name command=%proc.cmdline 
+        file=%fd.name parent=%proc.pname pcmdline=%proc.pcmdline k8s.ns=%k8s.ns.name k8s.pod=%k8s.pod.name)
+      priority: ERROR
+      tags: [filesystem, mitre_persistence]
+
+    # --------------------------------------------------------------------------------
+    # 3. Detect Network Connections from Containers
+    # --------------------------------------------------------------------------------
+    - rule: Outbound Connection to C2 Servers
+      desc: Detect outbound connections to suspicious IPs
+      condition: >
+        outbound and fd.typechar=4 and fd.ip != "127.0.0.1" and fd.ip != "::1"
+        and not proc.name in ("curl", "wget", "http", "https")
+        and not k8s.ns.name in ("kube-system", "monitoring", "flux-system")
+        and fd.sport > 32000
+      output: >
+        Outbound connection to suspicious destination (user=%user.name command=%proc.cmdline 
+        connection=%fd.name k8s.ns=%k8s.ns.name k8s.pod=%k8s.pod.name)
+      priority: WARNING
+      tags: [network, mitre_command_and_control]
