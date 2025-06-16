@@ -6,48 +6,61 @@ metadata:
 data:
   custom_rules.yaml: |
     # --------------------------------------------------------------------------------
-    # 1. Detect Shell Activity in Containers
+    # 1. Shell Detection in Containers
     # --------------------------------------------------------------------------------
-    - rule: Shell in Container
-      desc: Notice shell activity within a container
+    - rule: Shell Spawned in Container
+      desc: A shell was spawned in a container
       condition: >
         spawned_process and container and
-        (proc.name in (shell_binaries) or
-         (proc.name in (shell_interpreters) and not proc.args contains "entrypoint"))
-        and not k8s.ns.name in ("kube-system", "monitoring")
+        proc.name in (shell_binaries)
+        and not k8s.ns.name in (kube-system, monitoring)
       output: >
-        Shell spawned in container (user=%user.name %container.info
+        Shell spawned in container (user=%user.name container=%container.name 
         shell=%proc.name parent=%proc.pname cmdline=%proc.cmdline k8s.ns=%k8s.ns.name k8s.pod=%k8s.pod.name)
       priority: WARNING
       tags: [container, shell]
 
     # --------------------------------------------------------------------------------
-    # 2. Detect Write to Sensitive Files
+    # 2. File Write Detection using available macros
     # --------------------------------------------------------------------------------
-    - rule: Write Below Etc
-      desc: Write to sensitive directory /etc
+    - rule: Write to Etc Directory
+      desc: Detect writes to /etc directory
       condition: >
-        write_etc_common and not proc.name in (package_mgmt_binaries) 
-        and not proc.name in ("systemd", "sed", "bash", "sh")
-        and not k8s.ns.name in ("kube-system")
+        open_write and fd.name startswith /etc
+        and not proc.name in (passwd_binaries, shadowutils_binaries)
+        and not k8s.ns.name in (kube-system)
       output: >
-        File below /etc opened for writing (user=%user.name command=%proc.cmdline 
-        file=%fd.name parent=%proc.pname pcmdline=%proc.pcmdline k8s.ns=%k8s.ns.name k8s.pod=%k8s.pod.name)
+        File in /etc opened for writing (user=%user.name command=%proc.cmdline 
+        file=%fd.name k8s.ns=%k8s.ns.name k8s.pod=%k8s.pod.name)
       priority: ERROR
-      tags: [filesystem, mitre_persistence]
+      tags: [filesystem]
 
     # --------------------------------------------------------------------------------
-    # 3. Detect Network Connections from Containers
+    # 3. Database Server Detection
     # --------------------------------------------------------------------------------
-    - rule: Outbound Connection to C2 Servers
-      desc: Detect outbound connections to suspicious IPs
+    - rule: Unexpected Database Server
+      desc: Detect unexpected database server processes
       condition: >
-        outbound and fd.typechar=4 and fd.ip != "127.0.0.1" and fd.ip != "::1"
-        and not proc.name in ("curl", "wget", "http", "https")
-        and not k8s.ns.name in ("kube-system", "monitoring", "flux-system")
-        and fd.sport > 32000
+        spawned_process and container and
+        proc.name in (db_server_binaries, postgres_mgmt_binaries, nosql_server_binaries)
+        and not k8s.ns.name in (kube-system, monitoring, database)
       output: >
-        Outbound connection to suspicious destination (user=%user.name command=%proc.cmdline 
-        connection=%fd.name k8s.ns=%k8s.ns.name k8s.pod=%k8s.pod.name)
+        Unexpected database server started (user=%user.name container=%container.name 
+        process=%proc.name cmdline=%proc.cmdline k8s.ns=%k8s.ns.name k8s.pod=%k8s.pod.name)
       priority: WARNING
-      tags: [network, mitre_command_and_control]
+      tags: [process, database]
+
+    # --------------------------------------------------------------------------------
+    # 4. HTTP Server Detection
+    # --------------------------------------------------------------------------------
+    - rule: Unexpected HTTP Server
+      desc: Detect unexpected HTTP server processes
+      condition: >
+        spawned_process and container and
+        proc.name in (http_server_binaries)
+        and not k8s.ns.name in (kube-system, monitoring, ingress-nginx)
+      output: >
+        Unexpected HTTP server started (user=%user.name container=%container.name 
+        process=%proc.name cmdline=%proc.cmdline k8s.ns=%k8s.ns.name k8s.pod=%k8s.pod.name)
+      priority: NOTICE
+      tags: [process, network]
