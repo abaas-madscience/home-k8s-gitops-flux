@@ -35,3 +35,7 @@ kubectl get helmrelease opencost -n flux-system -o yaml
 
 # Reconcile HelmRelease
 flux reconcile hr opencost -n flux-system --with-source
+
+
+# Check K8S event
+kubectl get events -n infra-falco --sort-by='.lastTimestamp'

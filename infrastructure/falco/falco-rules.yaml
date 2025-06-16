@@ -1,0 +1,47 @@
+# This is the *content* that will go into your HelmRelease
+# Name this file something like `your-custom-falco-rules.yaml` for local editing,
+# but remember its content will be embedded.
+
+# --------------------------------------------------------------------------------
+# 1. Tune out the Grafana API Server Connection alert (False Positive)
+# --------------------------------------------------------------------------------
+- rule: Unexpected K8s API Server Connection
+  desc: Detects unexpected connections to the K8s API Server
+  condition: >
+    (k8s_api_server_connection)
+    and not k8s.ns.name = "monitoring" # Exclude all pods in the monitoring namespace
+    # OR if you want to be more specific (and safer if 'monitoring' has other apps):
+    # and not k8s.pod.label.app.kubernetes.io/name = "grafana" # Exclude by standard Grafana label
+    # and not k8s.pod.name in ("prometheus-stack-grafana-78c986877-wmj9l") # Least flexible, as pod names change
+  output: "Unexpected connection to K8s API Server from container (connection=%fd.name cmdline=%proc.cmdline k8s.ns=%k8s.ns.name k8s.pod=%k8s.pod.name)"
+  priority: NOTICE
+  tags: [k8s, network]
+
+# --------------------------------------------------------------------------------
+# 2. Example: Detect Write to Sensitive System Files
+# (This rule often exists in default rules, but good to ensure/customize)
+# --------------------------------------------------------------------------------
+- rule: Write to Sensitive System File
+  desc: Detects attempts to write to known sensitive system files like /etc/passwd or /etc/shadow.
+  condition: >
+    (evt.type = write and fd.name in ("/etc/passwd", "/etc/shadow", "/etc/sudoers", "/etc/group")
+     and fd.directory in ("/etc", "/bin", "/sbin", "/usr/bin", "/usr/sbin")
+     and proc.name != "touch" and proc.name != "cp" and proc.name != "mv" # Add common benign tools that might legitimately touch these
+     and not container.image.repository in ("k8s.gcr.io/pause", "registry.k8s.io/pause") # Exclude pause containers
+     and not user.name in ("root", "systemd", "kube-apiserver")) # Adjust trusted users
+  output: "Sensitive system file written (user=%user.name file=%fd.name cmdline=%proc.cmdline container_name=%container.name k8s.ns=%k8s.ns.name k8s.pod=%k8s.pod.name)"
+  priority: CRITICAL
+  tags: [filesystem, host_compromise]
+
+# --------------------------------------------------------------------------------
+# 3. Example: Detect Unexpected Listener on High Port
+# --------------------------------------------------------------------------------
+- rule: Unexpected Server Listener
+  desc: Detects a process listening on a high port outside of known services.
+  condition: >
+    (evt.type = listen and fd.type = ipv4 and fd.port >= 1024
+     and not proc.name in ("nginx", "httpd", "kube-apiserver", "kubelet", "kube-proxy", "cilium-agent") # Add your trusted servers
+     and not k8s.ns.name in ("kube-system", "monitoring")) # Or exclude entire namespaces
+  output: "Unexpected server listening on port %fd.port by %proc.name (cmdline=%proc.cmdline container_name=%container.name k8s.ns=%k8s.ns.name k8s.pod=%k8s.pod.name)"
+  priority: WARNING
+  tags: [network, persistence]
