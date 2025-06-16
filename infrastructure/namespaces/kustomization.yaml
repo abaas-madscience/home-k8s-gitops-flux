@@ -8,3 +8,4 @@ resources:
   - harbor.yaml
   - planka.yaml
   - opencost.yaml
+  - falco.yaml
