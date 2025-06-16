@@ -16,7 +16,7 @@ spec:
 
   releaseName: falco
   targetNamespace: infra-falco
-  timeout: 15m
+  timeout: 3m
 
   values:
     falco:
