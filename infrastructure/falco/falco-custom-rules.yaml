@@ -18,6 +18,8 @@ data:
         and not container.image.repository startswith "rancher/"
         and not container.image.repository startswith "bitnami/postgresql"
         and not container.image.repository startswith "postgres"
+        and not container.image.repository startswith "quay.io/prometheus-operator/"
+        and not container.image.repository startswith "quay.io/kiwigrid/"
         and not proc.args contains "version --client-only"
         and not proc.args contains "ls /data/longhorn"
         and not proc.args contains "pg_isready"
@@ -31,18 +33,22 @@ data:
       tags: [container, shell]
 
     # --------------------------------------------------------------------------------
-    # 2. File Write Detection (tuned to reduce false positives)
+    # 2. File Write Detection (tuned for monitoring stack)
     # --------------------------------------------------------------------------------
     - rule: Write to Etc Directory
       desc: Detect writes to /etc directory
       condition: >
         open_write and fd.name startswith /etc
-        and not proc.name in (passwd_binaries, shadowutils_binaries)
-        and not k8s.ns.name in (kube-system, infra-longhorn, longhorn-system, planka)
+        and not proc.name in (passwd_binaries, shadowutils_binaries, prometheus-conf)
+        and not k8s.ns.name in (kube-system, infra-longhorn, longhorn-system, planka, monitoring)
         and not container.image.repository startswith "longhornio/"
         and not container.image.repository startswith "bitnami/postgresql"
         and not container.image.repository startswith "postgres"
+        and not container.image.repository startswith "quay.io/prometheus-operator/"
         and not fd.name in (/etc/resolv.conf, /etc/hostname, /etc/hosts)
+        and not fd.name startswith "/etc/prometheus/"
+        and not fd.name startswith "/etc/alertmanager/"
+        and not fd.name endswith ".tmp"
       output: >
         File in /etc opened for writing (user=%user.name command=%proc.cmdline 
         file=%fd.name k8s.ns=%k8s.ns.name k8s.pod=%k8s.pod.name)
@@ -50,7 +56,25 @@ data:
       tags: [filesystem]
 
     # --------------------------------------------------------------------------------
-    # 3. Database Server Detection (tuned for PostgreSQL)
+    # 3. Kubernetes API Connection Detection (new rule to replace the undefined one)
+    # --------------------------------------------------------------------------------
+    - rule: Suspicious K8s API Connection
+      desc: Detect suspicious connections to K8s API server
+      condition: >
+        evt.type=connect and fd.typechar=4 and fd.rport=6443
+        and not k8s.ns.name in (kube-system, monitoring, flux-system, infra-longhorn)
+        and not container.image.repository startswith "quay.io/kiwigrid/"
+        and not container.image.repository startswith "quay.io/prometheus-operator/"
+        and not proc.name in (python, python3, python3.13)
+        and not proc.args contains "sidecar.py"
+      output: >
+        Suspicious connection to K8s API Server (connection=%fd.name process=%proc.name 
+        cmdline=%proc.cmdline k8s.ns=%k8s.ns.name k8s.pod=%k8s.pod.name)
+      priority: WARNING
+      tags: [k8s, network]
+
+    # --------------------------------------------------------------------------------
+    # 4. Database Server Detection (tuned for PostgreSQL)
     # --------------------------------------------------------------------------------
     - rule: Unexpected Database Server
       desc: Detect unexpected database server processes
@@ -67,7 +91,7 @@ data:
       tags: [process, database]
 
     # --------------------------------------------------------------------------------
-    # 4. HTTP Server Detection (unchanged)
+    # 5. HTTP Server Detection (unchanged)
     # --------------------------------------------------------------------------------
     - rule: Unexpected HTTP Server
       desc: Detect unexpected HTTP server processes
