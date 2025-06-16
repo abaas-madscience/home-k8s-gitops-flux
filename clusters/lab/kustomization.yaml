@@ -13,4 +13,4 @@ resources:
   - apps-harbor.yaml
   - apps-planka.yaml
   - apps-opencost.yaml
-  - infra-falco.yaml
+#  - infra-falco.yaml
