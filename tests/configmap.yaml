@@ -1,0 +1,267 @@
+# enhanced-storage-test-configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: enhanced-storage-test
+data:
+  enhanced-test.sh: |
+    #!/bin/sh
+    set -e
+
+    MOUNT_PATH="/mnt/longhorn-data"
+    
+    echo "=== Enhanced Longhorn Performance Test ==="
+    echo "Testing various I/O patterns and workloads"
+    echo "BusyBox shell version: $(busybox | head -1)"
+    echo "=========================================="
+
+    # Helper function for division (since bc is not available)
+    divide() {
+      # $1 divided by $2
+      if [ "$2" -eq 0 ]; then
+        echo "0"
+      else
+        echo $(( $1 / $2 ))
+      fi
+    }
+
+    # Test 1: Large Sequential I/O with Different Block Sizes
+    echo ""
+    echo "=== Test 1: Sequential I/O with Different Block Sizes ==="
+    
+    # Test with 4K blocks
+    echo ""
+    echo "Testing with 4K blocks..."
+    TEST_FILE="${MOUNT_PATH}/seq_test_4k.bin"
+    
+    # Write test - 4K x 256 = 1MB
+    START_TIME=$(date +%s)
+    dd if=/dev/zero of="${TEST_FILE}" bs=4k count=256 2>/dev/null
+    sync
+    END_TIME=$(date +%s)
+    WRITE_TIME=$(( END_TIME - START_TIME ))
+    
+    # Read test  
+    START_TIME=$(date +%s)
+    dd if="${TEST_FILE}" of=/dev/null bs=4k 2>/dev/null
+    END_TIME=$(date +%s)
+    READ_TIME=$(( END_TIME - START_TIME ))
+    
+    if [ ${WRITE_TIME} -gt 0 ]; then
+      WRITE_MBPS=$(divide 1 ${WRITE_TIME})
+    else
+      WRITE_MBPS=">1"
+    fi
+    
+    if [ ${READ_TIME} -gt 0 ]; then
+      READ_MBPS=$(divide 1 ${READ_TIME})
+    else
+      READ_MBPS=">1"
+    fi
+    
+    echo "  4K blocks: Write=${WRITE_MBPS}MB/s, Read=${READ_MBPS}MB/s"
+    rm -f "${TEST_FILE}"
+
+    # Test with 1M blocks
+    echo "Testing with 1M blocks..."
+    TEST_FILE="${MOUNT_PATH}/seq_test_1m.bin"
+    
+    # Write test - 1M x 100 = 100MB
+    START_TIME=$(date +%s)
+    dd if=/dev/zero of="${TEST_FILE}" bs=1M count=100 2>/dev/null
+    sync
+    END_TIME=$(date +%s)
+    WRITE_TIME=$(( END_TIME - START_TIME ))
+    
+    # Read test  
+    START_TIME=$(date +%s)
+    dd if="${TEST_FILE}" of=/dev/null bs=1M 2>/dev/null
+    END_TIME=$(date +%s)
+    READ_TIME=$(( END_TIME - START_TIME ))
+    
+    if [ ${WRITE_TIME} -gt 0 ]; then
+      WRITE_MBPS=$(divide 100 ${WRITE_TIME})
+    else
+      WRITE_MBPS=">100"
+    fi
+    
+    if [ ${READ_TIME} -gt 0 ]; then
+      READ_MBPS=$(divide 100 ${READ_TIME})
+    else
+      READ_MBPS=">100"
+    fi
+    
+    echo "  1M blocks: Write=${WRITE_MBPS}MB/s, Read=${READ_MBPS}MB/s"
+    rm -f "${TEST_FILE}"
+
+    # Test 2: Concurrent I/O (simulate multiple pods)
+    echo ""
+    echo "=== Test 2: Concurrent I/O Simulation ==="
+    
+    START_TIME=$(date +%s)
+    
+    # Start multiple background writes (smaller files for reliability)
+    dd if=/dev/zero of="${MOUNT_PATH}/concurrent1.bin" bs=1M count=50 2>/dev/null &
+    PID1=$!
+    dd if=/dev/zero of="${MOUNT_PATH}/concurrent2.bin" bs=1M count=50 2>/dev/null &
+    PID2=$!
+    dd if=/dev/zero of="${MOUNT_PATH}/concurrent3.bin" bs=1M count=50 2>/dev/null &
+    PID3=$!
+    
+    # Wait for all to complete
+    wait $PID1 2>/dev/null || echo "Process 1 completed"
+    wait $PID2 2>/dev/null || echo "Process 2 completed"
+    wait $PID3 2>/dev/null || echo "Process 3 completed"
+    sync
+    
+    END_TIME=$(date +%s)
+    CONCURRENT_TIME=$(( END_TIME - START_TIME ))
+    TOTAL_MB=150  # 3 x 50MB
+    
+    if [ ${CONCURRENT_TIME} -gt 0 ]; then
+      CONCURRENT_MBPS=$(divide ${TOTAL_MB} ${CONCURRENT_TIME})
+    else
+      CONCURRENT_MBPS=">${TOTAL_MB}"
+    fi
+    
+    echo "  Concurrent write (3x50MB): ${CONCURRENT_MBPS} MB/s combined"
+    
+    # Concurrent reads
+    START_TIME=$(date +%s)
+    dd if="${MOUNT_PATH}/concurrent1.bin" of=/dev/null 2>/dev/null &
+    PID1=$!
+    dd if="${MOUNT_PATH}/concurrent2.bin" of=/dev/null 2>/dev/null &
+    PID2=$!
+    dd if="${MOUNT_PATH}/concurrent3.bin" of=/dev/null 2>/dev/null &
+    PID3=$!
+    
+    wait $PID1 2>/dev/null || echo "Read 1 completed"
+    wait $PID2 2>/dev/null || echo "Read 2 completed" 
+    wait $PID3 2>/dev/null || echo "Read 3 completed"
+    
+    END_TIME=$(date +%s)
+    READ_CONCURRENT_TIME=$(( END_TIME - START_TIME ))
+    
+    if [ ${READ_CONCURRENT_TIME} -gt 0 ]; then
+      READ_CONCURRENT_MBPS=$(divide ${TOTAL_MB} ${READ_CONCURRENT_TIME})
+    else
+      READ_CONCURRENT_MBPS=">${TOTAL_MB}"
+    fi
+    
+    echo "  Concurrent read (3x50MB): ${READ_CONCURRENT_MBPS} MB/s combined"
+    
+    rm -f "${MOUNT_PATH}/concurrent"*.bin
+
+    # Test 3: Small File Performance
+    echo ""
+    echo "=== Test 3: Small File Database Simulation ==="
+    
+    START_TIME=$(date +%s)
+    
+    # Create 100 small files (4KB each - reduced for reliability)
+    i=1
+    while [ $i -le 100 ]; do
+      dd if=/dev/zero of="${MOUNT_PATH}/db_page_${i}.dat" bs=4k count=1 2>/dev/null
+      i=$(( i + 1 ))
+    done
+    sync
+    
+    END_TIME=$(date +%s)
+    SMALL_WRITE_TIME=$(( END_TIME - START_TIME ))
+    echo "  100 x 4KB file creation: ${SMALL_WRITE_TIME}s"
+    
+    # Random read test
+    START_TIME=$(date +%s)
+    for i in 1 10 20 30 40 50 60 70 80 90 100; do
+      if [ -f "${MOUNT_PATH}/db_page_${i}.dat" ]; then
+        cat "${MOUNT_PATH}/db_page_${i}.dat" > /dev/null
+      fi
+    done
+    END_TIME=$(date +%s)
+    RANDOM_READ_TIME=$(( END_TIME - START_TIME ))
+    echo "  Random small file reads: ${RANDOM_READ_TIME}s"
+    
+    # Cleanup
+    i=1
+    while [ $i -le 100 ]; do
+      rm -f "${MOUNT_PATH}/db_page_${i}.dat"
+      i=$(( i + 1 ))
+    done
+
+    # Test 4: Sustained Load Test (reduced to 1 minute)
+    echo ""
+    echo "=== Test 4: Sustained Load Test (1 minute) ==="
+    
+    LOAD_FILE="${MOUNT_PATH}/sustained_load.bin"
+    ITERATIONS=0
+    START_TIME=$(date +%s)
+    END_TARGET=$(( START_TIME + 60 ))  # 1 minute
+    
+    while [ $(date +%s) -lt ${END_TARGET} ]; do
+      dd if=/dev/zero of="${LOAD_FILE}" bs=1M count=10 2>/dev/null
+      dd if="${LOAD_FILE}" of=/dev/null 2>/dev/null
+      ITERATIONS=$(( ITERATIONS + 1 ))
+    done
+    
+    ACTUAL_TIME=$(( $(date +%s) - START_TIME ))
+    TOTAL_DATA=$(( ITERATIONS * 10 * 2 ))  # 10MB write + 10MB read per iteration
+    
+    if [ ${ACTUAL_TIME} -gt 0 ]; then
+      SUSTAINED_MBPS=$(divide ${TOTAL_DATA} ${ACTUAL_TIME})
+    else
+      SUSTAINED_MBPS=">${TOTAL_DATA}"
+    fi
+    
+    echo "  Sustained load: ${SUSTAINED_MBPS} MB/s over ${ACTUAL_TIME}s (${ITERATIONS} iterations)"
+    rm -f "${LOAD_FILE}"
+
+    # Test 5: Filesystem Operations
+    echo ""
+    echo "=== Test 5: Filesystem Operations ==="
+    
+    # Directory operations (reduced count)
+    START_TIME=$(date +%s)
+    i=1
+    while [ $i -le 20 ]; do
+      mkdir -p "${MOUNT_PATH}/testdir_${i}" 2>/dev/null || true
+      touch "${MOUNT_PATH}/testdir_${i}/file1.txt" 2>/dev/null || true
+      touch "${MOUNT_PATH}/testdir_${i}/file2.txt" 2>/dev/null || true
+      ls "${MOUNT_PATH}/testdir_${i}" > /dev/null 2>/dev/null || true
+      rm -rf "${MOUNT_PATH}/testdir_${i}" 2>/dev/null || true
+      i=$(( i + 1 ))
+    done
+    END_TIME=$(date +%s)
+    FS_OPS_TIME=$(( END_TIME - START_TIME ))
+    echo "  Directory operations (20 dirs): ${FS_OPS_TIME}s"
+
+    # Final disk usage
+    echo ""
+    echo "=== Final Disk Usage ==="
+    df -h "${MOUNT_PATH}"
+
+    # Summary
+    echo ""
+    echo "=== Enhanced Performance Summary ==="
+    echo "Block Size Tests:"
+    echo "  4K blocks: Write=${WRITE_MBPS}MB/s, Read=${READ_MBPS}MB/s"
+    echo "  1M blocks: Write=${WRITE_MBPS}MB/s, Read=${READ_MBPS}MB/s"
+    echo "Concurrent I/O:"
+    echo "  Write: ${CONCURRENT_MBPS} MB/s combined"  
+    echo "  Read:  ${READ_CONCURRENT_MBPS} MB/s combined"
+    echo "Small Files:"
+    echo "  100 x 4KB creation: ${SMALL_WRITE_TIME}s"
+    echo "  Random reads: ${RANDOM_READ_TIME}s"
+    echo "Sustained Load:"
+    echo "  1-minute test: ${SUSTAINED_MBPS} MB/s average"
+    echo "Filesystem Ops:"
+    echo "  Directory operations: ${FS_OPS_TIME}s"
+    echo "=================================="
+    
+    echo ""
+    echo "✓ Enhanced Longhorn Performance Test Complete!"
+    echo ""
+    echo "Compare with your basic test results:"
+    echo "  Your Sequential Write: ~93 MB/s"
+    echo "  Your Sequential Read:  ~146 MB/s"
+    echo ""
+    echo "This enhanced test shows performance across different patterns!"

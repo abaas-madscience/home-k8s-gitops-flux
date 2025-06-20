@@ -3,17 +3,14 @@ kind: CiliumClusterwideNetworkPolicy
 metadata:
   name: allow-external-kubectl-access
 spec:
-  endpointSelector: # This selects the API server pods
+  endpointSelector:
     matchLabels:
-      k8s-app: kube-apiserver # Common label for API server pods in kube-system
-      # You might need to adjust this selector based on your actual API server pod labels
+      k8s-app: kube-apiserver
   ingress:
     - fromCIDR:
-        - "YOUR_LAPTOP_PUBLIC_IP/32" # Or your home network's public IP range (e.g., 1.2.3.0/24)
-        - "VPN_OR_INTERNAL_SUBNET_CIDR/24" # If you access via VPN or from another internal network
+        - "192.168.178.2/32"
+        - "192.168.178.179/32"
       toPorts:
         - ports:
-            - port: "443"
+            - port: "8090"
               protocol: TCP
-    # You might also need to allow ingress from other internal cluster components
-    # that need to reach the API server, if not covered by other policies.

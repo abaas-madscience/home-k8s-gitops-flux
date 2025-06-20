@@ -1,0 +1,43 @@
+# Example: Policy for Prometheus to scrape CoreDNS metrics
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy # Or CiliumClusterwideNetworkPolicy if needed
+metadata:
+  name: allow-prometheus-to-coredns-metrics
+  namespace: monitoring # Example namespace where Prometheus runs
+spec:
+  endpointSelector:
+    matchLabels:
+      app.kubernetes.io/name: prometheus # Adjust to your Prometheus pod labels
+  egress:
+    - toEndpoints:
+        - matchLabels:
+            k8s-app: kube-dns
+          namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: kube-system
+      toPorts:
+        - ports:
+            - port: "9153"
+              protocol: TCP
+---
+# Example: Policy for CoreDNS to allow Prometheus metrics scraping
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-coredns-metrics-ingress
+  namespace: kube-system # Policy for kube-system
+spec:
+  endpointSelector:
+    matchLabels:
+      k8s-app: kube-dns # Selects the kube-dns pods
+  ingress:
+    - fromEndpoints:
+        - matchLabels:
+            app.kubernetes.io/name: prometheus # Adjust to your Prometheus pod labels
+          namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: monitoring # Namespace where Prometheus runs
+      toPorts:
+        - ports:
+            - port: "9153"
+              protocol: TCP

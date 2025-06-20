@@ -119,11 +119,15 @@ EOF
 install_cilium() {
     log_info "Installing Cilium CNI..."
     helm repo add cilium https://helm.cilium.io/ --force-update
-    helm install cilium cilium/cilium --version 1.14.5 \
+    helm install cilium cilium/cilium --version 1.16.11 \
         --namespace kube-system \
         --set operator.replicas=1 \
-        --set tunnel=vxlan \
-        --set ipam.mode=kubernetes
+        --set kubeProxyReplacement=true \
+        --set l2announcements.enabled=true \
+        --set ipam.mode=kubernetes \
+        --set gatewayAPI.enabled=true \
+        --set gatewayAPI.enableAlpn=true \
+        --set gatewayAPI.enableAppProtocol=true
     
     log_info "Waiting for Cilium to be ready..."
     kubectl wait --for=condition=ready pod -l k8s-app=cilium --namespace=kube-system --timeout=300s
@@ -615,9 +619,6 @@ main() {
                 install_prometheus="true"
                 shift
                 ;;
-            if [ "$install_prometheus" = "true" ]; then
-                install_prom_stack_with_storage_monitoring
-            fi
             -h|--help)
                 usage
                 exit 0
@@ -666,6 +667,10 @@ main() {
     if [ "$install_ingress" = "true" ]; then
         install_ingress_nginx
     fi
+    if [ "$install_prometheus" = "true" ]; then
+        install_prom_stack_with_storage_monitoring
+    fi
+
     
     # Install custom charts
     install_custom_charts "$custom_charts"

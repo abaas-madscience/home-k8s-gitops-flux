@@ -1,0 +1,112 @@
+# enhanced-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: longhorn-enhanced-test
+  labels:
+    app: longhorn-enhanced-test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: longhorn-enhanced-test
+  template:
+    metadata:
+      labels:
+        app: longhorn-enhanced-test
+    spec:
+      volumes:
+        - name: longhorn-data-storage
+          persistentVolumeClaim:
+            claimName: longhorn-2gb-pvc
+        - name: enhanced-script-volume
+          configMap:
+            name: enhanced-storage-test
+            defaultMode: 0755
+      containers:
+        - name: enhanced-test-container
+          image: busybox:1.36.1
+          command: ["/bin/sh"]
+          args:
+            - "-c"
+            - |
+              echo "=== Enhanced Longhorn Test Container Starting ==="
+              echo "Timestamp: $(date)"
+              echo ""
+              
+              echo "Waiting 10 seconds for all mounts to be ready..."
+              sleep 10
+              
+              echo "=== Mount Information ==="
+              df -h | head -1
+              df -h | grep -E "(longhorn|/mnt)" || echo "No longhorn mounts in df output"
+              echo ""
+              
+              echo "Mount details:"
+              mount | grep -E "(longhorn|/mnt)" || echo "No longhorn mounts found"
+              echo ""
+              
+              echo "Volume contents:"
+              ls -la /mnt/longhorn-data/ || echo "Cannot list longhorn mount"
+              echo ""
+              ls -la /script/ || echo "Cannot list script mount"
+              echo ""
+              
+              # Check available space
+              AVAILABLE_KB=$(df /mnt/longhorn-data | tail -1 | awk '{print $4}')
+              AVAILABLE_MB=$((AVAILABLE_KB / 1024))
+              echo "Available space: ${AVAILABLE_MB} MB"
+              
+              if [ ${AVAILABLE_MB} -lt 1500 ]; then
+                echo "WARNING: Less than 1.5GB available. Some tests may fail."
+                echo "Consider using a larger PVC for comprehensive testing."
+              fi
+              echo ""
+              
+              # Run the enhanced test
+              if [ -f /script/enhanced-test.sh ]; then
+                echo "✓ Enhanced test script found"
+                echo "Starting comprehensive storage performance test..."
+                echo "This will take several minutes to complete."
+                echo ""
+                
+                # Copy script to writable volume and execute
+                cp /script/enhanced-test.sh /mnt/longhorn-data/test-script.sh
+                chmod +x /mnt/longhorn-data/test-script.sh
+                
+                # Run the test
+                /mnt/longhorn-data/test-script.sh
+                
+                # Cleanup the copied script
+                rm -f /mnt/longhorn-data/test-script.sh
+                
+              else
+                echo "✗ ERROR: Enhanced test script not found at /script/enhanced-test.sh"
+                echo "Available files in /script/:"
+                ls -la /script/ || echo "Cannot list script directory"
+                exit 1
+              fi
+              
+              echo ""
+              echo "=== Test Completed Successfully ==="
+              echo "Container will now sleep for 600 seconds (10 minutes)"
+              echo "Use 'kubectl logs -f deployment/longhorn-enhanced-test' to see all results"
+              echo ""
+              sleep 600
+          volumeMounts:
+            - name: longhorn-data-storage
+              mountPath: "/mnt/longhorn-data"
+            - name: enhanced-script-volume
+              mountPath: "/script"
+              readOnly: true
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "500m"
+            limits:
+              memory: "1Gi"
+              cpu: "2000m" # More CPU for intensive testing
+          env:
+            - name: TEST_START_TIME
+              value: "$(date)"
+      restartPolicy: Always
