@@ -1,0 +1,40 @@
+# storage-perf-test-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: storage-perf-test
+  labels:
+    app: storage-perf-test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: storage-perf-test
+  template:
+    metadata:
+      labels:
+        app: storage-perf-test
+    spec:
+      containers:
+        - name: perf-test
+          image: harbor.public.lab.local/home/storage-perf-test:latest
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "500m"
+            limits:
+              memory: "2Gi"
+              cpu: "2000m"
+          volumeMounts:
+            - name: test-storage
+              mountPath: /data
+          env:
+            - name: TEST_SIZE
+              value: "2G" # Adjust test size as needed
+            - name: RUNTIME
+              value: "60" # Test duration in seconds
+      volumes:
+        - name: test-storage
+          persistentVolumeClaim:
+            claimName: longhorn-perf-test-pvc
+      restartPolicy: Always
