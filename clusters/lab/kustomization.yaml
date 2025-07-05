@@ -5,12 +5,12 @@ resources:
   - infra-cilium.yaml
   - infra-flux-system.yaml
   - infra-longhorn.yaml
-  - infra-falco.yaml
+  #   - infra-falco.yaml
   #  - infra-certmanager.yaml
   #  - infra-certmanager-issuer.yaml
   #  - infra-certwildcard.yaml
   - infra-gateways.yaml
   - infra-https-routes.yaml
-  - apps-harbor.yaml
+  #  - apps-harbor.yaml
   - apps-planka.yaml
   - apps-opencost.yaml
