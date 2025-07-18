@@ -1,0 +1,31 @@
+# Patch for the GPU workload node
+apiVersion: v1
+kind: Node
+metadata:
+  name: talos-cp-01
+spec:
+  # Add a taint to accept local storage workloads
+  # If the taint already exists with a different effect, it will be updated.
+  # If it doesn't exist, it will be added.
+  taints:
+    - key: storage
+      value: local
+      effect: NoSchedule
+  # Add a label to classify it as a GPU workload node
+  labels:
+    workload: gpu
+---
+# Patch for the CPU workload node
+apiVersion: v1
+kind: Node
+metadata:
+  name: talos-cp-02
+spec:
+  # Add a taint to accept local storage workloads
+  taints:
+    - key: storage
+      value: local
+      effect: NoSchedule
+  # Add a label to classify it as a CPU workload node
+  labels:
+    workload: cpu
