@@ -4,6 +4,7 @@ resources:
   - infra-namespaces.yaml
   # - infra-cilium.yaml
   - infra-flux-system.yaml
+  - kube-node-patches.yaml
   # - infra-longhorn.yaml
   #   - infra-falco.yaml
   #  - infra-certmanager.yaml
