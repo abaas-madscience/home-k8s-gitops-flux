@@ -5,11 +5,11 @@ metadata:
   namespace: ai-workload
   targetNamespace: ai-workload
 spec:
-  nodeSelector:
-    kubernetes.io/hostname: talos-cp-01
   interval: 10m
   chart:
     spec:
+      nodeSelector:
+        kubernetes.io/hostname: talos-cp-01
       chart: nvidia-device-plugin
       version: 0.17.2
       sourceRef:
