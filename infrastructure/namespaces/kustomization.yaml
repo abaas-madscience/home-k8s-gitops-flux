@@ -3,6 +3,7 @@ kind: Kustomization
 resources:
   - gateways.yaml
   - openebs.yaml
+  - ai-workload.yaml
   #- monitoring.yaml
   #- longhorn.yaml
   #- certmanager.yaml
