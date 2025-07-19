@@ -1,0 +1,80 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
+kind: HelmRelease
+metadata:
+  name: openebs
+  namespace: openebs
+spec:
+  interval: 10m
+  chart:
+    spec:
+      chart: openebs
+      version: "4.3.2"
+      sourceRef:
+        kind: HelmRepository
+        name: openebs
+        namespace: flux-system
+  values:
+    ndm:
+      enabled: true
+    openebs-ndm-operator:
+      enabled: true
+
+    # Explicitly disable all storage engines except hostpath
+    engines:
+      local:
+        lvm:
+          enabled: false
+        zfs:
+          enabled: false
+      replicated:
+        mayastor:
+          enabled: false
+
+    # Legacy engines
+    cstor:
+      enabled: false
+    jiva:
+      enabled: false
+
+    # LocalPV variants
+    localpv-hostpath:
+      enabled: true
+      basePath: "/var/openebs/local/"
+    localpv-lvm:
+      enabled: false
+    localpv-zfs:
+      enabled: false
+    lvm-localpv:
+      enabled: false
+    zfs-localpv:
+      enabled: false
+
+    # Monitoring
+    analytics:
+      enabled: false
+    loki-stack:
+      enabled: false
+
+    loki:
+      enabled: false
+      localpvScConfig:
+        enabled: false
+      loki:
+        commonConfig:
+          replication_factor: 0
+      minio:
+        persistence:
+          enabled: false
+        replicas: 0
+      singleBinary:
+        persistence:
+          enabled: false
+        replicas: 0
+
+    # Core components
+    openebs-admission-server:
+      enabled: true
+    openebs-provisioner:
+      enabled: true
+    openebs-snapshot-operator:
+      enabled: true
