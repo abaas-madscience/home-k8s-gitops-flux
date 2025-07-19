@@ -3,16 +3,22 @@ kind: HelmRelease
 metadata:
   name: nvidia-device-plugin
   namespace: ai-workload
-  targetNamespace: ai-workload
 spec:
+  targetNamespace: ai-workload
   interval: 10m
   chart:
     spec:
-      nodeSelector:
-        kubernetes.io/hostname: talos-cp-01
       chart: nvidia-device-plugin
       version: 0.17.2
       sourceRef:
         kind: HelmRepository
         name: nvidia-device-plugin
         namespace: flux-system
+  values:
+    nodeSelector: # This will apply to the DaemonSet's pod template
+      kubernetes.io/hostname: talos-cp-01
+    tolerations: # This will apply to the DaemonSet's pod template
+      - key: "storage"
+        operator: "Equal"
+        value: "local"
+        effect: "NoSchedule"
