@@ -1,0 +1,18 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: nvidia-device-plugin
+  namespace: ai-workload
+  targetNamespace: ai-workload
+spec:
+  nodeSelector:
+    kubernetes.io/hostname: talos-cp-01
+  interval: 10m
+  chart:
+    spec:
+      chart: nvidia-device-plugin
+      version: 0.17.2
+      sourceRef:
+        kind: HelmRepository
+        name: nvidia-device-plugin
+        namespace: flux-system
