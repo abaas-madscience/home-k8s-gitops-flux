@@ -4,6 +4,7 @@ resources:
   - gateways.yaml
   - openebs.yaml
   - ai-workload.yaml
+  - ollama.yaml
   #- monitoring.yaml
   #- longhorn.yaml
   #- certmanager.yaml
