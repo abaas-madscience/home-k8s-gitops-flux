@@ -1,0 +1,35 @@
+# filename: fio-test-pod-node1.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: fio-test-pod-node2
+  namespace: default
+spec:
+  nodeSelector:
+    kubernetes.io/hostname: talos-cp-02
+  tolerations: # <--- ADDED: Toleration for the node taint
+    - key: "storage"
+      operator: "Equal"
+      value: "local"
+      effect: "NoSchedule"
+  containers:
+  - name: fio-tester
+    image: ubuntu:latest # A common image with apt for installing fio
+    command: ["/bin/bash", "-c"]
+    args:
+      - |
+        apt-get update && apt-get install -y fio && \
+        echo "Starting FIO Read Test (4k block size, 1 minute duration):" && \
+        fio --name=readtest --ioengine=libaio --iodepth=32 --rw=randread --bs=4k --size=1G --numjobs=1 --runtime=60 --group_reporting --direct=1 --filename=/mnt/test_file && \
+        echo "Starting FIO Write Test (4k block size, 1 minute duration):" && \
+        fio --name=writetest --ioengine=libaio --iodepth=32 --rw=randwrite --bs=4k --size=1G --numjobs=1 --runtime=60 --group_reporting --direct=1 --filename=/mnt/test_file && \
+        echo "FIO tests complete. Pod will exit in 5 minutes." && \
+        sleep 300 # Keep the pod alive for a bit to inspect logs
+    volumeMounts:
+    - name: test-volume
+      mountPath: /mnt
+  volumes:
+  - name: test-volume
+    persistentVolumeClaim:
+      claimName: openebs-test-pvc
+  restartPolicy: Never # Ensure the pod doesn't restart after the test

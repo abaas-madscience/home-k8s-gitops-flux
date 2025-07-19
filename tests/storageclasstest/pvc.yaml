@@ -1,0 +1,13 @@
+# filename: openebs-pvc.yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: openebs-test-pvc
+  namespace: default # Or your desired namespace
+spec:
+  accessModes:
+    - ReadWriteOnce # Suitable for a single Pod accessing the volume
+  storageClassName: openebs-hostpath
+  resources:
+    requests:
+      storage: 5Gi # Request 5GB of storage for the test
