@@ -30,7 +30,9 @@ spec:
         operator: "Equal"
         value: "local"
         effect: "NoSchedule"
-
+      - key: "node-role.kubernetes.io/control-plane"
+        operator: "Exists"
+        effect: "NoSchedule"
     # Ollama specific configurations
     ollama:
       gpu:
