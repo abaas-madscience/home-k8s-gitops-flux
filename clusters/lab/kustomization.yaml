@@ -6,6 +6,7 @@ resources:
   - infra-flux-system.yaml
   - kube-node-patches.yaml
   - infra-openebs.yaml
+  - apps-ai-workload.yaml
   # - infra-longhorn.yaml
   #   - infra-falco.yaml
   #  - infra-certmanager.yaml
