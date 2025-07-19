@@ -22,3 +22,4 @@ spec:
         operator: "Equal"
         value: "local"
         effect: "NoSchedule"
+    affinity: {} # This will disable the chart's default node affinity rules
