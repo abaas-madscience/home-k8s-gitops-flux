@@ -7,6 +7,7 @@ resources:
   - kube-node-patches.yaml
   - infra-openebs.yaml
   - apps-ai-workload.yaml
+  - apps-ollama.yaml
   # - infra-longhorn.yaml
   #   - infra-falco.yaml
   #  - infra-certmanager.yaml
