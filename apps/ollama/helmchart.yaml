@@ -3,7 +3,7 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: ollama
-  namespace: ollama # Deploy into the ollama namespace
+  namespace: ollama
 spec:
   interval: 10m
   chart:
@@ -33,44 +33,64 @@ spec:
       - key: "node-role.kubernetes.io/control-plane"
         operator: "Exists"
         effect: "NoSchedule"
+
     # Ollama specific configurations
     ollama:
       gpu:
-        enabled: true # Enable GPU integration
-        type: "nvidia" # Specify GPU type
-        number: 1 # Request 1 GPU
+        enabled: true
+        type: "nvidia"
+        number: 1
       models:
         pull:
-          - llama2 # Example model to download on startup
-          - mistral # Another example model
-        # You can add more models here, e.g.:
-        # - "llama3:8b"
-        # - "codellama"
-      # Configure Ollama API host (optional, usually default is fine)
-      # extraEnv:
-      #   - name: OLLAMA_HOST
-      #     value: "0.0.0.0:11434"
+          - llama2
+          - mistral
+          # Add more models here as needed
 
-    # Persistence configuration
-    persistentVolume:
-      enabled: true # Enable persistence for models
-      existingClaim: ollama-models-pvc # Use the PVC we pre-created
-      # size: 50Gi # This size is defined in the PVC, but can be overridden here if chart allows
-      # storageClass: "openebs-hostpath" # Not needed if using existingClaim, but good to know
+      # --- START: Probe Configuration ---
+      probes:
+        startupProbe:
+          enabled: true
+          # Start checking after 10 seconds.
+          # Give it a very generous threshold and period for initial model downloads.
+          # 180 * 10s = 1800 seconds = 30 minutes. Adjust based on model size & network.
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          failureThreshold: 180 # Allows for 30 minutes of startup time
+          timeoutSeconds: 5
+        readinessProbe:
+          enabled: true
+          # Give it some initial delay even after startup probe for safety
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          failureThreshold: 3
+          timeoutSeconds: 5
+        livenessProbe:
+          enabled: true
+          # Start checking liveness after it's been ready for a bit
+          initialDelaySeconds: 60
+          periodSeconds: 10
+          failureThreshold: 3
+          timeoutSeconds: 5
+      # --- END: Probe Configuration ---
 
-    # Service configuration (default is ClusterIP)
+      # Service configuration (default is ClusterIP)
+      # ... rest of your service and resource config ...
     service:
       type: ClusterIP
       port: 11434
-      name: ollama # The service name will be 'ollama' in 'ollama' namespace
+      name: ollama
 
-    # Resource requests and limits for the Ollama container
     resources:
       requests:
-        cpu: 8000m # 8 CPU cores
-        memory: 16Gi # 16GB RAM (adjust based on models and usage)
-        nvidia.com/gpu: 1 # Request 1 GPU
+        cpu: 8000m
+        memory: 16Gi
+        nvidia.com/gpu: 1
       limits:
-        cpu: 12000m # 12 CPU cores
-        memory: 16Gi # 24GB RAM (adjust based on models and usage)
-        nvidia.com/gpu: 1 # Limit to 1 GPU
+        cpu: 12000m
+        memory: 16Gi
+        nvidia.com/gpu: 1
+
+    # Persistence configuration
+    persistentVolume:
+      enabled: true
+      existingClaim: ollama-models-pvc

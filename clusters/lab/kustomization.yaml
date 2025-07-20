@@ -7,3 +7,4 @@ resources:
   - infra-openebs.yaml
   - apps-ai-workload.yaml
   - apps-ollama.yaml
+  - apps-cnpg-system.yaml
