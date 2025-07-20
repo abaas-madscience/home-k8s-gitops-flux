@@ -1,0 +1,51 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: n8n-postgres
+  namespace: n8n
+spec:
+  instances: 3
+
+  # Storage configuration
+  storage:
+    size: 20Gi
+    storageClass: openebs-hostpath
+
+  # Database configuration
+  bootstrap:
+    initdb:
+      database: n8n
+      owner: n8n
+      secret:
+        name: n8n-user-secret
+
+  # Resource limits to protect control plane
+  resources:
+    requests:
+      memory: "1Gi"
+      cpu: "8000m"
+    limits:
+      memory: "2Gi"
+      cpu: "12000m"
+
+  # Target specific labeled node for this database
+  nodeSelector:
+    workload: cpu
+    storage: local
+
+  affinity:
+    tolerations:
+      # Allow scheduling on control plane nodes
+      - key: node-role.kubernetes.io/control-plane
+        operator: Exists
+        effect: NoSchedule
+      - key: storage
+        operator: Equal
+        value: "local"
+        effect: NoSchedule
+
+  postgresql:
+    parameters:
+      # Optimize for limited resources
+      shared_buffers: "128MB"
+      max_connections: "100"
