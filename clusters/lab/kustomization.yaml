@@ -8,3 +8,4 @@ resources:
   - apps-ai-workload.yaml
   - apps-ollama.yaml
   - apps-cnpg-system.yaml
+  - apps-n8n.yaml
