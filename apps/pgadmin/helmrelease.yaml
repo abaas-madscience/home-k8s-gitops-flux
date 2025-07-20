@@ -9,25 +9,12 @@ spec:
   chart:
     spec:
       chart: pgadmin4
-      version: "1.47.0" # TODO: Update to the latest version via flux
+      version: "1.47.0" # Check Artifact Hub for the latest stable version
       sourceRef:
         kind: HelmRepository
         name: runix-charts
         namespace: flux-system
   values:
-    # Configure pgAdmin credentials from the secret
-    env:
-      email:
-        valueFrom:
-          secretKeyRef:
-            name: pgadmin-credentials
-            key: PGADMIN_DEFAULT_EMAIL
-      password:
-        valueFrom:
-          secretKeyRef:
-            name: pgadmin-credentials
-            key: PGADMIN_DEFAULT_PASSWORD
-
     # Node selector to deploy pgAdmin specifically on talos-worker-01
     nodeSelector:
       kubernetes.io/hostname: talos-worker-01
@@ -36,9 +23,21 @@ spec:
     persistence:
       enabled: true
       storageClass: openebs-hostpath # Use your OpenEBS LocalPV StorageClass
-      size: 1Gi # Adjust size as needed
+      size: 1Gi # More than enough for pgAdmin data
 
     # Service type - ClusterIP is sufficient as Cilium HTTPRoute will expose it
     service:
       type: ClusterIP
       port: 80
+
+  # Use valuesFrom to inject secret data directly into chart values
+  valuesFrom:
+    - kind: Secret
+      name: pgadmin-credentials
+      valuesKey: PGADMIN_DEFAULT_EMAIL
+      targetPath: env.email # Maps to .Values.env.email in the chart
+    - kind: Secret
+      name: pgadmin-credentials
+      valuesKey: PGADMIN_DEFAULT_PASSWORD
+      targetPath: env.password # Maps to .Values.env.password in the chart
+
