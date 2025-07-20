@@ -20,7 +20,7 @@ spec:
       kubernetes.io/hostname: talos-worker-01
 
     # Persistence for pgAdmin configuration and saved connections
-    persistence:
+    persistentVolume:
       enabled: true
       # Updated to use 'openebs-hostpath' as per your StorageClass
       storageClass: openebs-hostpath
