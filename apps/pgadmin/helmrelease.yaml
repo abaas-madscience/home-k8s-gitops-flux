@@ -35,7 +35,7 @@ spec:
     # Persistence for pgAdmin configuration and saved connections
     persistence:
       enabled: true
-      storageClass: local-path # Use your OpenEBS LocalPV StorageClass
+      storageClass: openebs-hostpath # Use your OpenEBS LocalPV StorageClass
       size: 1Gi # Adjust size as needed
 
     # Service type - ClusterIP is sufficient as Cilium HTTPRoute will expose it
