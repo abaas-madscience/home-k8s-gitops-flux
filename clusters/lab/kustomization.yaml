@@ -9,3 +9,4 @@ resources:
   - apps-ollama.yaml
   - apps-cnpg-system.yaml
   - apps-n8n.yaml
+  - apps-pgadmin.yaml

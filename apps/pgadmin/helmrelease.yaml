@@ -1,0 +1,44 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: pgadmin
+  namespace: pgadmin
+spec:
+  interval: 5m
+  chart:
+    spec:
+      chart: pgadmin4
+      version: "1.47.0" # TODO: Update to the latest version via flux
+      sourceRef:
+        kind: HelmRepository
+        name: runix-charts
+        namespace: flux-system
+  values:
+    # Configure pgAdmin credentials from the secret
+    env:
+      email:
+        valueFrom:
+          secretKeyRef:
+            name: pgadmin-credentials
+            key: PGADMIN_DEFAULT_EMAIL
+      password:
+        valueFrom:
+          secretKeyRef:
+            name: pgadmin-credentials
+            key: PGADMIN_DEFAULT_PASSWORD
+
+    # Node selector to deploy pgAdmin specifically on talos-worker-01
+    nodeSelector:
+      kubernetes.io/hostname: talos-worker-01
+
+    # Persistence for pgAdmin configuration and saved connections
+    persistence:
+      enabled: true
+      storageClass: local-path # Use your OpenEBS LocalPV StorageClass
+      size: 1Gi # Adjust size as needed
+
+    # Service type - ClusterIP is sufficient as Cilium HTTPRoute will expose it
+    service:
+      type: ClusterIP
+      port: 80

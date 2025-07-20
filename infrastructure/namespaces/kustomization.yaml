@@ -7,6 +7,7 @@ resources:
   - ollama.yaml
   - cnpg-system.yaml
   - n8n.yaml
+  - pgadmin.yaml
   #- monitoring.yaml
   #- longhorn.yaml
   #- certmanager.yaml
