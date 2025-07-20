@@ -22,7 +22,6 @@ spec:
     # Persistence for pgAdmin configuration and saved connections
     persistentVolume:
       enabled: true
-      # Updated to use 'openebs-hostpath' as per your StorageClass
       storageClass: openebs-hostpath
       size: 1Gi # Adjust size as needed
 
