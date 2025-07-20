@@ -28,11 +28,6 @@ spec:
       memory: "2Gi"
       cpu: "12000m"
 
-  # Target specific labeled node for this database
-  nodeSelector:
-    workload: cpu
-    storage: local
-
   affinity:
     tolerations:
       # Allow scheduling on control plane nodes
@@ -43,6 +38,14 @@ spec:
         operator: Equal
         value: "local"
         effect: NoSchedule
+
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: workload
+                operator: In
+                values: ["cpu"]
 
   postgresql:
     parameters:
