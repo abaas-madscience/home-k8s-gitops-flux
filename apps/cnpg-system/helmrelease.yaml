@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: cloudnative-pg
-      version: "1.26.0" # TODO: Update to the latest version via flux
+      version: "0.24.0" # TODO: Update to the latest version via flux
       sourceRef:
         kind: HelmRepository
         name: cloudnative-pg
