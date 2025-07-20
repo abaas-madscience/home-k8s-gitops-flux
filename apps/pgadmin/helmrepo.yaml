@@ -6,4 +6,4 @@ metadata:
   namespace: flux-system
 spec:
   interval: 1h
-  url: https://runix.github.io/kubernetes-charts/
+  url: https://helm.runix.net
