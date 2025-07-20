@@ -6,6 +6,7 @@ resources:
   - ai-workload.yaml
   - ollama.yaml
   - cnpg-system.yaml
+  - n8n.yaml
   #- monitoring.yaml
   #- longhorn.yaml
   #- certmanager.yaml
