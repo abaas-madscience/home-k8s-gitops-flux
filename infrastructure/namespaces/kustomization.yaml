@@ -5,6 +5,7 @@ resources:
   - openebs.yaml
   - ai-workload.yaml
   - ollama.yaml
+  - cnpg-system.yaml
   #- monitoring.yaml
   #- longhorn.yaml
   #- certmanager.yaml
