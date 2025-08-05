@@ -30,6 +30,21 @@ spec:
       type: ClusterIP
       port: 80
 
+    # Resource limits and security context
+    resources:
+      requests:
+        cpu: "100m"
+        memory: "256Mi"
+      limits:
+        cpu: "500m"
+        memory: "512Mi"
+    
+    securityContext:
+      runAsNonRoot: true
+      runAsUser: 5050
+      runAsGroup: 5050
+      fsGroup: 5050
+
   # Use valuesFrom to inject secret data directly into chart values
   valuesFrom:
     - kind: Secret

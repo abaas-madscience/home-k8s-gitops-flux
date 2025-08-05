@@ -5,10 +5,14 @@ metadata:
   namespace: planka
 spec:
   interval: 10m
-  chartRef:
-    kind: OCIRepository
-    name: harbor-planka-repo
-    namespace: flux-system
+  chart:
+    spec:
+      chart: planka
+      version: "1.0.0"
+      sourceRef:
+        kind: HelmRepository
+        name: planka
+        namespace: flux-system
   values:
     planka:
       secretKey: "YOUR_GENERATED_SECURE_SECRET_KEY"
@@ -20,7 +24,7 @@ spec:
         name: "Planka Admin"
       persistence:
         enabled: true
-        storageClass: "longhorn"
+        storageClass: "openebs-hostpath"
         size: 2Gi
     postgresql:
       enabled: true
@@ -31,7 +35,23 @@ spec:
       primary:
         persistence:
           enabled: true
-          storageClass: "longhorn"
+          storageClass: "openebs-hostpath"
           size: 5Gi
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "256Mi"
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
     ingress:
       enabled: false
+    
+    # Resource limits for Planka and PostgreSQL
+    resources:
+      requests:
+        cpu: "200m"
+        memory: "512Mi"
+      limits:
+        cpu: "1000m"
+        memory: "1Gi"

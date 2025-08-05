@@ -1,12 +1,25 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
+  # Infrastructure
   - infra-namespaces.yaml
   - infra-flux-system.yaml
-  - kube-node-patches.yaml
   - infra-openebs.yaml
-  - apps-ai-workload.yaml
-  - apps-ollama.yaml
+  - infra-cilium.yaml
+  - infra-falco.yaml
+  - infra-certmanager.yaml
+  - infra-certmanager-issuer.yaml  
+  - infra-certwildcard.yaml
+  - infra-gateways.yaml
+  - infra-https-routes.yaml
+  
+  # Kube system patches
+  - kube-node-patches.yaml
+  
+  # Applications
+  - apps.yaml
   - apps-cnpg-system.yaml
   - apps-n8n.yaml
   - apps-pgadmin.yaml
+  - apps-planka.yaml
+  - apps-opencost.yaml

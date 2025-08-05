@@ -45,9 +45,16 @@ spec:
       persistence:
         enabled: true
         size: 1Gi
-        storageClass: "longhorn"
+        storageClass: "openebs-hostpath"
         accessModes:
           - ReadWriteOnce
+      resources:
+        requests:
+          cpu: "100m"
+          memory: "256Mi"
+        limits:
+          cpu: "500m"
+          memory: "512Mi"
       ui:
         enabled: true
       metrics:

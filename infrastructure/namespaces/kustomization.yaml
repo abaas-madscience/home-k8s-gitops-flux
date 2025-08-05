@@ -3,15 +3,11 @@ kind: Kustomization
 resources:
   - gateways.yaml
   - openebs.yaml
-  - ai-workload.yaml
-  - ollama.yaml
   - cnpg-system.yaml
   - n8n.yaml
   - pgadmin.yaml
   #- monitoring.yaml
-  #- longhorn.yaml
   #- certmanager.yaml
-  #- harbor.yaml
   #- planka.yaml
   #- opencost.yaml
   #- falco.yaml
