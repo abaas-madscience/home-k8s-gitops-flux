@@ -2,6 +2,7 @@ apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: cluster-selfsigned-tls
+  namespace: infra-gateway
 spec:
   secretName: cfe-tls-key-pair
   issuerRef:
