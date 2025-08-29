@@ -12,16 +12,16 @@ spec:
     namespace: flux-system
   values:
     # Main n8n application configuration
-    main:
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-              - matchExpressions:
-                  - key: workload
-                    operator: In
-                    values: ["cpu"]
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: workload
+                  operator: In
+                  values: ["cpu"]
 
+    main:
       # n8n application configuration
       config:
         # Database configuration - ENABLED for external PostgreSQL, testing
