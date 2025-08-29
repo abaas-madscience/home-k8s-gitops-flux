@@ -11,15 +11,18 @@ spec:
     name: n8n-oci
     namespace: flux-system
   values:
-    nodeSelector:
-      kubernetes.io/hostname: talos-cp-02
-    tolerations:
-      - effect: NoSchedule
-        key: node-role.kubernetes.io/control-plane
-        operator: Exists
-
     # Main n8n application configuration
     main:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: workload
+                  operator: In
+                  values: ["cpu"]
+      nodeSelector:
+        kubernetes.io/hostname: talos-cp-02
+
       # n8n application configuration
       config:
         # Database configuration - ENABLED for external PostgreSQL, testing
