@@ -35,17 +35,6 @@ spec:
       memory: "2Gi"
       cpu: "12000m"
 
-    #affinity:
-    #  tolerations:
-    #    # Allow scheduling on control plane nodes
-    #    - key: node-role.kubernetes.io/control-plane
-    #      operator: Exists
-    #      effect: NoSchedule
-    #    - key: storage
-    #      operator: Equal
-    #      value: "local"
-    #      effect: NoSchedule
-
   affinity:
     nodeAffinity:
       requiredDuringSchedulingIgnoredDuringExecution:
