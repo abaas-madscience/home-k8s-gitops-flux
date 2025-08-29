@@ -8,7 +8,7 @@ spec:
     - name: public-gateway
       namespace: infra-gateway
   hostnames:
-    - "hpt.public.lab.local" # Change to the hostname you want to use
+    - "hpt.cluster" # Change to the hostname you want to use
   rules:
     - matches:
         - path:

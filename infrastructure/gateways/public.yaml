@@ -7,10 +7,10 @@ spec:
   gatewayClassName: cilium
   addresses:
     - type: IPAddress
-      value: 192.168.178.240
+      value: 192.168.68.15
   listeners:
     - name: http
-      hostname: "*.public.lab.local"
+      hostname: "*.cluster"
       port: 80
       protocol: HTTP
       allowedRoutes:
