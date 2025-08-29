@@ -11,6 +11,13 @@ spec:
     name: n8n-oci
     namespace: flux-system
   values:
+    nodeSelector:
+      kubernetes.io/hostname: talos-cp-02
+    tolerations:
+      - effect: NoSchedule
+        key: node-role.kubernetes.io/control-plane
+        operator: Exists
+
     # Main n8n application configuration
     main:
       # n8n application configuration
@@ -72,15 +79,6 @@ spec:
         enabled: true
         size: 5Gi
         storageClass: openebs-hostpath
-
-      nodeSelector:
-        kubernetes.io/hostname: talos-cp-02
-
-      # Allow scheduling on control-plane node
-      tolerations:
-        - key: "node-role.kubernetes.io/control-plane"
-          operator: "Exists"
-          effect: "NoSchedule"
 
       # Use Recreate strategy for data consistency
       strategy:
