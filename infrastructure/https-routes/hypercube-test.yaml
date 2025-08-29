@@ -8,7 +8,7 @@ spec:
     - name: public-gateway
       namespace: infra-gateway
   hostnames:
-    - "hpt.cluster" # Change to the hostname you want to use
+    - "hypercube.cluster"
   rules:
     - matches:
         - path:
