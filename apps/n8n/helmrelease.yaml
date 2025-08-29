@@ -10,17 +10,19 @@ spec:
     kind: OCIRepository
     name: n8n-oci
     namespace: flux-system
-  values:
-    # Main n8n application configuration
-    affinity:
-      nodeAffinity:
-        requiredDuringSchedulingIgnoredDuringExecution:
-          nodeSelectorTerms:
-            - matchExpressions:
-                - key: workload
-                  operator: In
-                  values: ["cpu"]
+  # Main n8n application configuration
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: workload
+                operator: In
+                values: ["cpu"]
+  nodeSelector:
+    kubernetes.io/hostname: talos-cp-02
 
+  values:
     main:
       # n8n application configuration
       config:
