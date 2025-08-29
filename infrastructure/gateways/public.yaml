@@ -9,15 +9,10 @@ spec:
     - type: IPAddress
       value: 192.168.178.240
   listeners:
-    - name: https
+    - name: http
       hostname: "*.public.lab.local"
-      port: 443
-      protocol: HTTPS
-      tls:
-        mode: Terminate
-        certificateRefs:
-          - kind: Secret
-            name: wildcard-tls
+      port: 80
+      protocol: HTTP
       allowedRoutes:
         namespaces:
           from: All
