@@ -13,15 +13,14 @@ spec:
   values:
     # Main n8n application configuration
     main:
-      nodeAffinity:
-        requiredDuringSchedulingIgnoredDuringExecution:
-          nodeSelectorTerms:
-            - matchExpressions:
-                - key: workload
-                  operator: In
-                  values: ["cpu"]
-      nodeSelector:
-        kubernetes.io/hostname: talos-cp-02
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: workload
+                    operator: In
+                    values: ["cpu"]
 
       # n8n application configuration
       config:
