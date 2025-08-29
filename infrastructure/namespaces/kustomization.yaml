@@ -10,4 +10,4 @@ resources:
   #- certmanager.yaml
   - planka.yaml
   #- opencost.yaml
-  #- falco.yaml
+  - falco.yaml
