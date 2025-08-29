@@ -7,9 +7,6 @@ resources:
   - infra-openebs.yaml
   # - infra-cilium.yaml
   - infra-falco.yaml
-  #- infra-certmanager.yaml
-  #- infra-certmanager-issuer.yaml
-  #- infra-certwildcard.yaml
   - infra-gateways.yaml
   - infra-https-routes.yaml
 
@@ -21,5 +18,4 @@ resources:
   - apps-cnpg-system.yaml
   - apps-n8n.yaml
   - apps-pgadmin.yaml
-  - apps-planka.yaml
   - apps-opencost.yaml

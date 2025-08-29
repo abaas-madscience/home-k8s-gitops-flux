@@ -7,6 +7,5 @@ resources:
   - n8n.yaml
   - pgadmin.yaml
   #- monitoring.yaml
-  - planka.yaml
-  #- opencost.yaml
+  - opencost.yaml
   - falco.yaml
