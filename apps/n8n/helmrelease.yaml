@@ -73,24 +73,14 @@ spec:
         size: 5Gi
         storageClass: openebs-hostpath
 
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-              - matchExpressions:
-                  - key: workload
-                    operator: In
-                    values:
-                      - cpu
+      nodeSelector:
+        kubernetes.io/hostname: talos-cp-02
 
+      # Allow scheduling on control-plane node
       tolerations:
         - key: "node-role.kubernetes.io/control-plane"
           operator: "Exists"
           effect: "NoSchedule"
-
-      # Schedule n8n on workload=cpu nodes
-      nodeSelector:
-        workload: cpu
 
       # Use Recreate strategy for data consistency
       strategy:
