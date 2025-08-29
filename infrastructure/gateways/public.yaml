@@ -1,22 +1,3 @@
-#apiVersion: gateway.networking.k8s.io/v1
-#kind: Gateway
-#metadata:
-#  name: public-gateway
-#  namespace: infra-gateway
-#spec:
-#  gatewayClassName: cilium
-#  addresses:
-#    - type: IPAddress
-#      value: 192.168.68.15
-#  listeners:
-#    - name: http
-#      hostname: "*.cluster"
-#      port: 80
-#      protocol: HTTP
-#      allowedRoutes:
-#        namespaces:
-#          from: All
-
 apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
 metadata:
@@ -35,3 +16,13 @@ spec:
       hostname: "*.cluster"
       port: 80
       protocol: HTTP
+
+    - name: https
+      protocol: HTTPS
+      port: 443
+      hostname: "*.cluster"
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: cfe-tls-key-pair

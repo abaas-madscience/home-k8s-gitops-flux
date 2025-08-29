@@ -1,0 +1,13 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: cluster-selfsigned-tls
+spec:
+  secretName: cfe-tls-key-pair
+  issuerRef:
+    name: selfsigned-cluster-issuer
+    kind: ClusterIssuer
+  commonName: "*.cluster"
+  dnsNames:
+    - "*.cluster"
+    - cluster
