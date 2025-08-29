@@ -11,7 +11,7 @@ resources:
   - infra-https-routes.yaml
 
   # Kube system patches
-  - kube-node-patches.yaml
+  # - kube-node-patches.yaml
 
   # Applications
   - apps.yaml
