@@ -80,7 +80,13 @@ spec:
               - matchExpressions:
                   - key: workload
                     operator: In
-                    values: ["cpu"]
+                    values:
+                      - cpu
+
+      tolerations:
+        - key: "node-role.kubernetes.io/control-plane"
+          operator: "Exists"
+          effect: "NoSchedule"
 
       # Schedule n8n on workload=cpu nodes
       nodeSelector:
