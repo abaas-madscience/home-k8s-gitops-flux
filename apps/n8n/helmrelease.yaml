@@ -10,17 +10,10 @@ spec:
     kind: OCIRepository
     name: n8n-oci
     namespace: flux-system
-  # Main n8n application configuration
-  affinity:
-    nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-        nodeSelectorTerms:
-          - matchExpressions:
-              - key: workload
-                operator: In
-                values: ["cpu"]
 
   values:
+    nodeSelector:
+      workload: "cpu"
     main:
       # n8n application configuration
       config:
