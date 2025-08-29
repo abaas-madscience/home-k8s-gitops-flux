@@ -46,13 +46,14 @@ spec:
     #      value: "local"
     #      effect: NoSchedule
 
-  nodeAffinity:
-    requiredDuringSchedulingIgnoredDuringExecution:
-      nodeSelectorTerms:
-        - matchExpressions:
-            - key: workload
-              operator: In
-              values: ["cpu"]
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: workload
+                operator: In
+                values: ["cpu"]
 
   postgresql:
     parameters:
