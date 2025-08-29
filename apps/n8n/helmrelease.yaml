@@ -15,7 +15,7 @@ spec:
     main:
       # n8n application configuration
       config:
-        # Database configuration - ENABLED for external PostgreSQL
+        # Database configuration - ENABLED for external PostgreSQL, testing
         db:
           type: postgresdb
 
