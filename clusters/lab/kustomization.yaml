@@ -5,17 +5,17 @@ resources:
   - infra-namespaces.yaml
   - infra-flux-system.yaml
   - infra-openebs.yaml
-  - infra-cilium.yaml
+  # - infra-cilium.yaml
   - infra-falco.yaml
-  - infra-certmanager.yaml
-  - infra-certmanager-issuer.yaml  
-  - infra-certwildcard.yaml
+  #- infra-certmanager.yaml
+  #- infra-certmanager-issuer.yaml
+  #- infra-certwildcard.yaml
   - infra-gateways.yaml
   - infra-https-routes.yaml
-  
+
   # Kube system patches
   - kube-node-patches.yaml
-  
+
   # Applications
   - apps.yaml
   - apps-cnpg-system.yaml
