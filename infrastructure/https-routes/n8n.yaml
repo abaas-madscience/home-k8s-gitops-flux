@@ -1,19 +1,19 @@
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
-  name: opencost-route
-  namespace: opencost
+  name: n8n-route
+  namespace: n8n
 spec:
   parentRefs:
     - name: public-gateway
       namespace: infra-gateway
   hostnames:
-    - "opencost.public.lab.local"
+    - "n8n.cluster"
   rules:
     - matches:
         - path:
             type: PathPrefix
             value: /
       backendRefs:
-        - name: opencost
-          port: 9090
+        - name: n8n
+          port: 80
