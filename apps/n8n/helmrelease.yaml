@@ -17,6 +17,7 @@ spec:
         workload: "cpu"
 
       # n8n application configuration
+      # Main
       config:
         # Database configuration - ENABLED for external PostgreSQL, testing
         db:
