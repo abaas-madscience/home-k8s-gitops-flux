@@ -62,6 +62,10 @@ spec:
               name: n8n-encryption-secret
               key: encryption-key
 
+      #
+      #
+      #
+      #
       # Resource configuration
       resources:
         requests:
