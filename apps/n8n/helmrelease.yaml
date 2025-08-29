@@ -1,0 +1,112 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: n8n
+  namespace: n8n
+spec:
+  interval: 30m
+  timeout: 10m
+  chartRef:
+    kind: OCIRepository
+    name: n8n-oci
+    namespace: flux-system
+  values:
+    # Main n8n application configuration
+    main:
+      # n8n application configuration
+      config:
+        # Database configuration - ENABLED for external PostgreSQL
+        db:
+          type: postgresdb
+
+        # Basic n8n settings
+        n8n:
+          timezone: "UTC"
+          log_level: "info"
+          hide_usage_page: true
+
+      # Environment variables from CNPG secrets
+      extraEnv:
+        DB_POSTGRESDB_HOST:
+          valueFrom:
+            secretKeyRef:
+              name: n8n-postgres-app
+              key: host
+        DB_POSTGRESDB_DATABASE:
+          valueFrom:
+            secretKeyRef:
+              name: n8n-postgres-app
+              key: dbname
+        DB_POSTGRESDB_USER:
+          valueFrom:
+            secretKeyRef:
+              name: n8n-postgres-app
+              key: username
+        DB_POSTGRESDB_PASSWORD:
+          valueFrom:
+            secretKeyRef:
+              name: n8n-postgres-app
+              key: password
+        DB_POSTGRESDB_PORT:
+          valueFrom:
+            secretKeyRef:
+              name: n8n-postgres-app
+              key: port
+        N8N_ENCRYPTION_KEY:
+          valueFrom:
+            secretKeyRef:
+              name: n8n-encryption-secret
+              key: encryption-key
+
+      # Resource configuration
+      resources:
+        requests:
+          memory: "512Mi"
+          cpu: "250m"
+        limits:
+          memory: "2Gi"
+          cpu: "1000m"
+
+      # Persistence for n8n data
+      persistence:
+        enabled: true
+        size: 5Gi
+        storageClass: openebs-hostpath
+
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: workload
+                    operator: In
+                    values: ["cpu"]
+
+      # Schedule n8n on workload=cpu nodes
+      nodeSelector:
+        workload: cpu
+
+      # Use Recreate strategy for data consistency
+      strategy:
+        type: Recreate
+
+    # Service configuration
+    service:
+      type: ClusterIP
+      port: 5678
+
+    # Disable built-in PostgreSQL since we're using CNPG
+    postgresql:
+      enabled: false
+
+    # ServiceAccount
+    serviceAccount:
+      create: true
+
+    # RBAC
+    rbac:
+      create: true
+
+    # Ingress (disabled by default)
+    ingress:
+      enabled: false

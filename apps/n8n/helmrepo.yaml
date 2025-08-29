@@ -6,3 +6,5 @@ metadata:
 spec:
   interval: 30m
   url: oci://8gears.container-registry.com/library/n8n
+  ref:
+    tag: "0.23.0" # Specify the chart version
