@@ -5,7 +5,7 @@ resources:
   - infra-namespaces.yaml
   - infra-flux-system.yaml
   - infra-openebs.yaml
-  # - infra-cilium.yaml
+  - infra-cilium.yaml
   - infra-falco.yaml
   - infra-gateways.yaml
   - infra-https-routes.yaml
@@ -18,4 +18,3 @@ resources:
   - apps-cnpg-system.yaml
   - apps-n8n.yaml
   - apps-pgadmin.yaml
-  - apps-opencost.yaml
