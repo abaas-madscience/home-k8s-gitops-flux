@@ -34,6 +34,7 @@ spec:
 
       # Environment variables from CNPG secrets
       extraEnv:
+        N8N_SECURE_COOKIE: false # Set to true if using HTTPS
         DB_POSTGRESDB_HOST:
           valueFrom:
             secretKeyRef:
