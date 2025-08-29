@@ -19,8 +19,6 @@ spec:
               - key: workload
                 operator: In
                 values: ["cpu"]
-  nodeSelector:
-    kubernetes.io/hostname: talos-cp-02
 
   values:
     main:
