@@ -8,6 +8,6 @@ resources:
   - pgadmin.yaml
   #- monitoring.yaml
   #- certmanager.yaml
-  #- planka.yaml
+  - planka.yaml
   #- opencost.yaml
   #- falco.yaml
