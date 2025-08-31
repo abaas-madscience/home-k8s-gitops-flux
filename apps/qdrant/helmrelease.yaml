@@ -94,7 +94,6 @@ spec:
       size: 75Gi
       storageClassName: openebs-database
       storageVolumeName: qdrant-database-storage
-      # Used new storage
     podAnnotations: {}
     podDisruptionBudget:
       enabled: false
