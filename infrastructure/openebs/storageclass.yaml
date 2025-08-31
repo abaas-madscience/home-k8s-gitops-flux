@@ -2,7 +2,7 @@ apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
   name: openebs-local-disk
-provisioner: openebs.io/localpv-device # This is the provisioner for raw block devices
-volumeBindingMode: WaitForFirstConsumer
+provisioner: openebs.io/localpv-device
+volumeBindingMode: Immediate
 reclaimPolicy: Delete
 allowVolumeExpansion: true
