@@ -94,8 +94,8 @@ spec:
     persistence:
       enabled: true
       size: 75Gi
-      storageClass: openebs-database
-      #storageVolumeName: qdrant-database-storage
+      storageClassName: openebs-database
+      storageVolumeName: qdrant-database-storage
       annotations: {}
     podAnnotations: {}
     podDisruptionBudget:
