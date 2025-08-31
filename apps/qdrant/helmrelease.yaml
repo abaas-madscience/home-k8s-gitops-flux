@@ -93,6 +93,9 @@ spec:
       enabled: true
       size: 75Gi
       storageClassName: openebs-database
+      annotations:
+        volume.kubernetes.io/selected-node: talos-cp-02
+        # Another example annotation
     podAnnotations: {}
     podDisruptionBudget:
       enabled: false
