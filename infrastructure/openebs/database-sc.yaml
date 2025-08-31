@@ -2,15 +2,16 @@ apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
   name: openebs-database
-  cas.openebs.io/config: |
-    - name: StorageType
-      value: "hostpath"
-    - name: BasePath
-      value: "/var/openebs/local"
-  meta.helm.sh/release-name: openebs
-  meta.helm.sh/release-namespace: openebs
-  openebs.io/cas-type: local
-  volume.kubernetes.io/selected-node: talos-cp-02
+  annotations:
+    cas.openebs.io/config: |
+      - name: StorageType
+        value: "hostpath"
+      - name: BasePath
+        value: "/var/openebs/local"
+    meta.helm.sh/release-name: openebs
+    meta.helm.sh/release-namespace: openebs
+    openebs.io/cas-type: local
+    volume.kubernetes.io/selected-node: talos-cp-02
 provisioner: openebs.io/local
 volumeBindingMode: Immediate
 reclaimPolicy: Delete
