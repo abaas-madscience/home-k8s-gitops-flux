@@ -4,9 +4,9 @@ kind: PersistentVolumeClaim
 metadata:
   name: qdrant-database-storage
   namespace: qdrant
-spec:
   annotations:
     volume.kubernetes.io/selected-node: talos-cp-02
+spec:
   storageClassName: openebs-database
   accessModes:
     - ReadWriteOnce
