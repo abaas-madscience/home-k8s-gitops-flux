@@ -3,6 +3,6 @@ kind: StorageClass
 metadata:
   name: openebs-local-disk
 provisioner: openebs.io/localpv-device
-volumeBindingMode: Immediate
+volumeBindingMode: WaitForFirstConsumer
 reclaimPolicy: Delete
 allowVolumeExpansion: true
