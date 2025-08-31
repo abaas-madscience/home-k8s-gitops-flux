@@ -78,8 +78,8 @@ spec:
       # Persistence for n8n data
       persistence:
         enabled: true
-        size: 5Gi
         storageClass: openebs-hostpath
+        size: 5Gi
 
       # Use Recreate strategy for data consistency
       strategy:
