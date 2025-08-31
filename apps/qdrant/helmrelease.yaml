@@ -1,0 +1,166 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: qdrant
+  namespace: flux-system
+spec:
+  chart:
+    spec:
+      chart: qdtant
+      reconcileStrategy: ChartVersion
+      sourceRef:
+        kind: HelmRepository
+        name: qdrant
+        namespace: flux-system
+      version: 1.15.4
+  install:
+    createNamespace: true
+  interval: 1m0s
+  releaseName: qdrant
+  targetNamespace: qdrant
+  values:
+    additionalAnnotations: {}
+    additionalLabels: {}
+    additionalVolumeMounts: []
+    additionalVolumes: []
+    affinity: {}
+    args:
+      - ./config/initialize.sh
+    chartTests:
+      dbInteraction:
+        image: registry.suse.com/bci/bci-base:latest
+    config:
+      cluster:
+        consensus:
+          tick_period_ms: 100
+        enabled: true
+        p2p:
+          enable_tls: false
+          port: 6335
+    containerSecurityContext:
+      allowPrivilegeEscalation: false
+      privileged: false
+      readOnlyRootFilesystem: true
+      runAsGroup: 2000
+      runAsNonRoot: true
+      runAsUser: 1000
+    env: {}
+    fullnameOverride: ""
+    image:
+      pullPolicy: IfNotPresent
+      repository: docker.io/qdrant/qdrant
+      tag: ""
+      useUnprivilegedImage: false
+    imagePullSecrets: []
+    ingress:
+      additionalLabels: {}
+      annotations: {}
+      enabled: false
+      hosts:
+        - host: example-domain.com
+          paths:
+            - path: /
+              pathType: Prefix
+              servicePort: 6333
+      ingressClassName: ""
+      tls: []
+    lifecycle:
+      preStop:
+        exec:
+          command:
+            - sleep
+            - "3"
+    livenessProbe:
+      enabled: false
+      failureThreshold: 6
+      initialDelaySeconds: 5
+      periodSeconds: 5
+      successThreshold: 1
+      timeoutSeconds: 1
+    metrics:
+      serviceMonitor:
+        additionalLabels: {}
+        enabled: false
+        metricRelabelings: []
+        relabelings: []
+        scrapeInterval: 30s
+        scrapeTimeout: 10s
+        targetPath: /metrics
+        targetPort: http
+    nameOverride: ""
+    nodeSelector:
+      workload: "cpu"
+    persistence:
+      enabled: true
+      size: 75Gi
+      storageClass: openebs-hostpath
+      accessModes:
+        - ReadWriteOnce
+      annotations: {}
+    podAnnotations: {}
+    podDisruptionBudget:
+      enabled: false
+      maxUnavailable: 1
+      unhealthyPodEvictionPolicy: ""
+    podLabels: {}
+    podManagementPolicy: Parallel
+    podSecurityContext:
+      fsGroup: 3000
+      fsGroupChangePolicy: Always
+    priorityClassName: ""
+    readinessProbe:
+      enabled: true
+      failureThreshold: 6
+      initialDelaySeconds: 5
+      periodSeconds: 5
+      successThreshold: 1
+      timeoutSeconds: 1
+    replicaCount: 1
+    resources: {}
+    service:
+      additionalLabels: {}
+      annotations: {}
+      loadBalancerIP: ""
+      ports:
+        - checksEnabled: true
+          name: http
+          port: 6333
+          protocol: TCP
+          targetPort: 6333
+        - checksEnabled: false
+          name: grpc
+          port: 6334
+          protocol: TCP
+          targetPort: 6334
+        - checksEnabled: false
+          name: p2p
+          port: 6335
+          protocol: TCP
+          targetPort: 6335
+      type: ClusterIP
+    serviceAccount:
+      annotations: {}
+    shareProcessNamespace: false
+    sidecarContainers: []
+    snapshotPersistence:
+      accessModes:
+        - ReadWriteOnce
+      annotations: {}
+      enabled: false
+      size: 10Gi
+    snapshotRestoration:
+      enabled: false
+      mountPath: /qdrant/snapshot-restoration
+      pvcName: snapshots-pvc
+      snapshots: null
+    startupProbe:
+      enabled: false
+      failureThreshold: 30
+      initialDelaySeconds: 10
+      periodSeconds: 5
+      successThreshold: 1
+      timeoutSeconds: 1
+    tolerations: []
+    topologySpreadConstraints: []
+    updateVolumeFsOwnership: true
