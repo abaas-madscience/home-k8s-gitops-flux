@@ -14,8 +14,6 @@ spec:
         name: qdrant
         namespace: flux-system
       version: 1.15.4
-  install:
-    createNamespace: true
   interval: 1m0s
   releaseName: qdrant
   targetNamespace: qdrant
