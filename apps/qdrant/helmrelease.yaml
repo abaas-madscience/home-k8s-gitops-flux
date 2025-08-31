@@ -94,7 +94,7 @@ spec:
     persistence:
       enabled: true
       size: 75Gi
-      existingClaim: openebs-database
+      existingClaim: qdrant-database-storage
       accessModes:
         - ReadWriteOnce
       annotations: {}
