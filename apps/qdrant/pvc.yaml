@@ -5,9 +5,9 @@ metadata:
   name: qdrant-database-storage
   namespace: qdrant
 spec:
+  storageClassName: openebs-database
   accessModes:
     - ReadWriteOnce
-  storageClassName: openebs-database
   resources:
     requests:
-      storage: 75Gi
+      storage: 75G

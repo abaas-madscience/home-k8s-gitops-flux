@@ -90,7 +90,7 @@ spec:
         targetPort: http
     nameOverride: ""
     nodeSelector:
-      workload: "cpu"
+      kubernetes.io/hostname: talos-cp-02
     persistence:
       enabled: true
       size: 75Gi
