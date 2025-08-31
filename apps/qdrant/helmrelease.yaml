@@ -95,9 +95,7 @@ spec:
       enabled: true
       size: 75Gi
       storageClass: openebs-database
-      existingClaim: qdrant-database-storage
-      accessModes:
-        - ReadWriteOnce
+      storageVolumeName: qdrant-database-storage
       annotations: {}
     podAnnotations: {}
     podDisruptionBudget:
