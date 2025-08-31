@@ -2,14 +2,14 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: qdrant-database-storage
+  name: qdrant-database-snapshot
   namespace: qdrant
 spec:
-  annotations:
-    volume.kubernetes.io/selected-node: talos-cp-02
   storageClassName: openebs-database
   accessModes:
     - ReadWriteOnce
+  annotations:
+    volume.kubernetes.io/selected-node: talos-cp-02
   resources:
     requests:
       storage: 75G
