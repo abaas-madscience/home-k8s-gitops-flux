@@ -9,3 +9,4 @@ resources:
   #- monitoring.yaml
   - opencost.yaml
   - falco.yaml
+  - qdrant.yaml
