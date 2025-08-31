@@ -96,7 +96,8 @@ spec:
       size: 75Gi
       storageClassName: openebs-database
       storageVolumeName: qdrant-database-storage
-      annotations: {}
+      annotations:
+        volume.kubernetes.io/selected-node: talos-cp-02
     podAnnotations: {}
     podDisruptionBudget:
       enabled: false
