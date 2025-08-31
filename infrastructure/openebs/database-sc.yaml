@@ -6,3 +6,6 @@ provisioner: openebs.io/local
 volumeBindingMode: Immediate
 reclaimPolicy: Delete
 allowVolumeExpansion: true
+parameters:
+  path: "/var/openebs/local"
+  nodeAffinityLabels: "kubernetes.io/hostname=talos-cp-02"
