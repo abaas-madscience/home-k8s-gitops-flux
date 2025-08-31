@@ -94,7 +94,7 @@ spec:
     persistence:
       enabled: true
       size: 75Gi
-      storageClass: openebs-hostpath
+      existingClaim: openebs-database
       accessModes:
         - ReadWriteOnce
       annotations: {}
