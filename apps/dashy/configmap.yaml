@@ -1,0 +1,32 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dashy-config
+  namespace: dashy
+data:
+  conf.yml: |
+    pageInfo:
+      title: AI Lab
+      description: Welcome Oscar
+    appConfig:
+      theme: colorful
+      layout: auto
+      iconSize: medium
+    sections:
+      - name: "Database & Analytics"
+        items:
+          - title: pgAdmin
+            description: PostgreSQL administration tool
+            url: https://pgadmin.cluster
+            icon: hl-pgadmin
+          - title: Qdrant
+            description: Vector database dashboard
+            url: https://qdrant.cluster/dashboard
+            icon: hl-qdrant
+      - name: "Automation & Workflows"
+        items:
+          - title: n8n
+            description: Workflow automation tool
+            url: https://n8n.cluster
+            icon: hl-n8n
