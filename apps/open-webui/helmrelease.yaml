@@ -32,6 +32,16 @@ spec:
         - name: N8N_WEBHOOK_URL
           value: "https://n8n.cluster/webhook"
 
+      nodeSelector:
+        kubernetes.io/hostname: talos-cp-02
+
+      persistence:
+        enabled: true
+        size: 2Gi
+        storageClass: openebs-database
+        accessModes:
+          - ReadWriteOnce
+
     # Basic service configuration
     service:
       type: ClusterIP
