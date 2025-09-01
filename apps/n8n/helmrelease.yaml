@@ -33,6 +33,7 @@ spec:
           timezone: "UTC"
           log_level: "info"
           hide_usage_page: true
+          webhook_url: "http://n8n.n8n.svc.cluster.local:5678"
 
       # Environment variables from CNPG secrets
       extraEnv:
@@ -66,6 +67,11 @@ spec:
             secretKeyRef:
               name: n8n-encryption-secret
               key: encryption-key
+        N8N_WEBHOOK_URL: "http://n8n.n8n.svc.cluster.local:5678"
+        WEBHOOK_URL: "http://n8n.n8n.svc.cluster.local:5678"
+        N8N_HOST: "n8n.n8n.svc.cluster.local"
+        N8N_PORT: "5678"
+        N8N_PROTOCOL: "http"
 
       # Resource configuration
       resources:
