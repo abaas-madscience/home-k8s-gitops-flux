@@ -78,6 +78,7 @@ spec:
         size: 5Gi
         annotations:
           volume.kubernetes.io/selected-node: talos-cp-02
+        # Testing
 
     # Service configuration
     service:
