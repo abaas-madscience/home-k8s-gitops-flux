@@ -41,8 +41,6 @@ spec:
         storageClass: openebs-database
         annotations:
           volume.kubernetes.io/selected-node: talos-cp-02
-        accessModes:
-          - ReadWriteOnce
 
     # Basic service configuration
     service:
@@ -59,8 +57,6 @@ spec:
       enabled: true
       size: 5Gi # Increased from default 2Gi
       storageClass: openebs-database
-      accessModes:
-        - ReadWriteOnce
       annotations:
         volume.kubernetes.io/selected-node: talos-cp-02
 
