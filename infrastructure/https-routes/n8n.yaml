@@ -16,4 +16,4 @@ spec:
             value: /
       backendRefs:
         - name: n8n
-          port: 80
+          port: 5678
