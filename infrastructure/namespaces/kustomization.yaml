@@ -10,3 +10,4 @@ resources:
   - opencost.yaml
   - falco.yaml
   - qdrant.yaml
+  - dashy.yaml
