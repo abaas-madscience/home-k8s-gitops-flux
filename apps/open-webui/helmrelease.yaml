@@ -49,6 +49,8 @@ spec:
       storageClass: openebs-database
       accessModes:
         - ReadWriteOnce
+      annotations:
+        volume.kubernetes.io/selected-node: talos-cp-02
 
     # Environment variables
     extraEnvVars:
