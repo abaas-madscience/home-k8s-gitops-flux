@@ -18,6 +18,45 @@ spec:
   interval: 1m0s
   releaseName: dashy
   values:
-  configmap:
-    enabled: true
-    existingConfigMap: dashy-config
+    static:
+      enabled: true
+      existingSecret: ""
+      configMapContent:
+        conf: |
+          # Page meta info, like heading, footer text and nav links
+          pageInfo:
+            title: My Homelab Dashboard
+            description: Welcome to your K8s cluster dashboard!
+            navLinks:
+              - title: GitHub
+                path: https://github.com/Lissy93/dashy
+              - title: Documentation
+                path: https://dashy.to/docs
+
+          # Optional app settings and configuration
+          appConfig:
+            theme: colorful
+
+          # Main content - An array of sections, each containing an array of items
+          sections:
+            - name: Database & Analytics
+              icon: fas fa-database
+              items:
+                - title: pgAdmin
+                  description: PostgreSQL administration tool
+                  icon: favicon
+                  url: https://pgadmin.cluster
+                  target: newtab
+                - title: Qdrant
+                  description: Vector database dashboard
+                  icon: favicon
+                  url: https://qdrant.cluster/dashboard
+                  target: newtab
+            - name: Automation & Workflows
+              icon: fas fa-cogs
+              items:
+                - title: n8n
+                  description: Workflow automation tool
+                  icon: favicon
+                  url: https://n8n.cluster
+                  target: newtab
