@@ -25,8 +25,9 @@ spec:
         conf: |
           # Page meta info, like heading, footer text and nav links
           pageInfo:
-            title: Oscar's AI K*S Lab
-            description: Welcome!
+            title: Oscar's AI Kubernetes Lab
+            description: Running Talos Linux
+            footerText: Made with ❤️ using Dashy
             navLinks:
               - title: GitHub
                 path: https://github.com/Lissy93/dashy
