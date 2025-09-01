@@ -19,3 +19,4 @@ resources:
   - apps-n8n.yaml
   - apps-pgadmin.yaml
   - apps-qdrant.yaml
+  - apps-dashy.yaml
