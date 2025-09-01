@@ -25,8 +25,8 @@ spec:
         conf: |
           # Page meta info, like heading, footer text and nav links
           pageInfo:
-            title: My Homelab Dashboard
-            description: Welcome to your K8s cluster dashboard!
+            title: Oscar's AI K*S Lab
+            description: Welcome!
             navLinks:
               - title: GitHub
                 path: https://github.com/Lissy93/dashy
