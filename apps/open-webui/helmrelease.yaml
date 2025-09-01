@@ -11,7 +11,7 @@ spec:
       reconcileStrategy: ChartVersion
       sourceRef:
         kind: HelmRepository
-        name: openwebui
+        name: open-webui
         namespace: flux-system
       version: 7.7.0
   install:
@@ -24,14 +24,14 @@ spec:
     ollama:
       enabled: true
       fullnameOverride: "open-webui-ollama"
-    
+
     pipelines:
       enabled: true
       # Add any specific pipeline environment variables you need
       extraEnvVars:
         - name: N8N_WEBHOOK_URL
           value: "https://n8n.cluster/webhook"
-    
+
     # Basic service configuration
     service:
       type: ClusterIP
@@ -41,15 +41,15 @@ spec:
     # Node Selector
     nodeSelector:
       kubernetes.io/hostname: talos-cp-02
-    
+
     # Persistence for data
     persistence:
       enabled: true
-      size: 5Gi  # Increased from default 2Gi
+      size: 5Gi # Increased from default 2Gi
       storageClass: openebs-database
       accessModes:
         - ReadWriteOnce
-    
+
     # Environment variables
     extraEnvVars:
       - name: OPENAI_API_KEY
@@ -57,10 +57,10 @@ spec:
       # Add N8N integration if needed
       - name: WEBHOOK_URL
         value: "https://n8n.cluster/webhook"
-    
+
     # Enable OpenAI API compatibility
     enableOpenaiApi: true
-    
+
     # Resource limits (optional but recommended)
     resources:
       requests:
