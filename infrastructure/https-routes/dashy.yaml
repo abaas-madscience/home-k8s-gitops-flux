@@ -16,4 +16,4 @@ spec:
             value: /
       backendRefs:
         - name: dashy
-          port: 80
+          port: 8080
