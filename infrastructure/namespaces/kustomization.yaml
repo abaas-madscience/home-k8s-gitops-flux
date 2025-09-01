@@ -11,3 +11,4 @@ resources:
   - falco.yaml
   - qdrant.yaml
   - dashy.yaml
+  - open-webui.yaml
