@@ -36,7 +36,7 @@ spec:
 
           # Optional app settings and configuration
           appConfig:
-            theme: colorful
+            theme: Material-Dark
 
           # Main content - An array of sections, each containing an array of items
           sections:
