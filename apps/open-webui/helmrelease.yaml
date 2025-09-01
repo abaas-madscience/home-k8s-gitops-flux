@@ -39,6 +39,8 @@ spec:
         enabled: true
         size: 2Gi
         storageClass: openebs-database
+        annotations:
+          volume.kubernetes.io/selected-node: talos-cp-02
         accessModes:
           - ReadWriteOnce
 
