@@ -74,7 +74,7 @@ spec:
       # Persistence for n8n data
       persistence:
         enabled: true
-        storageClass: openebs-database
+        storageClassName: openebs-database
         size: 5Gi
         annotations:
           volume.kubernetes.io/selected-node: talos-cp-02
