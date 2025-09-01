@@ -4,3 +4,4 @@ resources:
   - hypercube-test.yaml
   - n8n.yaml
   - pgadmin.yaml
+  - qdrant.yaml
