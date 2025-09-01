@@ -40,6 +40,14 @@ spec:
 
           # Main content - An array of sections, each containing an array of items
           sections:
+            - name: AI & Machine Learning
+              icon: fas fa-robot
+              items:
+                - title: Open WebUI
+                  description: AI chat interface with Ollama integration
+                  icon: favicon
+                  url: https://open-webui.cluster
+                  target: newtab
             - name: Database & Analytics
               icon: fas fa-database
               items:
