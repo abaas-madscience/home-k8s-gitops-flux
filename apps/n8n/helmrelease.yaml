@@ -33,43 +33,47 @@ spec:
         hide_usage_page: true
         webhook_url: "http://n8n.n8n.svc.cluster.local:5678"
 
-      # Environment variables from CNPG secret
       extraEnv:
-        DB_POSTGRESDB_HOST:
+        - name: DB_POSTGRESDB_HOST
           valueFrom:
             secretKeyRef:
               name: n8n-postgres-app
               key: host
-        DB_POSTGRESDB_DATABASE:
+        - name: DB_POSTGRESDB_DATABASE
           valueFrom:
             secretKeyRef:
               name: n8n-postgres-app
               key: dbname
-        DB_POSTGRESDB_USER:
+        - name: DB_POSTGRESDB_USER
           valueFrom:
             secretKeyRef:
               name: n8n-postgres-app
               key: username
-        DB_POSTGRESDB_PASSWORD:
+        - name: DB_POSTGRESDB_PASSWORD
           valueFrom:
             secretKeyRef:
               name: n8n-postgres-app
               key: password
-        DB_POSTGRESDB_PORT:
+        - name: DB_POSTGRESDB_PORT
           valueFrom:
             secretKeyRef:
               name: n8n-postgres-app
               key: port
-        N8N_ENCRYPTION_KEY:
+        - name: N8N_ENCRYPTION_KEY
           valueFrom:
             secretKeyRef:
               name: n8n-encryption-secret
               key: encryption-key
-        N8N_WEBHOOK_URL: "http://n8n.n8n.svc.cluster.local:5678"
-        WEBHOOK_URL: "http://n8n.n8n.svc.cluster.local:5678"
-        N8N_HOST: "n8n.n8n.svc.cluster.local"
-        N8N_PORT: "5678"
-        N8N_PROTOCOL: "http"
+        - name: N8N_WEBHOOK_URL
+          value: "http://n8n.n8n.svc.cluster.local:5678"
+        - name: WEBHOOK_URL
+          value: "http://n8n.n8n.svc.cluster.local:5678"
+        - name: N8N_HOST
+          value: "n8n.n8n.svc.cluster.local"
+        - name: N8N_PORT
+          value: "5678"
+        - name: N8N_PROTOCOL
+          value: "http"
 
       # Resource configuration
       resources:
