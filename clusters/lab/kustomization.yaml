@@ -14,7 +14,6 @@ resources:
   # - kube-node-patches.yaml
 
   # Applications
-  - apps.yaml
   - apps-cnpg-system.yaml
   - apps-n8n.yaml
   - apps-pgadmin.yaml
