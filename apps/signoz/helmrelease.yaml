@@ -20,12 +20,12 @@ spec:
   values:
     global:
       storageClass: openebs-signoz
-      nodeSelector:
-        kubernetes.io/hostname: talos-cp-03
+      annotations:
+        volume.kubernetes.io/selected-node: talos-cp-03
     clickhouse:
       installCustomStorageClass: true
-      nodeSelector:
-        kubernetes.io/hostname: talos-cp-03
+      annotations:
+        volume.kubernetes.io/selected-node: talos-cp-03
       resources:
         requests:
           cpu: "2000m"
