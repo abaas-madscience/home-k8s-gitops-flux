@@ -12,3 +12,4 @@ resources:
   - qdrant.yaml
   - dashy.yaml
   - open-webui.yaml
+  - signoz.yaml

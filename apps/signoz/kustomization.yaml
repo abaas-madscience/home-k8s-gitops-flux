@@ -3,5 +3,3 @@ kind: Kustomization
 resources:
   - helmrepo.yaml
   - helmrelease.yaml
-  - database-sc.yaml
-  - signoz-sc.yaml

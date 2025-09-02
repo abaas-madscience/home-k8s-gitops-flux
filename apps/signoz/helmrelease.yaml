@@ -1,0 +1,49 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: signoz
+  namespace: flux-system
+spec:
+  chart:
+    spec:
+      chart: signoz
+      reconcileStrategy: ChartVersion
+      sourceRef:
+        kind: HelmRepository
+        name: signoz
+        namespace: flux-system
+      version: 0.90.1
+  interval: 1m0s
+  releaseName: signoz
+  targetNamespace: signoz
+  values:
+    global:
+      storageClass: openebs-signoz
+      nodeSelector:
+        kubernetes.io/hostname: talos-cp-03
+    clickhouse:
+      installCustomStorageClass: true
+      nodeSelector:
+        kubernetes.io/hostname: talos-cp-03
+      resources:
+        requests:
+          cpu: "2000m"
+          memory: "8Gi"
+        limits:
+          cpu: "4000m"
+          memory: "16Gi"
+      persistence:
+        enabled: true
+        storageClass: openebs-signoz
+        size: 50Gi
+    signoz:
+      nodeSelector:
+        kubernetes.io/hostname: talos-cp-03
+      resources:
+        requests:
+          cpu: "1000m"
+          memory: "2Gi"
+        limits:
+          cpu: "2000m"
+          memory: "4Gi"

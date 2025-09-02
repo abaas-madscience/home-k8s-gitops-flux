@@ -1,0 +1,19 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: signoz-route
+  namespace: signoz
+spec:
+  parentRefs:
+    - name: public-gateway
+      namespace: infra-gateway
+  hostnames:
+    - "signoz.cluster"
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: signoz
+          port: 8080

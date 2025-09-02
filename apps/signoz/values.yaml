@@ -1,0 +1,5 @@
+global:
+  storageClass: openebs-signoz
+
+clickhouse:
+  installCustomStorageClass: true
