@@ -27,7 +27,6 @@ spec:
         # Database configuration - ENABLED for external PostgreSQL, testing
         db:
           type: postgresdb
-
         timezone: "UTC"
         log_level: "info"
         hide_usage_page: true
