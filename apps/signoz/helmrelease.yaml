@@ -20,12 +20,11 @@ spec:
   values:
     global:
       storageClass: openebs-signoz
-      annotations:
-        volume.kubernetes.io/selected-node: talos-cp-03
     clickhouse:
       installCustomStorageClass: true
-      annotations:
-        volume.kubernetes.io/selected-node: talos-cp-03
+      # Pin ClickHouse to the same node
+      nodeSelector:
+        kubernetes.io/hostname: talos-cp-03
       resources:
         requests:
           cpu: "2000m"
@@ -35,8 +34,13 @@ spec:
           memory: "16Gi"
       persistence:
         enabled: true
-        storageClass: openebs-signoz
+        # Remove storageClass here since global is set
         size: 50Gi
+      # Add pod annotations if needed for monitoring
+      podAnnotations:
+        signoz.io/scrape: "true"
+        signoz.io/port: "9363"
+        signoz.io/path: /metrics
     signoz:
       nodeSelector:
         kubernetes.io/hostname: talos-cp-03
