@@ -33,7 +33,7 @@ spec:
         hide_usage_page: true
         webhook_url: "http://n8n.n8n.svc.cluster.local:5678"
 
-      # Environment variables from CNPG secrets
+      # Environment variables from CNPG secret
       extraEnv:
         DB_POSTGRESDB_HOST:
           valueFrom:
