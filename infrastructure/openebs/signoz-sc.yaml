@@ -6,7 +6,7 @@ provisioner: openebs.io/local
 parameters:
   StorageType: "hostpath"
   BasePath: "/var/openebs/local"
-volumeBindingMode: Immediate
+volumeBindingMode: WaitForFirstConsumer
 allowedTopologies:
   - matchLabelExpressions:
       - key: kubernetes.io/hostname
