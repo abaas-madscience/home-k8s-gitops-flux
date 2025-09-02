@@ -20,8 +20,11 @@ spec:
   values:
     global:
       storageClass: openebs-signoz
+      annotations:
+        volume.kubernetes.io/selected-node: talos-cp-03
+
     clickhouse:
-      installCustomStorageClass: true
+      installCustomStorageClass: false
       # Pin ClickHouse to the same node
       nodeSelector:
         kubernetes.io/hostname: talos-cp-03
@@ -34,7 +37,6 @@ spec:
           memory: "16Gi"
       persistence:
         enabled: true
-        # Remove storageClass here since global is set
         size: 50Gi
       # Add pod annotations if needed for monitoring
       podAnnotations:
