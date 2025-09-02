@@ -2,11 +2,20 @@ apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
   name: openebs-signoz
+  annotations:
+    cas.openebs.io/config: |
+      - name: StorageType
+        value: "hostpath"
+      - name: BasePath
+        value: "/var/openebs/local"
+    meta.helm.sh/release-name: openebs
+    meta.helm.sh/release-namespace: openebs
+    openebs.io/cas-type: local
+    volume.kubernetes.io/selected-node: talos-cp-03
 provisioner: openebs.io/local
-parameters:
-  StorageType: "hostpath"
-  BasePath: "/var/openebs/local"
-volumeBindingMode: WaitForFirstConsumer
+volumeBindingMode: Immediate
+reclaimPolicy: Delete
+allowVolumeExpansion: true
 allowedTopologies:
   - matchLabelExpressions:
       - key: kubernetes.io/hostname
