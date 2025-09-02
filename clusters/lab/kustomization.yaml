@@ -9,6 +9,7 @@ resources:
   - infra-falco.yaml
   - infra-gateways.yaml
   - infra-https-routes.yaml
+  - infra-certmanager.yaml
 
   # Kube system patches
   # - kube-node-patches.yaml
