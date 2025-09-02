@@ -37,20 +37,25 @@ spec:
         enabled: true
         size: 50Gi
         storageClass: openebs-signoz
-        annotations:
-          volume.kubernetes.io/selected-node: talos-cp-03
+        # For ClickHouse, annotations might need to be at a different level
+      # Try adding annotations directly to the ClickHouse configuration
+      annotations:
+        volume.kubernetes.io/selected-node: talos-cp-03
 
       # Add pod annotations if needed for monitoring
       podAnnotations:
         signoz.io/scrape: "true"
         signoz.io/port: "9363"
         signoz.io/path: /metrics
+        # Also add the node selection annotation here
+        volume.kubernetes.io/selected-node: talos-cp-03
 
       # Zookeeper configuration within clickhouse
       zookeeper:
         nodeSelector:
           kubernetes.io/hostname: talos-cp-03
         persistence:
+          enabled: true
           storageClass: openebs-signoz
           annotations:
             volume.kubernetes.io/selected-node: talos-cp-03
@@ -58,6 +63,10 @@ spec:
     signoz:
       nodeSelector:
         kubernetes.io/hostname: talos-cp-03
+      annotations:
+        volume.kubernetes.io/selected-node: talos-cp-03
+      podAnnotations:
+        volume.kubernetes.io/selected-node: talos-cp-03
       resources:
         requests:
           cpu: "1000m"
