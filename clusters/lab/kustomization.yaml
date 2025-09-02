@@ -21,3 +21,4 @@ resources:
   - apps-qdrant.yaml
   - apps-dashy.yaml
   - apps-open-webui.yaml
+  - apps-signoz.yaml
