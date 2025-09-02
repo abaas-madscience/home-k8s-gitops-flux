@@ -1,7 +1,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cnpg-system
+  name: signoz
   namespace: flux-system
 spec:
   interval: 10m
