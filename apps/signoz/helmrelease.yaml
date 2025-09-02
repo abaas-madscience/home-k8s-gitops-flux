@@ -38,15 +38,25 @@ spec:
       persistence:
         enabled: true
         size: 50Gi
+        annotations:
+          volume.kubernetes.io/selected-node: talos-cp-03
+
       # Add pod annotations if needed for monitoring
       podAnnotations:
         signoz.io/scrape: "true"
         signoz.io/port: "9363"
         signoz.io/path: /metrics
+
     signoz:
       nodeSelector:
         kubernetes.io/hostname: talos-cp-03
       resources:
+        persistence:
+          enabled: true
+          size: 10Gi
+          annotations:
+            volume.kubernetes.io/selected-node: talos-cp-03
+
         requests:
           cpu: "1000m"
           memory: "2Gi"
