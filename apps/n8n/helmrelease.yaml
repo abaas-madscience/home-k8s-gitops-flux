@@ -22,9 +22,8 @@ spec:
         port: 5678
 
       # n8n application configuration
-      # Main
       config:
-        # Database configuration - ENABLED for external PostgreSQL, testing
+        # Database configuration - ENABLED for external PostgreSQL
         db:
           type: postgresdb
         timezone: "UTC"
@@ -32,46 +31,47 @@ spec:
         hide_usage_page: true
         webhook_url: "http://n8n.n8n.svc.cluster.local:5678"
 
+      # Environment variables from CNPG secret
       extraEnv:
-        - name: DB_POSTGRESDB_HOST
+        DB_POSTGRESDB_HOST:
           valueFrom:
             secretKeyRef:
               name: n8n-postgres-app
               key: host
-        - name: DB_POSTGRESDB_DATABASE
+        DB_POSTGRESDB_DATABASE:
           valueFrom:
             secretKeyRef:
               name: n8n-postgres-app
               key: dbname
-        - name: DB_POSTGRESDB_USER
+        DB_POSTGRESDB_USER:
           valueFrom:
             secretKeyRef:
               name: n8n-postgres-app
               key: username
-        - name: DB_POSTGRESDB_PASSWORD
+        DB_POSTGRESDB_PASSWORD:
           valueFrom:
             secretKeyRef:
               name: n8n-postgres-app
               key: password
-        - name: DB_POSTGRESDB_PORT
+        DB_POSTGRESDB_PORT:
           valueFrom:
             secretKeyRef:
               name: n8n-postgres-app
               key: port
-        - name: N8N_ENCRYPTION_KEY
+        N8N_ENCRYPTION_KEY:
           valueFrom:
             secretKeyRef:
               name: n8n-encryption-secret
               key: encryption-key
-        - name: N8N_WEBHOOK_URL
+        N8N_WEBHOOK_URL:
           value: "http://n8n.n8n.svc.cluster.local:5678"
-        - name: WEBHOOK_URL
+        WEBHOOK_URL:
           value: "http://n8n.n8n.svc.cluster.local:5678"
-        - name: N8N_HOST
+        N8N_HOST:
           value: "n8n.n8n.svc.cluster.local"
-        - name: N8N_PORT
+        N8N_PORT:
           value: "5678"
-        - name: N8N_PROTOCOL
+        N8N_PROTOCOL:
           value: "http"
 
       # Resource configuration
