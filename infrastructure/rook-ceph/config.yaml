@@ -8,9 +8,16 @@ spec:
     image: quay.io/ceph/ceph:v18.2.4
   dataDirHostPath: /var/lib/rook
   mon:
-    count: 1 # Single node setup
+    count: 1
   mgr:
     count: 1
+  placement:
+    all: # Apply to all Ceph components
+      tolerations:
+        - key: distributed-storage
+          operator: Equal
+          value: "true"
+          effect: NoSchedule
   storage:
     useAllNodes: false
     nodes:
