@@ -61,10 +61,10 @@ spec:
       - name: WEBHOOK_URL
         value: "https://n8n.cluster/webhook"
 
-    # Enable OpenAI API compatibility
+    # Enable OpenAI API compat
     enableOpenaiApi: true
 
-    # Resource limits (optional but recommended)
+    # Resource limits
     resources:
       requests:
         memory: "512Mi"
