@@ -6,10 +6,10 @@ resources:
   - cnpg-system.yaml
   - n8n.yaml
   - pgadmin.yaml
-  #- monitoring.yaml
   - opencost.yaml
   - falco.yaml
   - qdrant.yaml
   - dashy.yaml
   - open-webui.yaml
   - signoz.yaml
+  - rook-ceph.yaml

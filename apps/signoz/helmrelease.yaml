@@ -22,7 +22,7 @@ spec:
       storageClass: openebs-signoz
 
     clickhouse:
-      installCustomStorageClass: false
+      installCustomStorageClass: true
       nodeSelector:
         kubernetes.io/hostname: talos-cp-03
       resources:

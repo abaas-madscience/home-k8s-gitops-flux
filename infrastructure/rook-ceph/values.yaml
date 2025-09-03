@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: rook-ceph-helm-chart-value-overrides
+  namespace: rook-ceph
+data:
+  values.yaml: |
+    # Key overrides for your single-node setup
+    csi:
+      enableLiveness: true
+      
+    resources:
+      limits:
+        memory: 512Mi
+      requests:
+        cpu: 100m
+        memory: 128Mi
+
+    nodeSelector: 
+      ceph-osd: "enabled"  # Target your storage node
+
+    tolerations:
+    - key: distributed-storage
+      operator: Equal
+      value: "true" 
+      effect: NoSchedule
+
+    # Add any other specific overrides you need
