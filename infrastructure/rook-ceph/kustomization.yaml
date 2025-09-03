@@ -6,3 +6,4 @@ resources:
   - values.yaml
   - config.yaml
   - storage-class.yaml
+  - pool.yaml
