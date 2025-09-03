@@ -21,8 +21,8 @@ spec:
     global:
       storageClass: rook-ceph-block
 
-      # Add this section for log collection
-      otelCollectorConfig:
+    otelCollector:
+      config:
         receivers:
           filelog:
             include:
@@ -32,43 +32,6 @@ spec:
             start_at: end
             include_file_path: true
             include_file_name: false
-            operators:
-              - type: router
-                id: get-format
-                routes:
-                  - output: parser-docker
-                    expr: 'body matches "^\\{"'
-                  - output: parser-crio
-                    expr: 'body matches "^[^ Z]+ "'
-                  - output: parser-containerd
-                    expr: true
-              - type: json_parser
-                id: parser-docker
-                output: extract_metadata_from_filepath
-                timestamp:
-                  parse_from: attributes.time
-                  layout: "%Y-%m-%dT%H:%M:%S.%LZ"
-              - type: regex_parser
-                id: parser-crio
-                output: extract_metadata_from_filepath
-                regex: "^(?P<time>[^ Z]+) (?P<stream>stdout|stderr) (?P<logtag>[^ ]*) ?(?P<log>.*)$"
-                timestamp:
-                  parse_from: attributes.time
-                  layout: "%Y-%m-%dT%H:%M:%S.%L%z"
-              - type: regex_parser
-                id: parser-containerd
-                output: extract_metadata_from_filepath
-                regex: "^(?P<time>[^ ^Z]+Z) (?P<stream>stdout|stderr) (?P<logtag>[^ ]*) ?(?P<log>.*)$"
-                timestamp:
-                  parse_from: attributes.time
-                  layout: "%Y-%m-%dT%H:%M:%S.%LZ"
-              - type: regex_parser
-                id: extract_metadata_from_filepath
-                regex: '^.*\/(?P<namespace>[^_]+)_(?P<pod_name>[^_]+)_(?P<uid>[a-f0-9\-]{36})\/(?P<container_name>[^\._]+)\/(?P<restart_count>\d+)\.log$'
-                parse_from: attributes["log.file.path"]
-                cache:
-                  size: 128
-
           k8s_events:
             auth_type: serviceAccount
 
@@ -83,49 +46,55 @@ spec:
                 - k8s.deployment.name
                 - k8s.namespace.name
                 - k8s.node.name
-                - k8s.pod.start_time
 
         service:
           pipelines:
             logs:
-              receivers: [otlp, filelog, k8s_events]
+              receivers:
+                [
+                  otlp,
+                  filelog,
+                  k8s_events,
+                  httplogreceiver/heroku,
+                  httplogreceiver/json,
+                ]
               processors: [k8sattributes, batch]
-              exporters: [clickhouselogsexporter]
+              exporters: [clickhouselogsexporter, metadataexporter]
 
-      clickhouse:
-        installCustomStorageClass: true
-        resources:
-          requests:
-            cpu: "2000m"
-            memory: "4Gi"
-          limits:
-            cpu: "4000m"
-            memory: "8Gi"
+    clickhouse:
+      installCustomStorageClass: true
+      resources:
+        requests:
+          cpu: "2000m"
+          memory: "4Gi"
+        limits:
+          cpu: "4000m"
+          memory: "8Gi"
+      persistence:
+        enabled: true
+        size: 50Gi
+        storageClass: rook-ceph-block
+
+      podAnnotations:
+        signoz.io/scrape: "true"
+        signoz.io/port: "9363"
+        signoz.io/path: /metrics
+
+      zookeeper:
         persistence:
           enabled: true
-          size: 50Gi
           storageClass: rook-ceph-block
-
-        podAnnotations:
-          signoz.io/scrape: "true"
-          signoz.io/port: "9363"
-          signoz.io/path: /metrics
-
-        zookeeper:
-          persistence:
-            enabled: true
-            storageClass: rook-ceph-block
-            size: 10Gi
-
-      signoz:
-        resources:
-          requests:
-            cpu: "1000m"
-            memory: "2Gi"
-          limits:
-            cpu: "2000m"
-            memory: "4Gi"
-        persistence:
-          enabled: true
           size: 10Gi
-          storageClass: rook-ceph-block
+
+    signoz:
+      resources:
+        requests:
+          cpu: "1000m"
+          memory: "2Gi"
+        limits:
+          cpu: "2000m"
+          memory: "4Gi"
+      persistence:
+        enabled: true
+        size: 10Gi
+        storageClass: rook-ceph-block
