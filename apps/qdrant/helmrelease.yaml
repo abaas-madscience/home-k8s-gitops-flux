@@ -92,10 +92,10 @@ spec:
     persistence:
       enabled: true
       size: 75Gi
-      storageClassName: openebs-database
+      #storageClassName: openebs-database
+      existingClaim: "qdrant-storage-qdrant-0"
       annotations:
         volume.kubernetes.io/selected-node: talos-cp-02
-        # Another example annotation
     podAnnotations: {}
     podDisruptionBudget:
       enabled: false
@@ -149,6 +149,7 @@ spec:
       size: 10Gi
     snapshotRestoration:
       enabled: false
+      storageClassName: openebs-database
       mountPath: /qdrant/snapshot-restoration
       pvcName: snapshots-pvc
       snapshots: null
