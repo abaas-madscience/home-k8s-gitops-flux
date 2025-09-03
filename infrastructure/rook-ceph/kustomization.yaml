@@ -5,4 +5,4 @@ resources:
   - helmrepo.yaml
   - values.yaml
   - config.yaml
-  - storageclass.yaml
+  - storage-class.yaml
