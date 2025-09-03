@@ -9,8 +9,7 @@ spec:
   # Storage configuration
   storage:
     size: 20Gi
-    #storageClass: openebs-hostpath
-    existingClaim: "n8n-postgres-1"
+    storageClass: openebs-hostpath
 
     # You can get the superuser credentials from the secret created by the Cluster
     # kubectl get secret n8n-pg-superuser -n n8n -o jsonpath='{.data.username}' | base64 -d
