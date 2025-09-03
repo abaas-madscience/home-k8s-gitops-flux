@@ -22,7 +22,7 @@ spec:
     # Persistence for pgAdmin configuration and saved connections
     persistentVolume:
       enabled: true
-      storageClass: openebs-hostpath
+      storageClass: rook-ceph-block # Ensure this matches your Ceph storage class
       size: 1Gi # Adjust size as needed
 
     # Service type - ClusterIP is sufficient as Cilium HTTPRoute will expose it
@@ -38,7 +38,7 @@ spec:
       limits:
         cpu: "500m"
         memory: "512Mi"
-    
+
     securityContext:
       runAsNonRoot: true
       runAsUser: 5050

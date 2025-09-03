@@ -86,10 +86,8 @@ spec:
       # Persistence for n8n data
       persistence:
         enabled: true
-        storageClass: openebs-database
+        storageClass: rook-ceph-block
         size: 5Gi
-        annotations:
-          volume.kubernetes.io/selected-node: talos-cp-02
 
     # Disable built-in PostgreSQL since we're using CNPG
     postgresql:

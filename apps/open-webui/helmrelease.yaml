@@ -36,15 +36,10 @@ spec:
         - name: N8N_WEBHOOK_URL
           value: "https://n8n.cluster/webhook"
 
-      nodeSelector:
-        kubernetes.io/hostname: talos-cp-02
-
       persistence:
         enabled: true
         size: 2Gi
-        storageClass: openebs-database
-        annotations:
-          volume.kubernetes.io/selected-node: talos-cp-02
+        storageClass: rook-ceph-block
 
     # Basic service configuration
     service:
@@ -52,17 +47,11 @@ spec:
       port: 80
       containerPort: 8080
 
-    # Node Selector
-    nodeSelector:
-      kubernetes.io/hostname: talos-cp-02
-
     # Persistence for data
     persistence:
       enabled: true
       size: 5Gi # Increased from default 2Gi
-      storageClass: openebs-database
-      annotations:
-        volume.kubernetes.io/selected-node: talos-cp-02
+      storageClass: rook-ceph-block
 
     # Environment variables
     extraEnvVars:
