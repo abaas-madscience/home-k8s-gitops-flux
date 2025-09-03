@@ -19,12 +19,10 @@ spec:
   targetNamespace: signoz
   values:
     global:
-      storageClass: openebs-signoz
+      storageClass: rook-ceph-block
 
     clickhouse:
       installCustomStorageClass: true
-      nodeSelector:
-        kubernetes.io/hostname: talos-cp-03
       resources:
         requests:
           cpu: "2000m"
@@ -35,10 +33,7 @@ spec:
       persistence:
         enabled: true
         size: 50Gi
-        storageClass: openebs-signoz
-        # Try adding annotations here for the PVC
-        annotations:
-          volume.kubernetes.io/selected-node: talos-cp-03
+        storageClass: rook-ceph-block
 
       podAnnotations:
         signoz.io/scrape: "true"
@@ -46,17 +41,12 @@ spec:
         signoz.io/path: /metrics
 
       zookeeper:
-        nodeSelector:
-          kubernetes.io/hostname: talos-cp-03
         persistence:
           enabled: true
-          storageClass: openebs-signoz
-          annotations:
-            volume.kubernetes.io/selected-node: talos-cp-03
+          storageClass: rook-ceph-block
+          size: 10Gi
 
     signoz:
-      nodeSelector:
-        kubernetes.io/hostname: talos-cp-03
       resources:
         requests:
           cpu: "1000m"
@@ -67,6 +57,4 @@ spec:
       persistence:
         enabled: true
         size: 10Gi
-        storageClass: openebs-signoz
-        annotations:
-          volume.kubernetes.io/selected-node: talos-cp-03
+        storageClass: rook-ceph-block
