@@ -4,3 +4,4 @@ resources:
   - helmrepo.yaml
   - helmrelease.yaml
   - database-sc.yaml
+  - database-sc-retain.yaml
