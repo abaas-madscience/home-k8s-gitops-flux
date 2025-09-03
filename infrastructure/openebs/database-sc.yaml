@@ -14,6 +14,6 @@ metadata:
     volume.kubernetes.io/selected-node: talos-cp-02
 provisioner: openebs.io/local
 volumeBindingMode: Immediate
-reclaimPolicy: Delete
+reclaimPolicy: Retain
 allowVolumeExpansion: true
 # Testing
