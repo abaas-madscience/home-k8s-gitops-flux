@@ -1,0 +1,19 @@
+apiVersion: ceph.rook.io/v1
+kind: CephCluster
+metadata:
+  name: rook-ceph
+  namespace: rook-ceph
+spec:
+  cephVersion:
+    image: quay.io/ceph/ceph:v18.2.4
+  dataDirHostPath: /var/lib/rook
+  mon:
+    count: 1 # Single node setup
+  mgr:
+    count: 1
+  storage:
+    useAllNodes: false
+    nodes:
+      - name: talos-sc-01
+        devices:
+          - name: "/dev/sdb"
