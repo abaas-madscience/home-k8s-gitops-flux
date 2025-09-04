@@ -5,7 +5,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m
-  path: ./infrastructure/charts/app-template
+  path: ./infrastructure/charts/app-template/templates
   prune: false
   sourceRef:
     kind: GitRepository
