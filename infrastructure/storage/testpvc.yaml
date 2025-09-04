@@ -10,13 +10,15 @@ spec:
       chart: ./infrastructure/storage/charts
       sourceRef:
         kind: GitRepository
-        name: infrastructure
+        name: flux-system
         namespace: flux-system
   values:
     app:
       name: testapp
     component: test
     namespace: default
+    description: "Test PVC for development"
     storage:
       size: "1Gi"
       class: "rook-ceph-block"
+      accessMode: "ReadWriteOnce"

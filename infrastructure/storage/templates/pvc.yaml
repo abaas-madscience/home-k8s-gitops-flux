@@ -1,19 +1,19 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: "{ { .Values.app.name } }-{ { .Values.component } }-pvc"
+  name: "{{ .Values.app.name }}-{{ .Values.component }}-pvc"
   namespace: { { .Values.namespace } }
   labels:
     app.kubernetes.io/name: { { .Values.app.name } }
-  # In your template
   annotations:
     kustomize.toolkit.fluxcd.io/prune: disabled
     kustomize.toolkit.fluxcd.io/force: disabled
     kustomize.toolkit.fluxcd.io/ssa: IfNotPresent
-    description: { { .Values.description | quote } }
+    description:
+      { { .Values.description | default "Auto-generated PVC" | quote } }
 spec:
   accessModes:
-    - { { .Values.storage.accessMode } }
+    - { { .Values.storage.accessMode | default "ReadWriteOnce" } } # Add default
   resources:
     requests:
       storage: { { .Values.storage.size } }
