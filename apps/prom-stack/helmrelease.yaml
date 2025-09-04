@@ -9,7 +9,6 @@ spec:
   chartRef:
     kind: OCIRepository
     name: prom-stack-oci
-    namespace: flux-system
   values:
     # Storage configuration for Prometheus
     prometheus:
