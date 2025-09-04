@@ -13,3 +13,5 @@ resources:
   - open-webui.yaml
   - signoz.yaml
   - rook-ceph.yaml
+  - prom-stack.yaml
+  - cert-manager.yaml
