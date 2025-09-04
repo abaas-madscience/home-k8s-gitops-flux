@@ -13,4 +13,3 @@ spec:
     namespace: flux-system
   dependsOn:
     - name: infra-namespaces
-    - name: minio-storage-pvc
