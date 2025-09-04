@@ -23,5 +23,5 @@ resources:
   - apps-pgadmin.yaml
   - apps-qdrant.yaml
   - apps-dashy.yaml
-  - apps-open-webui.yaml
+  #- apps-open-webui.yaml
   - apps-prom-stack.yaml
