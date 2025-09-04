@@ -82,6 +82,7 @@ spec:
                   icon: favicon
                   url: https://qdrant.cluster/dashboard
                   target: newtab
+
             - name: Automation & Workflows
               icon: fas fa-cogs
               items:
@@ -89,4 +90,9 @@ spec:
                   description: Workflow automation tool
                   icon: favicon
                   url: https://n8n.cluster
+                  target: newtab
+                - title: Trello
+                  description: Project management and task tracking
+                  icon: favicon
+                  url: https://trello.com
                   target: newtab
