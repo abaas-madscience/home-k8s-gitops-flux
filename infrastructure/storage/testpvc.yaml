@@ -1,4 +1,5 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
 metadata:
   name: postgres-pvc
   namespace: flux-system
@@ -8,7 +9,7 @@ spec:
     spec:
       chart: ./infrastructure/storage/charts
       sourceRef:
-        kind: GitRepository
+        kind: HelmRepository
         name: infrastructure
         namespace: flux-system
   values:
