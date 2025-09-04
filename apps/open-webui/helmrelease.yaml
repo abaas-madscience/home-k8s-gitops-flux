@@ -38,8 +38,9 @@ spec:
 
       persistence:
         enabled: true
-        size: 2Gi
-        storageClass: rook-ceph-block
+        #size: 2Gi
+        #storageClass: rook-ceph-block
+        existingClaim: open-webui-pipelines-pvc
 
     # Basic service configuration
     service:
@@ -50,8 +51,9 @@ spec:
     # Persistence for data
     persistence:
       enabled: true
-      size: 5Gi # Increased from default 2Gi
-      storageClass: rook-ceph-block
+      #size: 5Gi
+      #storageClass: rook-ceph-block
+      existingClaim: open-webui-pvc
 
     # Environment variables
     extraEnvVars:
