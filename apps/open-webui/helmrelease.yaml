@@ -52,7 +52,6 @@ spec:
       enabled: true
       size: 5Gi # Increased from default 2Gi
       storageClass: rook-ceph-block
-      existingClaim: "open-webui"
 
     # Environment variables
     extraEnvVars:
