@@ -9,7 +9,7 @@ spec:
   chartRef:
     kind: OCIRepository
     name: prom-stack-oci
-    namespace: prom-stack
+    namespace: flux-system
   valuesFrom:
     - kind: ConfigMap
       name: prom-stack-values-55b286ttt7
