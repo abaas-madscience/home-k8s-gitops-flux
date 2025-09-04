@@ -12,7 +12,7 @@ resources:
   - infra-certmanager.yaml
   - infra-rook-ceph.yaml
   - infra-storage-pvcs.yaml
-  #  - infra-app-templates.yaml
+  - infra-app-templates.yaml
 
   # Kube system patches
   # - kube-node-patches.yaml
