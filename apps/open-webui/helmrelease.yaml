@@ -53,7 +53,7 @@ spec:
       enabled: true
       #size: 5Gi
       #storageClass: rook-ceph-block
-      existingClaim: open-webui-pvc
+      existingClaim: open-webui-base-pvc
 
     # Environment variables
     extraEnvVars:
