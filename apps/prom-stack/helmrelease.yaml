@@ -10,10 +10,6 @@ spec:
     kind: OCIRepository
     name: prom-stack-oci
     namespace: flux-system
-  valuesFrom:
-    - kind: ConfigMap
-      namespace: prom-stack
-      name: prom-stack-values-55b286ttt7
   values:
     # Storage configuration for Prometheus
     prometheus:
