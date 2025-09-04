@@ -4,3 +4,5 @@ resources:
   - configmap.yaml
   - helmrelease.yaml
   - helmrepo.yaml
+generatorOptions:
+  disableNameSuffixHash: false

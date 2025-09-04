@@ -5,6 +5,7 @@ metadata:
   name: dashy
   namespace: flux-system
 spec:
+  force: true
   chart:
     spec:
       chart: dashy
