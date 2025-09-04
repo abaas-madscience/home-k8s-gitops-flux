@@ -1,0 +1,48 @@
+# Simple interface for developers
+app:
+  name: ""
+  image: ""
+  tag: ""
+  port: 8080
+
+# Optional overrides (most have sane defaults)
+replicas: 1
+environment: "development"
+
+# Health check paths (defaults provided)
+healthChecks:
+  enabled: true
+  liveness:
+    path: "/health"
+    delay: 30
+  readiness:
+    path: "/ready"
+    delay: 5
+
+# Ingress (optional)
+ingress:
+  enabled: false
+  host: ""
+  path: "/"
+  tls: true
+
+# Database connection (auto-provisions PVC if enabled)
+database:
+  enabled: false
+  size: "10Gi"
+
+# Cache (auto-provisions Redis if enabled)
+cache:
+  enabled: false
+
+# Monitoring (always enabled, configurable)
+monitoring:
+  port: 8080
+  path: "/metrics"
+
+# Resource overrides (defaults provided based on environment)
+resources: {}
+
+# Team info (required for cost allocation)
+team: ""
+dataClassification: "standard"

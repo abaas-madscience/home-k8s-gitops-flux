@@ -1,0 +1,7 @@
+apiVersion: v2
+name: app-template
+description: Kubernetes deployment standard
+version: 1.0.0
+maintainers:
+  - name: Oscar Frowijn
+    email: oscarfrowijn@gmail.com
