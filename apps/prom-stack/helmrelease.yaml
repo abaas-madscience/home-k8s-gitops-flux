@@ -2,7 +2,7 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: prom-stack
-  namespace: prom-stack
+  namespace: flux-system
 spec:
   interval: 30m
   timeout: 10m
@@ -12,7 +12,7 @@ spec:
     namespace: prom-stack
   valuesFrom:
     - kind: ConfigMap
-      name: prom-stack-values
+      name: prom-stack-values-55b286ttt7
   values:
     # Storage configuration for Prometheus
     prometheus:
