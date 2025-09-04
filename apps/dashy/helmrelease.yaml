@@ -48,6 +48,26 @@ spec:
                   icon: favicon
                   url: https://open-webui.cluster
                   target: newtab
+
+          - name: Monitoring & Observability
+            icon: fas fa-chart-line
+            items:
+              - title: Grafana
+                description: Metrics visualization and dashboards
+                icon: favicon
+                url: https://grafana.cluster
+                target: newtab
+              - title: Prometheus
+                description: Metrics collection and alerting
+                icon: favicon
+                url: https://prometheus.cluster
+                target: newtab
+              - title: Alertmanager
+                description: Alert routing and management
+                icon: favicon
+                url: https://alertmanager.cluster
+                target: newtab
+
             - name: Database & Analytics
               icon: fas fa-database
               items:

@@ -8,3 +8,5 @@ resources:
   - open-webui.yaml
   - signoz.yaml
   - grafana.yaml
+  - prometheus.yaml
+  - alertmanager.yaml
