@@ -7,3 +7,4 @@ resources:
   - dashy.yaml
   - open-webui.yaml
   - signoz.yaml
+  - grafana.yaml

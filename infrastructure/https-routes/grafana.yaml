@@ -8,12 +8,12 @@ spec:
     - name: public-gateway
       namespace: infra-gateway
   hostnames:
-    - "g.public.lab.local"
+    - "grafana.cluster"
   rules:
     - matches:
         - path:
             type: PathPrefix
             value: /
       backendRefs:
-        - name: prometheus-stack-grafana
+        - name: prom-stack-grafana
           port: 80

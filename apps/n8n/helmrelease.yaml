@@ -86,9 +86,9 @@ spec:
       # Persistence for n8n data
       persistence:
         enabled: true
-        existingClaim: "n8n"
-        #storageClass: rook-ceph-block
-        #size: 5Gi
+        #existingClaim: "n8n"
+        storageClass: rook-ceph-block
+        size: 5Gi
 
     # Disable built-in PostgreSQL since we're using CNPG
     postgresql:
