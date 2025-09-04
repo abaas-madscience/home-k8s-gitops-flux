@@ -1,0 +1,43 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: minio
+  namespace: minio
+spec:
+  interval: 10m
+  chart:
+    spec:
+      chart: minio
+      version: "5.0.15"
+      sourceRef:
+        kind: HelmRepository
+        name: minio
+  values:
+    # Use your protected PVC
+    persistence:
+      enabled: true
+      existingClaim: "minio-storage-pvc"
+
+    # Access credentials
+    auth:
+      rootUser: "admin"
+      rootPassword: "password123" # Change this to a strong password
+
+    # Expose for your pipeline
+    service:
+      type: ClusterIP
+      port: 9000
+
+    # Console access
+    consoleService:
+      type: ClusterIP
+      port: 9001
+
+    # Resources for your knowledge workload
+    resources:
+      requests:
+        memory: "512Mi"
+        cpu: "250m"
+      limits:
+        memory: "1Gi"
+        cpu: "500m"
