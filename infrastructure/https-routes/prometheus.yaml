@@ -16,4 +16,4 @@ spec:
             value: /
       backendRefs:
         - name: prom-stack-kube-prometheus-prometheus
-          port: 8080
+          port: 9090

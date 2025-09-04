@@ -16,4 +16,4 @@ spec:
             value: /
       backendRefs:
         - name: prom-stack-kube-prometheus-alertmanager
-          port: 8080
+          port: 9093
