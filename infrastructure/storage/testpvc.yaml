@@ -9,7 +9,7 @@ spec:
     spec:
       chart: ./infrastructure/storage/charts
       sourceRef:
-        kind: HelmRepository
+        kind: GitRepository
         name: infrastructure
         namespace: flux-system
   values:
