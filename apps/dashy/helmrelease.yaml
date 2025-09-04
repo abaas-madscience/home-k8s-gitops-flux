@@ -68,24 +68,24 @@ spec:
                   url: https://alertmanager.cluster
                   target: newtab
 
-              - name: Database & Analytics
-                icon: fas fa-database
-                items:
-                  - title: pgAdmin
-                    description: PostgreSQL administration tool
-                    icon: favicon
-                    url: https://pgadmin.cluster
-                    target: newtab
-                  - title: Qdrant
-                    description: Vector database dashboard
-                    icon: favicon
-                    url: https://qdrant.cluster/dashboard
-                    target: newtab
-              - name: Automation & Workflows
-                icon: fas fa-cogs
-                items:
-                  - title: n8n
-                    description: Workflow automation tool
-                    icon: favicon
-                    url: https://n8n.cluster
-                    target: newtab
+            - name: Database & Analytics
+              icon: fas fa-database
+              items:
+                - title: pgAdmin
+                  description: PostgreSQL administration tool
+                  icon: favicon
+                  url: https://pgadmin.cluster
+                  target: newtab
+                - title: Qdrant
+                  description: Vector database dashboard
+                  icon: favicon
+                  url: https://qdrant.cluster/dashboard
+                  target: newtab
+            - name: Automation & Workflows
+              icon: fas fa-cogs
+              items:
+                - title: n8n
+                  description: Workflow automation tool
+                  icon: favicon
+                  url: https://n8n.cluster
+                  target: newtab
