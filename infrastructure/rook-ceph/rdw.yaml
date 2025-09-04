@@ -8,13 +8,13 @@ spec:
   metadataPool:
     replicated:
       size: 1
+      requireSafeReplicaSize: true
   dataPool:
     replicated:
       size: 1
+      requireSafeReplicaSize: true
   preservePoolsOnDelete: false
   gateway:
-    type: s3
-    sslCertificateRef:
     port: 80
     instances: 1
     resources:
@@ -23,4 +23,4 @@ spec:
         memory: "1Gi"
       requests:
         cpu: "100m"
-        memory: "128Mi"
+        memory: "256Mi"
