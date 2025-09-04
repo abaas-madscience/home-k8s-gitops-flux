@@ -10,3 +10,4 @@ resources:
   - grafana.yaml
   - prometheus.yaml
   - alertmanager.yaml
+  - s3.yaml
