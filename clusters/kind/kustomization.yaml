@@ -3,4 +3,4 @@ kind: Kustomization
 resources:
   # Infrastructure namespaces
   - infra-namespaces.yaml
-  - root-ceph/
+  - rook-ceph/
