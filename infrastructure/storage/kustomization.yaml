@@ -4,4 +4,4 @@ resources:
   - testpvc.yaml
   - open-webui.yaml
   - open-webui-pipelines.yaml
-  - minio.yaml
+  #- minio.yaml
