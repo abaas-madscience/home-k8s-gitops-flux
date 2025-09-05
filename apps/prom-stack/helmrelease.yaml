@@ -12,19 +12,27 @@ spec:
     namespace: flux-system
 
   values:
-    # Storage configuration for Prometheus
-
     prometheus:
       prometheusSpec:
-        storageSpec:
-          volumeClaimTemplate:
-            spec:
-              existingClaim: "prom-stack-prometheus-pvc"
-              #storageClassName: rook-ceph-block-retain
-              #accessModes: ["ReadWriteOnce"]
-              #resources:
-              #  requests:
-              #    storage: 50Gi
+        # Storage configuration for Prometheus
+        volumes:
+          - name: prometheus-data-volume
+            persistentVolumeClaim:
+              claimName: prom-stack-prometheus-pvc
+        volumeMounts:
+          - name: prometheus-data-volume
+            mountPath: /prometheus
+
+        #storageSpec:
+        #  volumeClaimTemplate:
+        #    spec:
+        #      volumeName: "prom-stack-prometheus-pvc"
+        #      existingClaim: "prom-stack-prometheus-pvc"
+        #storageClassName: rook-ceph-block-retain
+        #accessModes: ["ReadWriteOnce"]
+        #resources:
+        #  requests:
+        #    storage: 50Gi
 
         # Set retention to match storage size
         retention: 14d
