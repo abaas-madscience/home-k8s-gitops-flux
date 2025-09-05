@@ -91,6 +91,15 @@ generate_kind_config() {
     local name="$1"
     local config_file="$HOME/.kind-dev/clusters/${name}-config.yaml"
     
+    # Create storage directories for Rook-Ceph if we have workers
+    if [ "$CLUSTER_WORKERS" -gt 0 ]; then
+        log_info "Creating storage directories for Rook-Ceph..." >&2
+        for ((i=1; i<=CLUSTER_WORKERS; i++)); do
+            mkdir -p "/tmp/rook-storage-$i"
+            log_info "Created storage directory: /tmp/rook-storage-$i" >&2
+        done
+    fi
+    
     cat > "$config_file" << EOF
 kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
@@ -123,11 +132,14 @@ EOF
         fi
     done
     
-    # Add worker nodes
+    # Add worker nodes with Rook storage mounts
     for ((i=1; i<=CLUSTER_WORKERS; i++)); do
         cat >> "$config_file" << EOF
 - role: worker
   image: kindest/node:v${CLUSTER_K8S_VERSION}
+  extraMounts:
+  - hostPath: /tmp/rook-storage-$i
+    containerPath: /mnt/rook-disk
 EOF
     done
     
@@ -189,6 +201,7 @@ main() {
     parse_profile "$PROFILE_FILE"
     
     # Generate and create cluster
+    log_info "Generating Kind cluster configuration..."
     config_file=$(generate_kind_config "$name")
     log_info "Generated config: $config_file"
     
@@ -211,6 +224,8 @@ created=$(date -Iseconds)
 cilium=$FEATURE_CILIUM
 gatewayAPI=$FEATURE_GATEWAY_API
 ready_for_flux=true
+workers=$CLUSTER_WORKERS
+rook_storage_ready=$([ "$CLUSTER_WORKERS" -gt 0 ] && echo "true" || echo "false")
 EOF
     
     log_success "Cluster '$name' created successfully!"

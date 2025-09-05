@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: rook-ceph-helm-chart-value-overrides
+  namespace: rook-ceph
+data:
+  values.yaml: |
+    csi:
+      enableLiveness: true
+      
+    resources:
+      limits:
+        memory: 512Mi
+      requests:
+        cpu: 100m
+        memory: 128Mi
+
+    # Remove talos-specific node selectors and tolerations for kind
+    # nodeSelector: 
+    #   ceph-osd: "enabled"
+    # tolerations:
+    # - key: distributed-storage
+    #   operator: Equal
+    #   value: "true" 
+    #   effect: NoSchedule

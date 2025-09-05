@@ -1,0 +1,8 @@
+apiVersion: ceph.rook.io/v1
+kind: CephObjectStoreUser
+metadata:
+  name: ai-pipeline-user
+  namespace: rook-ceph
+spec:
+  store: knowledgebase
+  displayName: "AI Pipeline User"

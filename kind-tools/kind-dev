@@ -131,6 +131,26 @@ cmd_validate() {
     execute_script "cluster-validate" "$name"
 }
 
+cmd_suspend() {
+    local name="${1:-}"
+    if [ -z "$name" ]; then
+        log_error "Cluster name required"
+        return 1
+    fi
+    
+    execute_script "cluster-suspend" "$name"
+}
+
+cmd_resume() {
+    local name="${1:-}"
+    if [ -z "$name" ]; then
+        log_error "Cluster name required"
+        return 1
+    fi
+    
+    execute_script "cluster-resume" "$name"
+}
+
 # Usage
 usage() {
     cat << EOF
@@ -148,6 +168,8 @@ COMMANDS:
     bootstrap NAME [REPO]       Bootstrap Flux GitOps
     profiles                    List available profiles
     validate [NAME]             Validate cluster configuration
+    suspend NAME                Suspend cluster to save resources
+    resume NAME                 Resume suspended cluster
     
 PROFILES:
     basic       - Minimal cluster (default CNI)
@@ -200,6 +222,14 @@ main() {
         validate)
             shift
             cmd_validate "$@"
+            ;;
+        suspend)
+            shift
+            cmd_suspend "$@"
+            ;;
+        resume)
+            shift
+            cmd_resume "$@"
             ;;
         -h|--help|help)
             usage
