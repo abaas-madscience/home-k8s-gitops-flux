@@ -1,0 +1,27 @@
+# Description: GitOps-ready cluster with Cilium for Flux deployment
+apiVersion: kind-dev/v1alpha1
+kind: Profile
+metadata:
+  name: gitops
+  description: GitOps development cluster ready for Flux bootstrap
+
+cluster:
+  k8sVersion: "1.32.0"
+  controlPlanes: 1
+  workers: 3
+  disableCNI: true
+  disableKubeProxy: true
+
+features:
+  cilium:
+    enabled: true
+    kubeProxyReplacement: true
+    l2announcements: true
+  gatewayAPI:
+    enabled: true
+    
+gitops:
+  flux:
+    enabled: true
+    defaultBranch: "kind"
+    defaultPath: "clusters/kind"

@@ -1,0 +1,19 @@
+# Description: Basic Kind cluster with default settings
+apiVersion: kind-dev/v1alpha1
+kind: Profile
+metadata:
+  name: basic
+  description: Basic Kind cluster with default CNI and minimal configuration
+
+cluster:
+  k8sVersion: "1.32.0"
+  controlPlanes: 1
+  workers: 2
+  disableCNI: false
+  disableKubeProxy: false
+
+features:
+  cilium:
+    enabled: false
+  gatewayAPI:
+    enabled: false

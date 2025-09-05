@@ -17,7 +17,7 @@ NC='\033[0m' # No Color
 DEFAULT_NAME="test-cluster"
 DEFAULT_CONTROL_PLANES=1
 DEFAULT_WORKERS=2
-DEFAULT_K8S_VERSION="v1.28.0"
+DEFAULT_K8S_VERSION="1.32.0"
 
 # Configuration directory
 CONFIG_DIR="$HOME/.kind-builder"

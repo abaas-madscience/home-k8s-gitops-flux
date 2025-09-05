@@ -1,0 +1,39 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: n8n-backup
+spec:
+  schedule: "0 2 * * *" # 2 AM daily
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+            - name: backup
+              image: ubuntu:latest
+              command: ["/bin/bash"]
+              args:
+                - -c
+                - |
+                  apt update && apt install -y postgresql-client-15 rsync openssh-client
+                  pg_dump -h postgres-service -U $PGUSER -d $PGDATABASE > /tmp/backup_$(date +%Y%m%d_%H%M%S).sql
+                  rsync -av /tmp/backup_*.sql backup-host:/backups/postgres/
+              env:
+                - name: PGUSER
+                  valueFrom:
+                    secretKeyRef:
+                      name: postgres-secret
+                      key: username
+                - name: PGPASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: postgres-secret
+                      key: password
+              volumeMounts:
+                - name: ssh-key
+                  mountPath: /root/.ssh
+          volumes:
+            - name: ssh-key
+              secret:
+                secretName: backup-ssh-key

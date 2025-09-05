@@ -1,0 +1,21 @@
+# Description: Kind cluster with Cilium CNI and Gateway API
+apiVersion: kind-dev/v1alpha1
+kind: Profile
+metadata:
+  name: cilium
+  description: Kind cluster with Cilium CNI replacing kube-proxy
+
+cluster:
+  k8sVersion: "1.32.0"
+  controlPlanes: 1
+  workers: 2
+  disableCNI: true
+  disableKubeProxy: true
+
+features:
+  cilium:
+    enabled: true
+    kubeProxyReplacement: true
+    l2announcements: true
+  gatewayAPI:
+    enabled: true
