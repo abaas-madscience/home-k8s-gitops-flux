@@ -20,7 +20,15 @@ spec:
   #         value: "true"
   #         effect: NoSchedule
   storage:
-    useAllNodes: true # Changed from false
+    useAllNodes: true # or false if you want to be specific
     useAllDevices: false # Keep this false
-    directories: # Changed from nodes/devices to directories
-      - path: /mnt/rook-disk
+    nodes:
+      - name: "rook-worker"
+        directories:
+          - path: "/mnt/rook-disk-1"
+      - name: "rook-worker2"
+        directories:
+          - path: "/mnt/rook-disk-2"
+      - name: "rook-worker3"
+        directories:
+          - path: "/mnt/rook-disk-2"
