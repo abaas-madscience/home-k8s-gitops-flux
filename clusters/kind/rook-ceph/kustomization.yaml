@@ -6,7 +6,4 @@ resources:
   - values.yaml
   - config.yaml
   - storage-class.yaml
-  - storage-class-retain.yaml
   - pool.yaml
-  - rdw.yaml
-  - rdw-user.yaml
