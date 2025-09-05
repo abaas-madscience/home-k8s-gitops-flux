@@ -3,7 +3,8 @@ kind: Kustomization
 resources:
   - helmrepo.yaml
   - helmrelease.yaml
-  - config.yaml
-#  - values.yaml
+  - values.yaml
+# These needed to be added later
+#  - config.yaml
 #  - storage-class.yaml
 #  - pool.yaml
