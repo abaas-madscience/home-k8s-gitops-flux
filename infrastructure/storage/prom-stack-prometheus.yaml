@@ -19,6 +19,6 @@ spec:
     namespace: prom-stack
     description: "Prometheus PVC"
     storage:
-      size: "55Gi"
+      size: "50Gi"
       class: "rook-ceph-block"
       accessMode: "ReadWriteOnce"
