@@ -18,8 +18,8 @@ main() {
     local current_context
     current_context=$(get_current_context)
     
-    printf "%-15s %-12s %-10s %-15s %s\n" "NAME" "STATUS" "PROFILE" "CREATED" "CONTEXT"
-    printf "%s\n" "$(printf '%.0s-' {1..70})"
+    printf "%-15s %-12s %-10s %-15s %-10s %s\n" "NAME" "STATUS" "PROFILE" "CREATED" "STATE" "CONTEXT"
+    printf "%s\n" "$(printf '%.0s-' {1..80})"
     
     while IFS= read -r cluster; do
         [ -z "$cluster" ] && continue
@@ -27,6 +27,7 @@ main() {
         local status="Unknown"
         local profile="unknown"
         local created="unknown"
+        local state="Active"
         local context_marker=" "
         
         # Check if this is the current context
@@ -34,25 +35,33 @@ main() {
             context_marker="*"
         fi
         
-        # Get cluster status
-        if kubectl cluster-info --context "kind-$cluster" >/dev/null 2>&1; then
-            if validate_cluster_health "$cluster" >/dev/null 2>&1; then
-                status="Ready"
-            else
-                status="Degraded"
-            fi
-        else
-            status="Not Ready"
-        fi
-        
         # Get metadata if available
         local meta_file="$HOME/.kind-dev/clusters/$cluster.meta"
         if [ -f "$meta_file" ]; then
             profile=$(grep "^profile=" "$meta_file" 2>/dev/null | cut -d'=' -f2 || echo "unknown")
             created=$(grep "^created=" "$meta_file" 2>/dev/null | cut -d'=' -f2 | cut -d'T' -f1 || echo "unknown")
+            
+            # Check if suspended
+            if grep -q "^suspended=true" "$meta_file" 2>/dev/null; then
+                state="Suspended"
+                status="Suspended"
+            fi
         fi
         
-        printf "%s%-14s %-12s %-10s %-15s\n" "$context_marker" "$cluster" "$status" "$profile" "$created"
+        # Get cluster status (only if not suspended)
+        if [ "$state" != "Suspended" ]; then
+            if kubectl cluster-info --context "kind-$cluster" >/dev/null 2>&1; then
+                if validate_cluster_health "$cluster" >/dev/null 2>&1; then
+                    status="Ready"
+                else
+                    status="Degraded"
+                fi
+            else
+                status="Not Ready"
+            fi
+        fi
+        
+        printf "%s%-14s %-12s %-10s %-15s %-10s\n" "$context_marker" "$cluster" "$status" "$profile" "$created" "$state"
         
     done <<< "$clusters"
     

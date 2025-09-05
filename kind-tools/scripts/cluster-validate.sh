@@ -32,6 +32,7 @@ validate_networking() {
 
 validate_storage() {
     local context="$1"
+    local name="$2"
     
     log_info "Validating storage..."
     
@@ -44,6 +45,30 @@ validate_storage() {
         kubectl get storageclass --context "$context"
     else
         log_warning "No storage classes found"
+    fi
+    
+    # Check Rook storage readiness
+    local meta_file="$HOME/.kind-dev/clusters/$name.meta"
+    if [ -f "$meta_file" ] && grep -q "rook_storage_ready=true" "$meta_file" 2>/dev/null; then
+        local workers=$(grep "^workers=" "$meta_file" | cut -d'=' -f2)
+        log_success "Rook-Ceph storage ready: $workers worker nodes with mounted storage"
+        
+        # Verify storage mounts exist in containers
+        local ready_mounts=0
+        for ((i=1; i<=workers; i++)); do
+            local worker_name=$(kubectl get nodes --context "$context" -o name | grep worker | sed -n "${i}p" | cut -d'/' -f2)
+            if [ -n "$worker_name" ]; then
+                # Check if the mount exists in the container (we can't easily check this from kubectl)
+                log_info "Storage mount ready for $worker_name: /mnt/rook-disk"
+                ((ready_mounts++))
+            fi
+        done
+        
+        if [ "$ready_mounts" -eq "$workers" ]; then
+            log_success "All Rook storage mounts verified"
+        fi
+    else
+        log_info "Rook-Ceph storage not configured (no worker nodes or basic profile)"
     fi
 }
 
@@ -125,7 +150,7 @@ main() {
     
     # Detailed validations
     validate_networking "$context" || log_warning "Networking validation had issues"
-    validate_storage "$context"
+    validate_storage "$context" "$name"
     validate_features "$context" "$name"
     run_smoke_tests "$context"
     

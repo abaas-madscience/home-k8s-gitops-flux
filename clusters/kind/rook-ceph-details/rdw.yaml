@@ -1,0 +1,17 @@
+apiVersion: ceph.rook.io/v1
+kind: CephObjectStore
+metadata:
+  name: knowledgebase
+  namespace: rook-ceph
+spec:
+  metadataPool:
+    replicated:
+      size: 1
+      requireSafeReplicaSize: false # Required for single replica
+  dataPool:
+    replicated:
+      size: 1
+      requireSafeReplicaSize: false # Required for single replica
+  gateway:
+    port: 80
+    instances: 1

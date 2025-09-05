@@ -51,6 +51,8 @@ kind-tools/
 - `switch NAME` - Switch kubectl context
 - `info [NAME]` - Show cluster details
 - `validate [NAME]` - Validate cluster health
+- `suspend NAME` - Suspend cluster to save resources
+- `resume NAME` - Resume suspended cluster
 
 ### GitOps Integration  
 - `bootstrap NAME [REPO]` - Bootstrap Flux GitOps
@@ -75,6 +77,7 @@ Advanced networking with Cilium:
 GitOps-ready cluster:
 - Cilium CNI + Gateway API
 - 1 control plane, 3 workers
+- Rook-Ceph storage ready (mounted storage on each worker)
 - Ready for Flux bootstrap
 - Additional apps deployed via GitOps
 
@@ -83,6 +86,7 @@ Homelab networking simulation:
 - Cilium with Hubble enabled
 - Gateway API support
 - 3 worker nodes for realistic testing
+- Rook-Ceph storage mounts for distributed storage testing
 - Matches homelab networking setup
 
 ## 🔧 Prerequisites
@@ -126,6 +130,11 @@ export GITHUB_TOKEN=your_token_here
 ./kind-dev switch dev
 ./kind-dev switch cilium-test
 ./kind-dev list
+
+# Suspend cluster to save battery/resources
+./kind-dev suspend lab
+# Resume when needed
+./kind-dev resume lab
 
 # Clean up
 ./kind-dev delete dev
