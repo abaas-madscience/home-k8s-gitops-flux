@@ -13,3 +13,4 @@ spec:
     namespace: flux-system
   dependsOn:
     - name: infra-namespaces
+    - name: infra-storage-pvcs

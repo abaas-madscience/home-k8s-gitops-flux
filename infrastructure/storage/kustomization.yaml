@@ -4,4 +4,6 @@ resources:
   - testpvc.yaml
   - open-webui.yaml
   - open-webui-pipelines.yaml
-  #- minio.yaml
+  - prom-stack-alertmanager.yaml
+  - prom-stack-grafana.yaml
+  - prom-stack-prometheus.yaml

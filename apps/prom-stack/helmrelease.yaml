@@ -13,19 +13,21 @@ spec:
 
   values:
     # Storage configuration for Prometheus
+
     prometheus:
       prometheusSpec:
         storageSpec:
           volumeClaimTemplate:
             spec:
-              storageClassName: rook-ceph-block-retain
-              accessModes: ["ReadWriteOnce"]
-              resources:
-                requests:
-                  storage: 50Gi
+              existingClaim: "prom-stack-prometheus-pvc"
+              #storageClassName: rook-ceph-block-retain
+              #accessModes: ["ReadWriteOnce"]
+              #resources:
+              #  requests:
+              #    storage: 50Gi
 
         # Set retention to match storage size
-        retention: 30d
+        retention: 14d
         retentionSize: 45GiB
 
         # Resource limits for production use
@@ -43,11 +45,12 @@ spec:
         storage:
           volumeClaimTemplate:
             spec:
-              storageClassName: rook-ceph-block-retain
-              accessModes: ["ReadWriteOnce"]
-              resources:
-                requests:
-                  storage: 10Gi
+              existingClaim: "prom-stack-alertmanager-pvc"
+              #storageClassName: rook-ceph-block-retain
+              #accessModes: ["ReadWriteOnce"]
+              #resources:
+              #  requests:
+              #    storage: 10Gi
 
         # Resource limits
         resources:
@@ -63,12 +66,13 @@ spec:
       persistence:
         enabled: true
         type: pvc
-        storageClassName: rook-ceph-block-retain
-        accessModes:
-          - ReadWriteOnce
-        size: 10Gi
-        finalizers:
-          - kubernetes.io/pvc-protection
+        existingClaim: "prom-stack-grafana-pvc"
+        #storageClassName: rook-ceph-block-retain
+        #accessModes:
+        #  - ReadWriteOnce
+        #size: 10Gi
+        #finalizers:
+        #  - kubernetes.io/pvc-protection
 
       # Resource limits for Grafana
       resources:

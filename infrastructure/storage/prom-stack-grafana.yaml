@@ -1,7 +1,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: minio-storage-pvc
+  name: prom-stack-grafana-pvc
   namespace: flux-system
 spec:
   interval: 10m
@@ -14,11 +14,11 @@ spec:
         namespace: flux-system
   values:
     app:
-      name: minio
-    component: data
-    namespace: minio
-    description: "MinIo PVC"
+      name: prom-stack
+    component: grafana
+    namespace: prom-stack
+    description: "Alertmanager PVC"
     storage:
-      size: "25Gi"
+      size: "10Gi"
       class: "rook-ceph-block"
       accessMode: "ReadWriteOnce"

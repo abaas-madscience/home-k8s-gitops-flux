@@ -1,0 +1,24 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: prom-stack-alertmanager-pvc
+  namespace: flux-system
+spec:
+  interval: 10m
+  chart:
+    spec:
+      chart: ./infrastructure/storage/charts
+      sourceRef:
+        kind: GitRepository
+        name: flux-system
+        namespace: flux-system
+  values:
+    app:
+      name: prom-stack
+    component: alertmanager
+    namespace: prom-stack
+    description: "Alertmanager PVC"
+    storage:
+      size: "1Gi"
+      class: "rook-ceph-block"
+      accessMode: "ReadWriteOnce"
