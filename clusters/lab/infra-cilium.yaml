@@ -5,6 +5,9 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m
+  timeout: 5m
+  retryInterval: 2m
+  wait: true
   path: ./infrastructure/cilium
   prune: true
   sourceRef:
@@ -13,3 +16,16 @@ spec:
     namespace: flux-system
   dependsOn:
     - name: infra-namespaces
+  healthChecks:
+    - apiVersion: apps/v1
+      kind: DaemonSet
+      name: cilium
+      namespace: kube-system
+    - apiVersion: apps/v1
+      kind: DaemonSet
+      name: cilium-envoy
+      namespace: kube-system
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: cilium-operator
+      namespace: kube-system

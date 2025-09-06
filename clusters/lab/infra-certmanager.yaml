@@ -5,6 +5,9 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m
+  timeout: 5m
+  retryInterval: 2m
+  wait: true
   path: ./infrastructure/cert-manager/
   prune: true
   sourceRef:
@@ -13,3 +16,16 @@ spec:
     namespace: flux-system
   dependsOn:
     - name: infra-cilium
+  healthChecks:
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: cert-manager
+      namespace: cert-manager
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: cert-manager-cainjector
+      namespace: cert-manager
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: cert-manager-webhook
+      namespace: cert-manager

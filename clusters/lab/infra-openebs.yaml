@@ -5,6 +5,9 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m
+  timeout: 5m
+  retryInterval: 2m
+  wait: true
   path: ./infrastructure/openebs
   prune: true
   sourceRef:
@@ -13,3 +16,12 @@ spec:
     namespace: flux-system
   dependsOn:
     - name: infra-namespaces
+  healthChecks:
+    - apiVersion: apps/v1
+      kind: DaemonSet
+      name: openebs-alloy
+      namespace: openebs
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: openebs-localpv-provisioner
+      namespace: openebs
