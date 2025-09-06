@@ -11,8 +11,8 @@ resources:
   - infra-https-routes.yaml
   - infra-certmanager.yaml
   - infra-rook-ceph.yaml
-  - infra-rook-ceph-details.yaml
-  - infra-storage-pvcs.yaml
+  #- infra-rook-ceph-details.yaml
+  #- infra-storage-pvcs.yaml
   #- infra-app-templates.yaml
 
   # Kube system patches
