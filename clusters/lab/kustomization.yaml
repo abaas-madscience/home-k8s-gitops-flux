@@ -20,11 +20,11 @@ resources:
 
   # Applications
   - apps-cnpg-system.yaml
-  - apps-n8n.yaml
-  - apps-pgadmin.yaml
-  - apps-qdrant.yaml
-  - apps-dashy.yaml
-  - apps-open-webui.yaml
-  - apps-prom-stack.yaml
-  - apps-cool-app.yaml
-  - apps-ubuntu-app.yaml
+  #- apps-n8n.yaml
+  #- apps-pgadmin.yaml
+  #- apps-qdrant.yaml
+  #- apps-dashy.yaml
+  #- apps-open-webui.yaml
+  #- apps-prom-stack.yaml
+  #- apps-cool-app.yaml
+  #- apps-ubuntu-app.yaml
