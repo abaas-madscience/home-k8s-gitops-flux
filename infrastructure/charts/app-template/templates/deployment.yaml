@@ -21,3 +21,18 @@ spec:
           ports:
             - containerPort: {{ .Values.app.port }}
               name: http
+          {{- if .Values.storage.enabled }}
+          volumeMounts:
+            {{- range .Values.storage.mounts }}
+            - name: {{ .name }}
+              mountPath: {{ .mountPath }}
+            {{- end }}
+          {{- end }}
+      {{- if .Values.storage.enabled }}
+      volumes:
+        {{- range .Values.storage.mounts }}
+        - name: {{ .name }}
+          persistentVolumeClaim:
+            claimName: {{ .pvcName }}
+        {{- end }}
+      {{- end }}

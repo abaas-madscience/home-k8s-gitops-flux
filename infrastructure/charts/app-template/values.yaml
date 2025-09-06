@@ -8,6 +8,15 @@ app:
 # Basic deployment settings
 replicas: 1
 
+# Persistent storage (mounts existing PVCs created via storage template)
+storage:
+  enabled: false
+  mounts: []         # List of PVC mounts
+  # Example:
+  # - name: "data"
+  #   pvcName: "ubuntu-app-data-pvc"
+  #   mountPath: "/data"
+
 # Optional ingress
 ingress:
   enabled: false
