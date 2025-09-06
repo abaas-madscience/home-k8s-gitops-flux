@@ -5,7 +5,10 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m
-  path: ./infrastructure/rook-ceph
+  timeout: 10m
+  retryInterval: 2m
+  wait: false
+  path: ./infrastructure/rook-ceph-details
   prune: true
   sourceRef:
     kind: GitRepository
@@ -13,3 +16,8 @@ spec:
     namespace: flux-system
   dependsOn:
     - name: rook-ceph
+  healthChecks:
+    - apiVersion: ceph.rook.io/v1
+      kind: CephCluster
+      name: rook-ceph
+      namespace: rook-ceph
