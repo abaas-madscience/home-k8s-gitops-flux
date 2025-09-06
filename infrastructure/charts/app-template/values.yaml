@@ -1,48 +1,14 @@
-# Simple interface for developers
+# Simplified App Template Values
 app:
-  name: ""
-  image: ""
-  tag: ""
-  port: 8080
+  name: ""           # Required: Application name
+  image: ""          # Required: Docker image
+  tag: "latest"      # Image tag
+  port: 80           # Container port
 
-# Optional overrides (most have sane defaults)
+# Basic deployment settings
 replicas: 1
-environment: "development"
 
-# Health check paths (defaults provided)
-healthChecks:
-  enabled: true
-  liveness:
-    path: "/health"
-    delay: 30
-  readiness:
-    path: "/ready"
-    delay: 5
-
-# Ingress (optional)
+# Optional ingress
 ingress:
   enabled: false
-  host: ""
-  path: "/"
-  tls: true
-
-# Database connection (auto-provisions PVC if enabled)
-database:
-  enabled: false
-  size: "10Gi"
-
-# Cache (auto-provisions Redis if enabled)
-cache:
-  enabled: false
-
-# Monitoring (always enabled, configurable)
-monitoring:
-  port: 8080
-  path: "/metrics"
-
-# Resource overrides (defaults provided based on environment)
-resources: {}
-
-# Team info (required for cost allocation)
-team: ""
-dataClassification: "standard"
+  hostname: ""       # If empty, defaults to {app.name}.cluster

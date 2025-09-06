@@ -3,36 +3,21 @@ apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
   name: {{ .Values.app.name }}-route
-  namespace: {{ .Release.Namespace }}
+  namespace: {{ .Values.app.name }}
   labels:
     app.kubernetes.io/name: {{ .Values.app.name }}
-    app.kubernetes.io/component: gateway
-  annotations:
-    # Gateway standards
-    gateway.networking.k8s.io/managed-by: "platform-engineering"
 spec:
   parentRefs:
     - name: public-gateway
       namespace: infra-gateway
   hostnames:
-    - "{{ .Values.app.name }}.{{ .Values.ingress.domain | default "cluster" }}"
-    {{- if .Values.ingress.customHost }}
-    - "{{ .Values.ingress.customHost }}"
-    {{- end }}
+    - {{ .Values.ingress.hostname | default (printf "%s.cluster" .Values.app.name) }}
   rules:
     - matches:
         - path:
             type: PathPrefix
-            value: {{ .Values.ingress.path | default "/" }}
+            value: "/"
       backendRefs:
         - name: {{ .Values.app.name }}
           port: 80
-      {{- if .Values.ingress.rateLimit }}
-      filters:
-        - type: ExtensionRef
-          extensionRef:
-            group: gateway.networking.k8s.io
-            kind: RateLimitPolicy
-            name: {{ .Values.app.name }}-rate-limit
-      {{- end }}
 {{- end }}

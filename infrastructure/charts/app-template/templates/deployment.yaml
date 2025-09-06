@@ -2,33 +2,11 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ .Values.app.name }}
-  namespace: {{ .Release.Namespace }}
+  namespace: {{ .Values.app.name }}
   labels:
     app.kubernetes.io/name: {{ .Values.app.name }}
-    app.kubernetes.io/component: application
-    app.kubernetes.io/part-of: {{ .Values.app.name }}
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
-    team: {{ .Values.team }}
-  annotations:
-    # Emperor's secret sauce
-    deployment.kubernetes.io/revision: "{{ .Release.Revision }}"
-    security.scan/required: "true"
-    backup.policy/class: {{ .Values.dataClassification }}
-    cost.allocation/team: {{ .Values.team }}
-    platform.engineering/template-version: "{{ .Chart.Version }}"
 spec:
   replicas: {{ .Values.replicas }}
-  {{- if eq .Values.environment "production" }}
-  {{- if lt (.Values.replicas | int) 2 }}
-  # Emperor's rule: Production must have HA
-  replicas: 2
-  {{- end }}
-  {{- end }}
-  strategy:
-    type: RollingUpdate
-    rollingUpdate:
-      maxUnavailable: 1
-      maxSurge: 1
   selector:
     matchLabels:
       app.kubernetes.io/name: {{ .Values.app.name }}
@@ -36,94 +14,10 @@ spec:
     metadata:
       labels:
         app.kubernetes.io/name: {{ .Values.app.name }}
-        app.kubernetes.io/component: application
-        team: {{ .Values.team }}
-        # Monitoring labels (automatic)
-        prometheus.io/scrape: "true"
-      annotations:
-        prometheus.io/port: "{{ .Values.monitoring.port }}"
-        prometheus.io/path: "{{ .Values.monitoring.path }}"
-        # Force pod restart on config changes
-        checksum/config: {{ include (print $.Template.BasePath "/deployment.yaml") . | sha256sum }}
     spec:
-      # Scurity defaults
-      securityContext:
-        runAsNonRoot: true
-        runAsUser: 1000
-        fsGroup: 1000
       containers:
-      - name: {{ .Values.app.name }}
-        image: "{{ .Values.app.image }}:{{ .Values.app.tag }}"
-        imagePullPolicy: Always
-        ports:
-        - name: http
-          containerPort: {{ .Values.app.port }}
-          protocol: TCP
-        {{- if .Values.healthChecks.enabled }}
-        # Emperor's health checks (non-negotiable)
-        livenessProbe:
-          httpGet:
-            path: {{ .Values.healthChecks.liveness.path }}
-            port: http
-          initialDelaySeconds: {{ .Values.healthChecks.liveness.delay }}
-          periodSeconds: 30
-          timeoutSeconds: 5
-          failureThreshold: 3
-        readinessProbe:
-          httpGet:
-            path: {{ .Values.healthChecks.readiness.path }}
-            port: http
-          initialDelaySeconds: {{ .Values.healthChecks.readiness.delay }}
-          periodSeconds: 10
-          timeoutSeconds: 5
-          failureThreshold: 3
-        {{- end }}
-        # Emperor's resource governance
-        resources:
-          {{- if eq .Values.environment "production" }}
-          requests:
-            memory: {{ .Values.resources.requests.memory | default "256Mi" }}
-            cpu: {{ .Values.resources.requests.cpu | default "200m" }}
-          limits:
-            memory: {{ .Values.resources.limits.memory | default "1Gi" }}
-            cpu: {{ .Values.resources.limits.cpu | default "1000m" }}
-          {{- else }}
-          requests:
-            memory: {{ .Values.resources.requests.memory | default "128Mi" }}
-            cpu: {{ .Values.resources.requests.cpu | default "100m" }}
-          limits:
-            memory: {{ .Values.resources.limits.memory | default "512Mi" }}
-            cpu: {{ .Values.resources.limits.cpu | default "500m" }}
-          {{- end }}
-        # Emperor's security context (non-negotiable)
-        securityContext:
-          allowPrivilegeEscalation: false
-          capabilities:
-            drop:
-            - ALL
-          readOnlyRootFilesystem: true
-        # Writable temp directory
-        volumeMounts:
-        - name: tmp
-          mountPath: /tmp
-        {{- if .Values.database.enabled }}
-        env:
-        - name: DATABASE_URL
-          value: "postgresql://{{ .Values.app.name }}:password@{{ .Values.app.name }}-database:5432/{{ .Values.app.name }}"
-        {{- end }}
-      volumes:
-      - name: tmp
-        emptyDir: {}
-      # Emperor's pod scheduling rules
-      affinity:
-        podAntiAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-          - weight: 100
-            podAffinityTerm:
-              labelSelector:
-                matchExpressions:
-                - key: app.kubernetes.io/name
-                  operator: In
-                  values:
-                  - {{ .Values.app.name }}
-              topologyKey: kubernetes.io/hostname
+        - name: {{ .Values.app.name }}
+          image: "{{ .Values.app.image }}:{{ .Values.app.tag }}"
+          ports:
+            - containerPort: {{ .Values.app.port }}
+              name: http

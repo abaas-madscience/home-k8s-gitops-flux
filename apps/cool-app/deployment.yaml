@@ -1,27 +1,24 @@
-# apps/my-cool-app.yaml
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: my-cool-app
-  namespace: default
+  namespace: cool-app
 spec:
-  interval: 1m
+  interval: 10m
   chart:
     spec:
       chart: ./infrastructure/charts/app-template
       sourceRef:
         kind: GitRepository
         name: flux-system
+        namespace: flux-system
   values:
     app:
-      name: my-complex-app
-      image: ubuntu
-      tag: "22.04"
-    team: "data-team"
-    storage:
-      enabled: false
-      size: "100Gi"
-      mountPath: "/app/data"
+      name: cool-app
+      image: nginx
+      tag: "1.25"
+      port: 80
+    replicas: 1
     ingress:
-      enabled: false
-      customHost: "my-app.example.com"
+      enabled: true
+      hostname: "cool-app.cluster"
