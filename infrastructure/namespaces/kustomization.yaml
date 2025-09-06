@@ -16,3 +16,4 @@ resources:
   - prom-stack.yaml
   - cert-manager.yaml
   - minio.yaml
+  - ubuntu-app.yaml
