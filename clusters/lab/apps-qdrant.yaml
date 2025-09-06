@@ -5,6 +5,9 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m
+  timeout: 5m
+  retryInterval: 2m
+  wait: true
   path: ./apps/qdrant
   prune: true
   sourceRef:
@@ -13,3 +16,8 @@ spec:
     namespace: flux-system
   dependsOn:
     - name: openebs
+  healthChecks:
+    - apiVersion: apps/v1
+      kind: StatefulSet
+      name: qdrant
+      namespace: qdrant

@@ -5,6 +5,9 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m
+  timeout: 3m
+  retryInterval: 1m
+  wait: false
   path: ./apps/cnpg-system
   prune: true
   sourceRef:
@@ -14,3 +17,8 @@ spec:
   dependsOn:
     - name: infra-namespaces
     - name: openebs
+  healthChecks:
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: cloudnative-pg
+      namespace: cnpg-system

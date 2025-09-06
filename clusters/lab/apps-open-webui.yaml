@@ -5,6 +5,9 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m
+  timeout: 3m
+  retryInterval: 1m
+  wait: false
   path: ./apps/open-webui
   prune: true
   sourceRef:
@@ -13,3 +16,12 @@ spec:
     namespace: flux-system
   dependsOn:
     - name: infra-namespaces
+  healthChecks:
+    - apiVersion: apps/v1
+      kind: StatefulSet
+      name: open-webui
+      namespace: open-webui
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: open-webui-pipelines
+      namespace: open-webui

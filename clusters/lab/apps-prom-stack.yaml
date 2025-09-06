@@ -5,6 +5,9 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m
+  timeout: 5m
+  retryInterval: 2m
+  wait: false
   path: ./apps/prom-stack
   prune: true
   sourceRef:
@@ -14,3 +17,12 @@ spec:
   dependsOn:
     - name: infra-namespaces
     - name: infra-storage-pvcs
+  healthChecks:
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: kube-prometheus-stack-operator
+      namespace: prom-stack
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: kube-prometheus-stack-grafana
+      namespace: prom-stack
