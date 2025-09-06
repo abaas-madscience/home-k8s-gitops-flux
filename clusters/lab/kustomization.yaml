@@ -26,3 +26,4 @@ resources:
   - apps-dashy.yaml
   - apps-open-webui.yaml
   - apps-prom-stack.yaml
+  - apps-cool-app.yaml
