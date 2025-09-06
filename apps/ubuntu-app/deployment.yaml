@@ -21,6 +21,8 @@ spec:
       image: ubuntu
       tag: "22.04"
       port: 8080
+      command: ["/bin/bash"]
+      args: ["-c", "while true; do echo 'Ubuntu dev container running... Storage mounted at /data'; ls -la /data; sleep 30; done"]
     replicas: 1
     storage:
       enabled: true

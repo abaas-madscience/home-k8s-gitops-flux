@@ -4,6 +4,8 @@ app:
   image: ""          # Required: Docker image
   tag: "latest"      # Image tag
   port: 80           # Container port
+  command: []        # Optional: Override container command
+  args: []           # Optional: Override container args
 
 # Basic deployment settings
 replicas: 1

@@ -18,6 +18,12 @@ spec:
       containers:
         - name: {{ .Values.app.name }}
           image: "{{ .Values.app.image }}:{{ .Values.app.tag }}"
+          {{- if .Values.app.command }}
+          command: {{ toYaml .Values.app.command | nindent 12 }}
+          {{- end }}
+          {{- if .Values.app.args }}
+          args: {{ toYaml .Values.app.args | nindent 12 }}
+          {{- end }}
           ports:
             - containerPort: {{ .Values.app.port }}
               name: http
