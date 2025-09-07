@@ -12,8 +12,8 @@ resources:
   - infra-https-routes.yaml
   - infra-rook-ceph.yaml
   - infra-rook-ceph-details.yaml
-  #- infra-storage-pvcs.yaml
-  #- infra-app-templates.yaml
+  - infra-storage-pvcs.yaml
+  - infra-app-templates.yaml
 
   # Kube system patches
   # - kube-node-patches.yaml
@@ -27,4 +27,4 @@ resources:
   #- apps-open-webui.yaml
   #- apps-prom-stack.yaml
   #- apps-cool-app.yaml
-  #- apps-ubuntu-app.yaml
+  - apps-ubuntu-app.yaml
