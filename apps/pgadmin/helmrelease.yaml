@@ -15,9 +15,9 @@ spec:
         name: runix-charts
         namespace: flux-system
   values:
-    # Node selector to deploy pgAdmin specifically on talos-worker-01
+    # Node selector to deploy pgAdmin specifically on talos-compute-01
     nodeSelector:
-      kubernetes.io/hostname: talos-worker-01
+      kubernetes.io/hostname: talos-compute-01
 
     # Persistence for pgAdmin configuration and saved connections
     persistentVolume:

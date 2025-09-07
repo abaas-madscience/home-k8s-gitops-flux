@@ -88,14 +88,14 @@ spec:
         targetPort: http
     nameOverride: ""
     nodeSelector:
-      kubernetes.io/hostname: talos-cp-02
+      kubernetes.io/hostname: talos-compute-01
     persistence:
       enabled: true
       size: 75Gi
-      #storageClassName: openebs-database
-      existingClaim: "qdrant-storage-qdrant-0"
+      storageClassName: openebs-database
+      #existingClaim: "qdrant-storage-qdrant"
       annotations:
-        volume.kubernetes.io/selected-node: talos-cp-02
+        volume.kubernetes.io/selected-node: talos-compute-01
     podAnnotations: {}
     podDisruptionBudget:
       enabled: false
