@@ -15,7 +15,7 @@ spec:
   values:
     app:
       name: ubuntu-app
-    component: data
+    component: data-openebs
     namespace: ubuntu-app
     description: "Persistent storage for ubuntu-app development container"
     storage:
