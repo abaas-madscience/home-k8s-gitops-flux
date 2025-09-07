@@ -20,4 +20,4 @@ spec:
       name: public-gateway
       namespace: infra-gateway
   dependsOn:
-    - name: infra-certmanager
+    - name: infra-certmgr-deploy
