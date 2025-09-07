@@ -32,7 +32,7 @@ spec:
       enabled: true
       mounts:
         - name: "data"
-          pvcName: "ubuntu-app-openebs"
+          pvcName: "ubuntu-app-data-openebs-pvc"
           mountPath: "/data"
     ingress:
       enabled: false
