@@ -13,4 +13,4 @@ spec:
     namespace: flux-system
   dependsOn:
     - name: openebs
-    - name: ceph-rook-details
+    - name: rook-ceph-details
