@@ -13,7 +13,6 @@ metadata:
     openebs.io/cas-type: local
     volume.kubernetes.io/selected-node: talos-compute-01
 provisioner: openebs.io/local
-volumeBindingMode: Immediate
+volumeBindingMode: WaitForFirstConsumer
 reclaimPolicy: Delete
 allowVolumeExpansion: true
-# Testing
