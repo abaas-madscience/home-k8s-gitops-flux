@@ -25,4 +25,4 @@ spec:
     nodes:
       - name: talos-storage-01
         devices:
-          - name: "/dev/vdb"
+          - name: "/dev/sdb"
