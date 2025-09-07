@@ -7,6 +7,7 @@ resources:
   - infra-openebs.yaml
   - infra-cilium.yaml
   - infra-certmanager.yaml
+  - infra-certmanager-issuer.yaml
   - infra-gateways.yaml
   - infra-https-routes.yaml
   - infra-rook-ceph.yaml
