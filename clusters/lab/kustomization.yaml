@@ -11,7 +11,7 @@ resources:
   - infra-gateways.yaml
   - infra-https-routes.yaml
   - infra-rook-ceph.yaml
-  #- infra-rook-ceph-details.yaml
+  - infra-rook-ceph-details.yaml
   #- infra-storage-pvcs.yaml
   #- infra-app-templates.yaml
 
