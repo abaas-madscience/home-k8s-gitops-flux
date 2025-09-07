@@ -8,6 +8,24 @@ data:
     # Key overrides for single-node setup
     csi:
       enableLiveness: true
+      cephfs:
+        provisioner:
+          replicaCount: 1
+        plugin:
+          tolerations:
+          - key: distributed-storage
+            operator: Equal
+            value: "true"
+            effect: NoSchedule
+      rbd:
+        provisioner:
+          replicaCount: 1
+        plugin:
+          tolerations:
+          - key: distributed-storage
+            operator: Equal
+            value: "true"
+            effect: NoSchedule
       
     resources:
       limits:
