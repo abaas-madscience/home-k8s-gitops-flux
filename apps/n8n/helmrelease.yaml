@@ -13,9 +13,6 @@ spec:
 
   values:
     main:
-      nodeSelector:
-        workload: "cpu"
-
       # Service configuration
       service:
         type: ClusterIP

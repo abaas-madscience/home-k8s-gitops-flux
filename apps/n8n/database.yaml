@@ -40,9 +40,10 @@ spec:
       requiredDuringSchedulingIgnoredDuringExecution:
         nodeSelectorTerms:
           - matchExpressions:
-              - key: workload
+              - key: kubernetes.io/hostname
                 operator: In
-                values: ["cpu"]
+                values:
+                  - talos-compute-01
 
   postgresql:
     parameters:

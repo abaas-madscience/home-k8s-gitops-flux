@@ -4,7 +4,6 @@ resources:
   - open-webui.yaml
   - open-webui-pipelines.yaml
   - ubuntu-app.yaml
-  - ubuntu-ceph.yaml
   #- prom-stack-alertmanager.yaml
   #- prom-stack-grafana.yaml
   #- prom-stack-prometheus.yaml
