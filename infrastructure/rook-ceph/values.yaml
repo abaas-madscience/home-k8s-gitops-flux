@@ -8,9 +8,8 @@ data:
     # Key overrides for single-node setup
     csi:
       enableLiveness: true
-      provisioner:
-        # Single replica for both CephFS and RBD provisioners
-        replicaCount: 1
+      # Set CSI provisioner replicas to 1 for single-node setup
+      provisionerReplicas: 1
       
     resources:
       limits:
