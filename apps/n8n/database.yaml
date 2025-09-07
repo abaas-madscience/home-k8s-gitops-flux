@@ -9,9 +9,9 @@ spec:
   # Storage configuration
   storage:
     size: 20Gi
-    storageClass: openebs-hostpath
+    storageClass: openebs-database
 
-    # You can get the superuser credentials from the secret created by the Cluster
+    # Superuser credentials from the secret created by the Cluster
     # kubectl get secret n8n-pg-superuser -n n8n -o jsonpath='{.data.username}' | base64 -d
     # kubectl get secret n8n-pg-superuser -n n8n -o jsonpath='{.data.password}' | base64 -d
 

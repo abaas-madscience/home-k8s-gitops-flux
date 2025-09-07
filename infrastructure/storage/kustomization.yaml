@@ -1,10 +1,10 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  #- testpvc.yaml
-  #- open-webui.yaml
-  #- open-webui-pipelines.yaml
+  - open-webui.yaml
+  - open-webui-pipelines.yaml
   - ubuntu-app.yaml
+  - ubuntu-ceph.yaml
   #- prom-stack-alertmanager.yaml
   #- prom-stack-grafana.yaml
   #- prom-stack-prometheus.yaml
