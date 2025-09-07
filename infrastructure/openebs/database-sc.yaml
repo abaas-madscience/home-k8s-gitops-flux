@@ -11,7 +11,7 @@ metadata:
     meta.helm.sh/release-name: openebs
     meta.helm.sh/release-namespace: openebs
     openebs.io/cas-type: local
-    volume.kubernetes.io/selected-node: talos-cp-02
+    volume.kubernetes.io/selected-node: talos-compute-01
 provisioner: openebs.io/local
 volumeBindingMode: Immediate
 reclaimPolicy: Delete

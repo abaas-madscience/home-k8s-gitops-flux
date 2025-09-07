@@ -4,8 +4,8 @@ metadata:
   name: cluster-pool
 spec:
   blocks:
-    - start: "192.168.68.15"
-      stop: "192.168.68.15"
+    - start: "192.168.68.20"
+      stop: "192.168.68.20"
   serviceSelector:
     matchExpressions:
       - key: io.kubernetes.service.namespace

@@ -6,7 +6,6 @@ resources:
   - infra-flux-system.yaml
   - infra-openebs.yaml
   - infra-cilium.yaml
-  - infra-falco.yaml
   - infra-gateways.yaml
   - infra-https-routes.yaml
   - infra-certmanager.yaml
