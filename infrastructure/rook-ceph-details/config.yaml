@@ -21,6 +21,6 @@ spec:
   storage:
     useAllNodes: false
     nodes:
-      - name: talos-sc-01
+      - name: talos-storage-01
         devices:
           - name: "/dev/vdb"
