@@ -27,4 +27,4 @@ resources:
   - apps-open-webui.yaml
   #- apps-prom-stack.yaml
   #- apps-cool-app.yaml
-  - apps-ubuntu-app.yaml
+  #- apps-ubuntu-app.yaml

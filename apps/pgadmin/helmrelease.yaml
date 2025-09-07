@@ -22,7 +22,7 @@ spec:
     # Persistence for pgAdmin configuration and saved connections
     persistentVolume:
       enabled: true
-      existingClaim: "pgadmin-pgadmin4"
+      existingClaim: "pgadmin-storage-pgadmin"
       #storageClass: rook-ceph-block # Ensure this matches your Ceph storage class
       #size: 1Gi # Adjust size as needed
 
