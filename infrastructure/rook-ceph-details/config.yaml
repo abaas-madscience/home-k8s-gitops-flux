@@ -26,6 +26,67 @@ spec:
           operator: Equal
           value: "true"
           effect: NoSchedule
+  csi:
+    cephfs:
+      plugin:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/hostname
+                operator: In
+                values:
+                - talos-storage-01
+        tolerations:
+          - key: distributed-storage
+            operator: Equal
+            value: "true"
+            effect: NoSchedule
+      provisioner:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/hostname
+                operator: In
+                values:
+                - talos-storage-01
+        tolerations:
+          - key: distributed-storage
+            operator: Equal
+            value: "true"
+            effect: NoSchedule
+        replicas: 1
+    rbd:
+      plugin:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/hostname
+                operator: In
+                values:
+                - talos-storage-01
+        tolerations:
+          - key: distributed-storage
+            operator: Equal
+            value: "true"
+            effect: NoSchedule
+      provisioner:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/hostname
+                operator: In
+                values:
+                - talos-storage-01
+        tolerations:
+          - key: distributed-storage
+            operator: Equal
+            value: "true"
+            effect: NoSchedule
+        replicas: 1
   storage:
     useAllNodes: false
     nodes:
