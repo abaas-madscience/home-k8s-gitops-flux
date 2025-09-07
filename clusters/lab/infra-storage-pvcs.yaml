@@ -11,3 +11,6 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
+  dependsOn:
+    - name: openebs
+    - name: ceph-rook-details
