@@ -13,6 +13,14 @@ spec:
     count: 1
   placement:
     all: # Apply to all Ceph components
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+          - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              values:
+              - talos-storage-01
       tolerations:
         - key: distributed-storage
           operator: Equal

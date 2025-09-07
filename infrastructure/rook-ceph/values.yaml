@@ -5,7 +5,7 @@ metadata:
   namespace: rook-ceph
 data:
   values.yaml: |
-    # Key overrides for your single-node setup
+    # Key overrides for single-node setup
     csi:
       enableLiveness: true
       
@@ -17,7 +17,7 @@ data:
         memory: 128Mi
 
     nodeSelector: 
-      ceph-osd: "enabled"  # Target your storage node
+      ceph-osd: "enabled"  # Target storage node
 
     tolerations:
     - key: distributed-storage
