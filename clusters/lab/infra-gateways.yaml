@@ -19,3 +19,5 @@ spec:
       kind: Gateway
       name: public-gateway
       namespace: infra-gateway
+  dependsOn:
+    - name: infra-certmanager

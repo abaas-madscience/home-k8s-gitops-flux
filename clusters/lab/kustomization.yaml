@@ -6,9 +6,9 @@ resources:
   - infra-flux-system.yaml
   - infra-openebs.yaml
   - infra-cilium.yaml
+  - infra-certmanager.yaml
   - infra-gateways.yaml
   - infra-https-routes.yaml
-  - infra-certmanager.yaml
   - infra-rook-ceph.yaml
   #- infra-rook-ceph-details.yaml
   #- infra-storage-pvcs.yaml
