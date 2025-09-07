@@ -1,7 +1,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: postgres-pvc
+  name: ubuntu-openebs-pvc
   namespace: flux-system
 spec:
   interval: 10m
@@ -17,8 +17,8 @@ spec:
       name: testapp
     component: test
     namespace: default
-    description: "Test PVC for development"
+    description: "Test for OpenEBS"
     storage:
       size: "1Gi"
-      class: "rook-ceph-block"
+      class: "openebs-database"
       accessMode: "ReadWriteOnce"
