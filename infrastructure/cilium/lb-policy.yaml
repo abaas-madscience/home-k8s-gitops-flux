@@ -5,6 +5,7 @@ metadata:
 spec:
   nodeSelector: {}
   interfaces:
+    - enp2s0
     - enp1s0
     - eno1
     - eth0
