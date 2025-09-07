@@ -13,7 +13,7 @@ resources:
   - infra-rook-ceph.yaml
   - infra-rook-ceph-details.yaml
   - infra-storage-pvcs.yaml
-  - infra-app-templates.yaml
+  #- infra-app-templates.yaml
 
   # Kube system patches
   # - kube-node-patches.yaml
