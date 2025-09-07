@@ -19,3 +19,5 @@ spec:
       kind: Deployment
       name: rook-ceph-operator
       namespace: rook-ceph
+  dependsOn:
+    - name: infra-namespaces
