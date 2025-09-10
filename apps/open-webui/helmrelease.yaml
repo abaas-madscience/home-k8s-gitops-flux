@@ -34,12 +34,10 @@ spec:
       # Add any specific pipeline environment variables you need
       extraEnvVars:
         - name: N8N_WEBHOOK_URL
-          value: "https://n8n.cluster/webhook"
+          value: "http://n8n.n8n/webhook"
 
       persistence:
         enabled: true
-        #size: 2Gi
-        #storageClass: rook-ceph-block
         existingClaim: open-webui-pipelines-pvc
 
     # Basic service configuration
@@ -61,7 +59,7 @@ spec:
         value: "0p3n-w3bu!"
       # Add N8N integration if needed
       - name: WEBHOOK_URL
-        value: "https://n8n.cluster/webhook"
+        value: "http://open-webui-pipelines:9099"
 
     # Enable OpenAI API compat
     enableOpenaiApi: true

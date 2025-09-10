@@ -13,6 +13,8 @@ spec:
             - name: backup
               image: ubuntu:latest
               command: ["/bin/bash"]
+              # Todo: Add compression
+              # Todo:
               args:
                 - -c
                 - |
