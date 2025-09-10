@@ -31,7 +31,7 @@ spec:
     pipelines:
       enabled: true
 
-      # Add any specific pipeline environment variables you need
+      # Add any specific pipeline environment variables you need here
       extraEnvVars:
         - name: N8N_WEBHOOK_URL
           value: "http://n8n.n8n/webhook"
