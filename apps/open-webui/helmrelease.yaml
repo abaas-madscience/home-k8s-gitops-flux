@@ -63,6 +63,7 @@ spec:
 
     # Enable OpenAI API compat
     enableOpenaiApi: true
+    openaiBaseApiUrl: "http://open-webui-pipelines:9099"
 
     # Resource limits
     resources:
